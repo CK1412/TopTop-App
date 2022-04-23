@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "73540276623",
+    "project_id": "toptop-app-1450b",
+    "storage_bucket": "toptop-app-1450b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73540276623:android:5cc2b54022b1334e37fbfa",
+        "android_client_info": {
+          "package_name": "vn.haui.toptop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73540276623-ve0k436q6n0r85f0c3bp964gtjg8eola.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwGtBW4a92uNKzOBlC138EmXpciByCqL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73540276623-ve0k436q6n0r85f0c3bp964gtjg8eola.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
