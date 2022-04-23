@@ -110,7 +110,11 @@ class AuthService {
   }
 
   //! SIGN OUT THE CURRENT USER
-  Future<void> signOut() async {
-    await _auth.signOut();
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+    } on FirebaseException catch (e) {
+      showSnackbar(context, e.message!);
+    }
   }
 }

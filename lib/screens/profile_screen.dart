@@ -227,10 +227,9 @@ class ContentBlockAbove extends StatelessWidget {
                       builder: (context, ref, child) {
                         final _auth = ref.watch(authProvider);
 
-                        void _logOutCurrentUser() {
-                          _auth.signOut().whenComplete(
-                                () => Navigator.of(context).pop(),
-                              );
+                        _logOutCurrentUser() async {
+                          _auth.signOut(context);
+                          Navigator.of(context).pop();
                         }
 
                         return GestureDetector(

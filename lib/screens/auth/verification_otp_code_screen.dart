@@ -81,10 +81,9 @@ class _VerificationOtpCodeScreenState
         );
 
         if (isSuccessfully) {
-          debugPrint('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
+          // remove all routes current
           Navigator.of(context).popUntil((ModalRoute.withName('/')));
         } else {
-          debugPrint('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
           _loading();
         }
       }
