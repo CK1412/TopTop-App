@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/providers/state.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../src/constants.dart';
 import '../common/loading_widget.dart';
 
-class VideoPlayerWidget extends StatefulWidget {
+class VideoPlayerWidget extends ConsumerStatefulWidget {
   const VideoPlayerWidget({
     Key? key,
     required this.videoUrl,
@@ -13,10 +15,10 @@ class VideoPlayerWidget extends StatefulWidget {
   final String videoUrl;
 
   @override
-  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
+  ConsumerState<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
 }
 
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   late VideoPlayerController _controller;
 
   @override
@@ -29,7 +31,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       })
       ..play()
       ..setVolume(1)
-      ..setLooping(true);
+      ..setLooping(true)
+          .then((value) => ref.read(videoStateProvider.notifier).state = true);
   }
 
   @override
@@ -37,6 +40,18 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
     _controller.pause();
     _controller.dispose();
+  }
+
+  void _toggleVideoState() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        ref.read(videoStateProvider.state).state = false;
+      } else {
+        _controller.play();
+        ref.read(videoStateProvider.state).state = true;
+      }
+    });
   }
 
   @override
@@ -47,13 +62,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
     return _controller.value.isInitialized
         ? GestureDetector(
-            onTap: (() {
-              setState(() {
-                _controller.value.isPlaying
-                    ? _controller.pause()
-                    : _controller.play();
-              });
-            }),
+            onTap: _toggleVideoState,
             child: Stack(
               children: [
                 SizedBox.expand(

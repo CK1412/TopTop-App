@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/user.dart';
 import '../models/video.dart';
@@ -28,7 +29,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
   @override
   Widget build(BuildContext context) {
     final User currentUser = ref.watch(authProvider).currentUser!;
-    final videoService = ref.watch(videoProvider);
+    final _videoService = ref.watch(videoProvider);
 
     Future<bool> _likeVideo(bool isLiked) async {
       isLiked = !isLiked;
@@ -37,13 +38,26 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
       } else {
         widget.video.userIdLiked.remove(currentUser.uid);
       }
-      videoService.updateVideo(
+      _videoService.updateVideo(
         videoId: widget.video.id,
         videoUpdated: widget.video.copyWith(
           userIdLiked: widget.video.userIdLiked,
         ),
       );
       return isLiked;
+    }
+
+    Future<void> _shareVideo() async {
+      final result = await Share.shareWithResult(widget.video.videoUrl);
+      if (result.status == ShareResultStatus.success) {
+        widget.video.shareCount++;
+        _videoService.updateVideo(
+          videoId: widget.video.id,
+          videoUpdated: widget.video.copyWith(
+            shareCount: widget.video.shareCount,
+          ),
+        );
+      }
     }
 
     return Column(
@@ -223,11 +237,16 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
             );
           },
         ),
+
         buildText(widget.video.commentCount, context),
         const SizedBox(
           height: 12,
         ),
-        buildIconButton(iconPath: IconPath.shareFill, onPressed: () {}),
+        //! share button
+        buildIconButton(
+          iconPath: IconPath.shareFill,
+          onPressed: _shareVideo,
+        ),
         buildText(widget.video.shareCount, context),
         const SizedBox(
           height: 16,

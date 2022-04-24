@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/providers/state.dart';
 
 import '../common/custom_circle_avatar.dart';
 
@@ -56,14 +58,26 @@ class _CircleAnimationWidgetState extends State<CircleAnimationWidget>
         ),
         shape: BoxShape.circle,
       ),
-      child: RotationTransition(
-        // turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
-        turns: _animation,
-        filterQuality: FilterQuality.low,
-        child: CustomCircleAvatar(
-          avatarUrl: widget.avatarUrl,
-          radius: 16,
-        ),
+      child: Consumer(
+        builder: (context, ref, child) {
+          final videoPlaying = ref.watch(videoStateProvider);
+
+          if (videoPlaying) {
+            _controller.forward();
+          } else {
+            _controller.stop();
+          }
+
+          return RotationTransition(
+            // turns: Tween(begin: 0.0, end: 1.0).animate(_controller),
+            turns: _animation,
+            filterQuality: FilterQuality.low,
+            child: CustomCircleAvatar(
+              avatarUrl: widget.avatarUrl,
+              radius: 16,
+            ),
+          );
+        },
       ),
     );
   }

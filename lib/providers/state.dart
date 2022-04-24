@@ -38,3 +38,8 @@ final getVideosProvider = StreamProvider<List<Video>>((ref) async* {
         .toList(),
   );
 });
+
+//* pause/play video
+final videoStateProvider = StateProvider<bool>((ref) {
+  return true;
+});

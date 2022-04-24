@@ -33,8 +33,11 @@ class VideoScreen extends ConsumerWidget {
           scrollDirection: Axis.vertical,
           itemBuilder: (context, index) => Stack(
             children: [
-              VideoPlayerWidget(
-                videoUrl: data[index].videoUrl,
+              GestureDetector(
+                onTap: () {},
+                child: VideoPlayerWidget(
+                  videoUrl: data[index].videoUrl,
+                ),
               ),
               Positioned(
                 right: 10,
@@ -89,8 +92,9 @@ class InformationBelow extends StatelessWidget {
             Lottie.asset(LottiePath.barMusic, height: 26),
             Text(
               video.songName,
-              style:
-                  CustomTextStyle.bodyText2.copyWith(color: CustomColors.white),
+              style: CustomTextStyle.bodyText2.copyWith(
+                color: CustomColors.white,
+              ),
             ),
           ],
         )
