@@ -18,8 +18,12 @@ class SignInScreen extends ConsumerWidget {
 
     // use this variable to access all the functions of the authentication
     final _auth = ref.watch(authProvider);
+    final _firestore = ref.watch(firestoreProvider);
 
-    void _signInWithGoogle() => _auth.signInWithGoogle(context);
+    Future<void> _signInWithGoogle() async {
+      await _auth.signInWithGoogle(context);
+      _firestore.addUser(context, _auth.currentUser!);
+    }
 
     void _signInWithFacebook() {
       Navigator.of(context).push(MaterialPageRoute(

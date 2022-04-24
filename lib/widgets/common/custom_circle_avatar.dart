@@ -32,7 +32,13 @@ class _CustomCircleAvatarState extends State<CustomCircleAvatar> {
                 _loadImageError = true;
               });
             },
-      child: _loadImageError ? const Text('ERROR') : null,
+      child: _loadImageError
+          ? const FittedBox(
+              child: Padding(
+              padding: EdgeInsets.all(6.0),
+              child: Text('ERROR'),
+            ))
+          : null,
     );
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:toptop_app/widgets/custom_right_taskbar.dart';
 
+import '../providers/state.dart';
 import '../src/constants.dart';
 import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
-import '../widgets/custom_right_taskbar.dart';
 
 class VideoScreen extends StatelessWidget {
   const VideoScreen({Key? key}) : super(key: key);
@@ -24,10 +26,15 @@ class VideoScreen extends StatelessWidget {
           VideoPlayerWidget(
             videoUrl: videosUrl[index],
           ),
-          const Positioned(
+          Positioned(
             right: 10,
             bottom: 14,
-            child: CustomRightTaskbar(),
+            child: Consumer(
+              builder: (context, ref, child) {
+                final user = ref.watch(authProvider).currentUser;
+                return CustomRightTaskbar(user: user!);
+              },
+            ),
           ),
           Positioned(
             bottom: 14,

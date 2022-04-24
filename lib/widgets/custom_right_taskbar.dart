@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 
+import '../models/user.dart';
 import '../src/constants.dart';
 import 'common/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
@@ -10,7 +11,10 @@ import 'common/custom_circle_avatar.dart';
 class CustomRightTaskbar extends StatelessWidget {
   const CustomRightTaskbar({
     Key? key,
+    required this.user,
   }) : super(key: key);
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -172,8 +176,8 @@ class CustomRightTaskbar extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          const CustomCircleAvatar(
-                            avatarUrl: avatarUrl,
+                          CustomCircleAvatar(
+                            avatarUrl: user.avatarUrl,
                             radius: 16,
                           ),
                           Expanded(
@@ -213,7 +217,7 @@ class CustomRightTaskbar extends StatelessWidget {
         const SizedBox(
           height: 16,
         ),
-        const CircleAnimationWidget(avatarUrl: avatarUrl)
+        CircleAnimationWidget(avatarUrl: user.avatarUrl)
       ],
     );
   }
@@ -244,12 +248,12 @@ class CustomRightTaskbar extends StatelessWidget {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 25,
             backgroundColor: CustomColors.white,
             child: Padding(
-              padding: EdgeInsets.all(1.0),
-              child: CustomCircleAvatar(avatarUrl: avatarUrl, radius: 24),
+              padding: const EdgeInsets.all(1.0),
+              child: CustomCircleAvatar(avatarUrl: user.avatarUrl, radius: 24),
             ),
           ),
           Positioned(

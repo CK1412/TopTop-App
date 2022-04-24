@@ -82,8 +82,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: const NetworkImage(
-                              'https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-6/277556063_2178000099054433_18910963916724021_n.jpg?_nc_cat=1&ccb=1-5&_nc_sid=730e14&_nc_ohc=XdMqOc-RRPQAX-2yn5G&_nc_ht=scontent.fhan2-4.fna&oh=00_AT8H0c9qWfDFPRO95IDHPvDI9UZbCT5Y-AwyMAsDAePwYg&oe=62513819'),
+                          image: const NetworkImage(avatarUrl),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(0.4),

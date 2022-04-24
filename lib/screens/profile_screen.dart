@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/state.dart';
-import 'package:toptop_app/services/auth_service.dart';
 
 import '../src/constants.dart';
 import '../widgets/common/custom_circle_avatar.dart';
@@ -15,14 +14,17 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = AuthService.instance.currentUser!;
-
     return SafeArea(
       child: SizedBox.expand(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ContentBlockAbove(user: user),
+            Consumer(
+              builder: (context, ref, child) {
+                final user = ref.watch(authProvider).currentUser;
+                return ContentBlockAbove(user: user!);
+              },
+            ),
             const ContentBlockBelow(),
           ],
         ),
@@ -51,7 +53,7 @@ class ContentBlockAbove extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  user.userId,
+                  user.email,
                   style: CustomTextStyle.title1,
                   overflow: TextOverflow.ellipsis,
                 ),

@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:toptop_app/views/common/show_snackbar.dart';
 import '../models/user.dart' as user_model;
 import '../screens/auth/verification_otp_code_screen.dart';
 import '../widgets/common/show_snackbar.dart';
-// import '../views/screens/auth/verification_code_screen.dart';
 
 class AuthService {
   static final AuthService instance = AuthService._internal();
@@ -15,10 +13,10 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   user_model.User? get currentUser => user_model.User(
-        id: _auth.currentUser!.uid,
-        userId: 'toptop' + _auth.currentUser!.uid,
+        uid: _auth.currentUser!.uid,
         name: _auth.currentUser?.displayName ?? '',
         email: _auth.currentUser?.email ?? '',
+        phoneNumber: _auth.currentUser?.phoneNumber ?? '',
         avatarUrl: _auth.currentUser?.photoURL ?? '',
       );
 
