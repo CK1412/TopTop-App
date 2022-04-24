@@ -1,27 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 
 import '../models/user.dart';
+import '../models/video.dart';
+import '../providers/state.dart';
 import '../src/constants.dart';
 import 'common/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
 
-class CustomRightTaskbar extends StatelessWidget {
-  const CustomRightTaskbar({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
+class CustomRightTaskbar extends ConsumerStatefulWidget {
+  const CustomRightTaskbar({Key? key, required this.video}) : super(key: key);
 
-  final User user;
+  final Video video;
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CustomRightTaskbarState();
+}
+
+class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
+  final isLikedComment = false;
+  var likedCommentCount = 0;
 
   @override
   Widget build(BuildContext context) {
-    bool isLikedComment = false;
-    int likedCommentCount = 21;
-    bool isLiked = false;
-    int likedCount = 230;
+    final User currentUser = ref.watch(authProvider).currentUser!;
+    final videoService = ref.watch(videoProvider);
+
+    Future<bool> _likeVideo(bool isLiked) async {
+      isLiked = !isLiked;
+      if (isLiked) {
+        widget.video.userIdLiked.add(currentUser.uid);
+      } else {
+        widget.video.userIdLiked.remove(currentUser.uid);
+      }
+      videoService.updateVideo(
+        videoId: widget.video.id,
+        videoUpdated: widget.video.copyWith(
+          userIdLiked: widget.video.userIdLiked,
+        ),
+      );
+      return isLiked;
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -32,7 +55,7 @@ class CustomRightTaskbar extends StatelessWidget {
           height: 14,
         ),
         LikeButton(
-          isLiked: isLiked,
+          isLiked: widget.video.userIdLiked.contains(currentUser.uid),
           size: 40,
           bubblesColor: const BubblesColor(
             dotPrimaryColor: CustomColors.pink,
@@ -45,17 +68,9 @@ class CustomRightTaskbar extends StatelessWidget {
               size: 40,
             );
           },
-          onTap: (isLiked) async {
-            isLiked = !isLiked;
-            if (isLiked) {
-              likedCount++;
-            } else {
-              likedCount--;
-            }
-            return isLiked;
-          },
+          onTap: _likeVideo,
         ),
-        buildText(likedCount, context),
+        buildText(widget.video.userIdLiked.length, context),
         const SizedBox(
           height: 12,
         ),
@@ -154,9 +169,9 @@ class CustomRightTaskbar extends StatelessWidget {
                                 onTap: (isLiked) async {
                                   isLiked = !isLiked;
                                   if (isLiked) {
-                                    likedCount++;
+                                    likedCommentCount++;
                                   } else {
-                                    likedCount--;
+                                    likedCommentCount--;
                                   }
                                   return isLiked;
                                 },
@@ -177,7 +192,7 @@ class CustomRightTaskbar extends StatelessWidget {
                       child: Row(
                         children: [
                           CustomCircleAvatar(
-                            avatarUrl: user.avatarUrl,
+                            avatarUrl: widget.video.userAvatarUrl,
                             radius: 16,
                           ),
                           Expanded(
@@ -208,16 +223,16 @@ class CustomRightTaskbar extends StatelessWidget {
             );
           },
         ),
-        buildText(230, context),
+        buildText(widget.video.commentCount, context),
         const SizedBox(
           height: 12,
         ),
         buildIconButton(iconPath: IconPath.shareFill, onPressed: () {}),
-        buildText(230, context),
+        buildText(widget.video.shareCount, context),
         const SizedBox(
           height: 16,
         ),
-        CircleAnimationWidget(avatarUrl: user.avatarUrl)
+        CircleAnimationWidget(avatarUrl: widget.video.userAvatarUrl)
       ],
     );
   }
@@ -253,7 +268,10 @@ class CustomRightTaskbar extends StatelessWidget {
             backgroundColor: CustomColors.white,
             child: Padding(
               padding: const EdgeInsets.all(1.0),
-              child: CustomCircleAvatar(avatarUrl: user.avatarUrl, radius: 24),
+              child: CustomCircleAvatar(
+                avatarUrl: widget.video.userAvatarUrl,
+                radius: 24,
+              ),
             ),
           ),
           Positioned(

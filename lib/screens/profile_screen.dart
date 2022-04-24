@@ -127,7 +127,7 @@ class ContentBlockAbove extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
-              '@${user.name}',
+              '@${user.username}',
               style: CustomTextStyle.title3,
             ),
           ),

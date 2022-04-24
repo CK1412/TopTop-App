@@ -39,7 +39,10 @@ class _TextExpandWidgetState extends State<TextExpandWidget> {
   @override
   Widget build(BuildContext context) {
     return lastHalf.isEmpty
-        ? Text(firstHalf)
+        ? Text(
+            firstHalf,
+            style: CustomTextStyle.bodyText2.copyWith(color: widget.textColor),
+          )
         : Column(
             children: <Widget>[
               AnimatedSize(

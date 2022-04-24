@@ -69,7 +69,7 @@ class _VerificationOtpCodeScreenState
   @override
   Widget build(BuildContext context) {
     final _auth = ref.watch(authProvider);
-    final _firestore = ref.watch(firestoreProvider);
+    final _user = ref.watch(userProvider);
 
     void _verifyOTP() async {
       if (_formKey.currentState!.validate()) {
@@ -84,7 +84,7 @@ class _VerificationOtpCodeScreenState
         if (isSuccessfully) {
           // remove all routes current
           Navigator.of(context).popUntil((ModalRoute.withName('/')));
-          _firestore.addUser(context, _auth.currentUser!);
+          _user.addUser(_auth.currentUser!);
         } else {
           _loading();
         }

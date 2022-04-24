@@ -11,10 +11,11 @@ class AuthService {
 
   // For Authentication related functions you need an instance of FirebaseAuth
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _googleSignIn = GoogleSignIn();
 
   user_model.User? get currentUser => user_model.User(
         uid: _auth.currentUser!.uid,
-        name: _auth.currentUser?.displayName ?? '',
+        username: _auth.currentUser?.displayName ?? '',
         email: _auth.currentUser?.email ?? '',
         phoneNumber: _auth.currentUser?.phoneNumber ?? '',
         avatarUrl: _auth.currentUser?.photoURL ?? '',
@@ -27,7 +28,7 @@ class AuthService {
   //! SIGN IN WITH GOOGLE
   Future<void> signInWithGoogle(BuildContext context) async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
     if (googleUser == null) return;
 
@@ -110,6 +111,7 @@ class AuthService {
   //! SIGN OUT THE CURRENT USER
   Future<void> signOut(BuildContext context) async {
     try {
+      await _googleSignIn.disconnect();
       await _auth.signOut();
     } on FirebaseException catch (e) {
       showSnackbar(context, e.message!);

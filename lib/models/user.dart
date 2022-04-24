@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class User {
   final String uid;
-  final String name;
+  final String username;
   final String email;
   final String phoneNumber;
   final String avatarUrl;
@@ -12,7 +12,7 @@ class User {
 
   User({
     required this.uid,
-    required this.name,
+    required this.username,
     required this.email,
     required this.phoneNumber,
     this.avatarUrl = '',
@@ -22,8 +22,7 @@ class User {
   });
 
   User copyWith({
-    String? uid,
-    String? name,
+    String? username,
     String? email,
     String? phoneNumber,
     String? avatarUrl,
@@ -32,8 +31,8 @@ class User {
     List? following,
   }) {
     return User(
-      uid: this.uid,
-      name: name ?? this.name,
+      uid: uid,
+      username: username ?? this.username,
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       avatarUrl: avatarUrl ?? this.avatarUrl,
@@ -46,7 +45,7 @@ class User {
   Map<String, dynamic> toMap() {
     return {
       UserField.uid: uid,
-      UserField.name: name,
+      UserField.username: username,
       UserField.email: email,
       UserField.phoneNumber: phoneNumber,
       UserField.avatarUrl: avatarUrl,
@@ -59,7 +58,7 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       uid: map[UserField.uid] ?? '',
-      name: map[UserField.name] ?? '',
+      username: map[UserField.username] ?? '',
       email: map[UserField.email] ?? '',
       phoneNumber: map[UserField.phoneNumber] ?? '',
       avatarUrl: map[UserField.avatarUrl] ?? '',
@@ -76,7 +75,7 @@ class User {
 
 class UserField {
   static const String uid = 'uid';
-  static const String name = 'name';
+  static const String username = 'username';
   static const String email = 'email';
   static const String phoneNumber = 'phoneNumber';
   static const String avatarUrl = 'avatarUrl';

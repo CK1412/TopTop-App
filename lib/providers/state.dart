@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/services/auth_service.dart';
+import 'package:toptop_app/services/video_service.dart';
 
-import '../services/firestore_service.dart';
+import '../services/user_service.dart';
 
 //! AUTH
 
@@ -17,8 +19,22 @@ final authStateProvider = StreamProvider<User?>((ref) {
   return ref.read(authProvider).authStateChange;
 });
 
-//! STORE
+final userProvider = Provider<UserService>((ref) {
+  return UserService.instance;
+});
 
-final firestoreProvider = Provider<FirestoreService>((ref) {
-  return FirestoreService.instance;
+final videoProvider = Provider<VideoService>((ref) {
+  return VideoService.instance;
+});
+
+//! GET VIDEOS
+final getVideosProvider = StreamProvider<List<Video>>((ref) async* {
+  final stream = VideoService.instance.collectionStream;
+  yield* stream.map(
+    (snapshot) => snapshot.docs
+        .map(
+          (doc) => Video.fromMap(doc.data()),
+        )
+        .toList(),
+  );
 });

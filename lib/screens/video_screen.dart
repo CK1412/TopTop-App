@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:toptop_app/widgets/custom_right_taskbar.dart';
+import 'package:toptop_app/models/video.dart';
+import 'package:toptop_app/screens/error_screen.dart';
+import 'package:toptop_app/widgets/common/loading_widget.dart';
 
 import '../providers/state.dart';
 import '../src/constants.dart';
 import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
+import '../widgets/custom_right_taskbar.dart';
 
-class VideoScreen extends StatelessWidget {
+class VideoScreen extends ConsumerWidget {
   const VideoScreen({Key? key}) : super(key: key);
 
   static final List videosUrl = [
@@ -17,33 +20,39 @@ class VideoScreen extends StatelessWidget {
     'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
   ];
   @override
-  Widget build(BuildContext context) {
-    return PageView.builder(
-      itemCount: videosUrl.length,
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) => Stack(
-        children: [
-          VideoPlayerWidget(
-            videoUrl: videosUrl[index],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videos = ref.watch(getVideosProvider);
+
+    return videos.when(
+      data: (data) => RefreshIndicator(
+        onRefresh: () async {
+          data.shuffle();
+        },
+        child: PageView.builder(
+          itemCount: data.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) => Stack(
+            children: [
+              VideoPlayerWidget(
+                videoUrl: data[index].videoUrl,
+              ),
+              Positioned(
+                right: 10,
+                bottom: 14,
+                child: CustomRightTaskbar(video: data[index]),
+              ),
+              Positioned(
+                bottom: 14,
+                left: 10,
+                width: MediaQuery.of(context).size.width * .6,
+                child: InformationBelow(video: data[index]),
+              ),
+            ],
           ),
-          Positioned(
-            right: 10,
-            bottom: 14,
-            child: Consumer(
-              builder: (context, ref, child) {
-                final user = ref.watch(authProvider).currentUser;
-                return CustomRightTaskbar(user: user!);
-              },
-            ),
-          ),
-          Positioned(
-            bottom: 14,
-            left: 10,
-            width: MediaQuery.of(context).size.width * .6,
-            child: const InformationBelow(),
-          ),
-        ],
+        ),
       ),
+      error: (e, stackTrace) => ErrorScreen(e, stackTrace),
+      loading: () => const LoadingWidget(),
     );
   }
 }
@@ -51,7 +60,10 @@ class VideoScreen extends StatelessWidget {
 class InformationBelow extends StatelessWidget {
   const InformationBelow({
     Key? key,
+    required this.video,
   }) : super(key: key);
+
+  final Video video;
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +71,14 @@ class InformationBelow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '@user',
+          '@${video.username}',
           style: CustomTextStyle.title2.copyWith(color: CustomColors.white),
         ),
         const SizedBox(
           height: 6,
         ),
-        const TextExpandWidget(
-          text:
-              'f hd asjsdjdjffdhfhđgdfdgdff s sadhfi asjsdjdjffdhfhđgdfdgdff s sadhfi fhd jd cdhid hds hdf idsf dsf hdsfhd jd cdhid hds hdf idsf dsf hds ha fhas dúah',
+        TextExpandWidget(
+          text: video.caption,
           textColor: CustomColors.white,
         ),
         const SizedBox(
@@ -77,7 +88,7 @@ class InformationBelow extends StatelessWidget {
           children: [
             Lottie.asset(LottiePath.barMusic, height: 26),
             Text(
-              'Tên bài hát',
+              video.songName,
               style:
                   CustomTextStyle.bodyText2.copyWith(color: CustomColors.white),
             ),
