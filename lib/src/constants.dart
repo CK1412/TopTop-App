@@ -33,6 +33,7 @@ class LottiePath {
   static const loader = 'assets/lotties/loader_color.json';
   static const music = 'assets/lotties/music.json';
   static const barMusic = 'assets/lotties/bars-music.json';
+  static const heartAnimation = 'assets/lotties/heart-animation.json';
 }
 
 // TEXT STYLE

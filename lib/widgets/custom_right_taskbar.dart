@@ -9,7 +9,7 @@ import '../models/user.dart';
 import '../models/video.dart';
 import '../providers/state.dart';
 import '../src/constants.dart';
-import 'common/circle_animation_widget.dart';
+import 'animations/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
 
 class CustomRightTaskbar extends ConsumerStatefulWidget {

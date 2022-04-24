@@ -36,7 +36,7 @@ class VideoScreen extends ConsumerWidget {
               GestureDetector(
                 onTap: () {},
                 child: VideoPlayerWidget(
-                  videoUrl: data[index].videoUrl,
+                  video: data[index],
                 ),
               ),
               Positioned(
