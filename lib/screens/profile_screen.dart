@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/state.dart';
 
+import '../services/instance.dart';
 import '../src/constants.dart';
 import '../widgets/common/custom_circle_avatar.dart';
 import '../widgets/common/video_grid_view.dart';
@@ -16,17 +17,37 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox.expand(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Consumer(
-              builder: (context, ref, child) {
-                final user = ref.watch(authProvider).currentUser;
-                return ContentBlockAbove(user: user!);
-              },
-            ),
-            const ContentBlockBelow(),
-          ],
+        child: Consumer(
+          builder: (context, ref, child) {
+            // final user = ref.watch(getUserProvider(currentUser.id));
+
+            // return user.when(
+            //     data: (data) => Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Consumer(
+            //               builder: (context, ref, child) {
+            //                 return ContentBlockAbove(user: data!);
+            //               },
+            //             ),
+            //             const ContentBlockBelow(),
+            //           ],
+            //         ),
+            //     error: (e, stackTrace) => ErrorScreen(e, stackTrace),
+            //     loading: () => const LoadingWidget());
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Consumer(
+                  builder: (context, ref, child) {
+                    return ContentBlockAbove(user: currentUser);
+                  },
+                ),
+                const ContentBlockBelow(),
+              ],
+            );
+          },
         ),
       ),
     );

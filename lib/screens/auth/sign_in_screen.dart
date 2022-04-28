@@ -22,7 +22,7 @@ class SignInScreen extends ConsumerWidget {
 
     Future<void> _signInWithGoogle() async {
       await _auth.signInWithGoogle(context);
-      _user.addUser(_auth.currentUser!);
+      _user.add(_auth.currentUser!);
     }
 
     void _signInWithFacebook() {

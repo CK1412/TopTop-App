@@ -84,7 +84,7 @@ class _VerificationOtpCodeScreenState
         if (isSuccessfully) {
           // remove all routes current
           Navigator.of(context).popUntil((ModalRoute.withName('/')));
-          _user.addUser(_auth.currentUser!);
+          _user.add(_auth.currentUser!);
         } else {
           _loading();
         }

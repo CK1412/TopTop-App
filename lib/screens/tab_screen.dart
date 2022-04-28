@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/providers/state.dart';
+import 'package:toptop_app/services/instance.dart';
 
 import '../src/constants.dart';
 import 'message_screen.dart';
 import 'profile_screen.dart';
 import 'video_screen.dart';
 
-class TabScreen extends StatefulWidget {
+class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
 
   @override
-  State<TabScreen> createState() => _TabScreenState();
+  ConsumerState<TabScreen> createState() => _TabScreenState();
 }
 
-class _TabScreenState extends State<TabScreen> {
+class _TabScreenState extends ConsumerState<TabScreen> {
+  @override
+  initState() {
+    super.initState();
+    currentUser = ref.read(authProvider).currentUser!;
+  }
+
   int _screenIndex = 0;
 
   List screens = [

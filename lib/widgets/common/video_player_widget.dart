@@ -47,7 +47,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       ..setLooping(true)
           .then((value) => ref.read(videoStateProvider.notifier).state = true);
 
-    _isLiked = widget.video.userIdLiked.contains(_currentUser.uid);
+    _isLiked = widget.video.userIdLiked.contains(_currentUser.id);
     _isHeartAnimating = false;
   }
 
@@ -72,7 +72,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
   //! only like video
   Future<void> _onlyLikeVideo() async {
-    _isLiked = widget.video.userIdLiked.contains(_currentUser.uid);
+    _isLiked = widget.video.userIdLiked.contains(_currentUser.id);
     if (_isLiked) {
       _isHeartAnimating = true;
       return;
@@ -80,9 +80,9 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
     _isLiked = true;
     _isHeartAnimating = true;
-    widget.video.userIdLiked.add(_currentUser.uid);
+    widget.video.userIdLiked.add(_currentUser.id);
 
-    await _videoService.updateVideo(
+    await _videoService.update(
       videoId: widget.video.id,
       videoUpdated: widget.video.copyWith(
         userIdLiked: widget.video.userIdLiked,

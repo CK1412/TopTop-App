@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class User {
-  final String uid;
+  final String id;
   final String username;
   final String email;
   final String phoneNumber;
@@ -11,7 +11,7 @@ class User {
   final List following;
 
   User({
-    required this.uid,
+    required this.id,
     required this.username,
     required this.email,
     required this.phoneNumber,
@@ -31,7 +31,7 @@ class User {
     List? following,
   }) {
     return User(
-      uid: uid,
+      id: id,
       username: username ?? this.username,
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -44,7 +44,7 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      UserField.uid: uid,
+      UserField.id: id,
       UserField.username: username,
       UserField.email: email,
       UserField.phoneNumber: phoneNumber,
@@ -57,7 +57,7 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      uid: map[UserField.uid] ?? '',
+      id: map[UserField.id] ?? '',
       username: map[UserField.username] ?? '',
       email: map[UserField.email] ?? '',
       phoneNumber: map[UserField.phoneNumber] ?? '',
@@ -74,7 +74,7 @@ class User {
 }
 
 class UserField {
-  static const String uid = 'uid';
+  static const String id = 'id';
   static const String username = 'username';
   static const String email = 'email';
   static const String phoneNumber = 'phoneNumber';

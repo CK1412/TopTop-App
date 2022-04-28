@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/services/auth_service.dart';
 import 'package:toptop_app/services/video_service.dart';
-
+import 'package:toptop_app/models/user.dart' as models;
 import '../services/user_service.dart';
 
 //! AUTH
@@ -29,7 +29,7 @@ final videoProvider = Provider<VideoService>((ref) {
 
 //! GET VIDEOS
 final getVideosProvider = StreamProvider<List<Video>>((ref) async* {
-  final stream = VideoService.instance.collectionStream;
+  final stream = ref.read(videoProvider).collectionStream;
   yield* stream.map(
     (snapshot) => snapshot.docs
         .map(
@@ -42,4 +42,10 @@ final getVideosProvider = StreamProvider<List<Video>>((ref) async* {
 //* pause/play video
 final videoStateProvider = StateProvider<bool>((ref) {
   return true;
+});
+
+final getUserProvider =
+    FutureProvider.family<models.User?, String>((ref, userId) async {
+  final userService = ref.read(userProvider);
+  return userService.getUser(userId);
 });

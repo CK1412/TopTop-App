@@ -10,7 +10,7 @@ class Video {
   String videoUrl;
   String thumbnailUrl;
   // infor user created
-  String uid;
+  String userId;
   String username;
   String userAvatarUrl;
 
@@ -23,7 +23,7 @@ class Video {
     this.caption = '',
     required this.videoUrl,
     required this.thumbnailUrl,
-    required this.uid,
+    required this.userId,
     required this.username,
     required this.userAvatarUrl,
   });
@@ -48,7 +48,7 @@ class Video {
       caption: caption ?? this.caption,
       videoUrl: videoUrl ?? this.videoUrl,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-      uid: uid,
+      userId: userId,
       username: username ?? this.username,
       userAvatarUrl: userAvatarUrl ?? this.userAvatarUrl,
     );
@@ -64,7 +64,7 @@ class Video {
       VideoField.caption: caption,
       VideoField.videoUrl: videoUrl,
       VideoField.thumbnailUrl: thumbnailUrl,
-      VideoField.uid: uid,
+      VideoField.userId: userId,
       VideoField.username: username,
       VideoField.userAvatarUrl: userAvatarUrl,
     };
@@ -80,7 +80,7 @@ class Video {
       caption: map[VideoField.caption] ?? '',
       videoUrl: map[VideoField.videoUrl] ?? '',
       thumbnailUrl: map[VideoField.thumbnailUrl] ?? '',
-      uid: map[VideoField.uid] ?? '',
+      userId: map[VideoField.userId] ?? '',
       username: map[VideoField.username] ?? '',
       userAvatarUrl: map[VideoField.userAvatarUrl] ?? '',
     );
@@ -100,7 +100,7 @@ class VideoField {
   static const String caption = 'caption';
   static const String videoUrl = 'videoUrl';
   static const String thumbnailUrl = 'thumbnailUrl';
-  static const String uid = 'uid';
+  static const String userId = 'userId';
   static const String username = 'username';
   static const String userAvatarUrl = 'userAvatarUrl';
 }

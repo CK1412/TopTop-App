@@ -34,11 +34,11 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     Future<bool> _likeVideo(bool isLiked) async {
       isLiked = !isLiked;
       if (isLiked) {
-        widget.video.userIdLiked.add(currentUser.uid);
+        widget.video.userIdLiked.add(currentUser.id);
       } else {
-        widget.video.userIdLiked.remove(currentUser.uid);
+        widget.video.userIdLiked.remove(currentUser.id);
       }
-      _videoService.updateVideo(
+      _videoService.update(
         videoId: widget.video.id,
         videoUpdated: widget.video.copyWith(
           userIdLiked: widget.video.userIdLiked,
@@ -51,7 +51,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
       final result = await Share.shareWithResult(widget.video.videoUrl);
       if (result.status == ShareResultStatus.success) {
         widget.video.shareCount++;
-        _videoService.updateVideo(
+        _videoService.update(
           videoId: widget.video.id,
           videoUpdated: widget.video.copyWith(
             shareCount: widget.video.shareCount,
@@ -69,7 +69,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
           height: 14,
         ),
         LikeButton(
-          isLiked: widget.video.userIdLiked.contains(currentUser.uid),
+          isLiked: widget.video.userIdLiked.contains(currentUser.id),
           size: 40,
           bubblesColor: const BubblesColor(
             dotPrimaryColor: CustomColors.pink,

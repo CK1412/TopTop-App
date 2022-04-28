@@ -4,26 +4,25 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user.dart' as user_model;
 import '../screens/auth/verification_otp_code_screen.dart';
 import '../widgets/common/show_snackbar.dart';
+import 'instance.dart';
 
 class AuthService {
   static final AuthService instance = AuthService._internal();
   AuthService._internal();
 
-  // For Authentication related functions you need an instance of FirebaseAuth
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
 
   user_model.User? get currentUser => user_model.User(
-        uid: _auth.currentUser!.uid,
-        username: _auth.currentUser?.displayName ?? '',
-        email: _auth.currentUser?.email ?? '',
-        phoneNumber: _auth.currentUser?.phoneNumber ?? '',
-        avatarUrl: _auth.currentUser?.photoURL ?? '',
+        id: fireAuth.currentUser!.uid,
+        username: fireAuth.currentUser?.displayName ?? '',
+        email: fireAuth.currentUser?.email ?? '',
+        phoneNumber: fireAuth.currentUser?.phoneNumber ?? '',
+        avatarUrl: fireAuth.currentUser?.photoURL ?? '',
       );
 
   //  This getter will be returning a Stream of User object.
   //  It will be used to check if the user is logged in or not.
-  Stream<User?> get authStateChange => _auth.authStateChanges();
+  Stream<User?> get authStateChange => fireAuth.authStateChanges();
 
   //! SIGN IN WITH GOOGLE
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -44,7 +43,7 @@ class AuthService {
 
     try {
       // Once signed in, return the UserCredential
-      await _auth.signInWithCredential(credential);
+      await fireAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       showSnackbar(context, e.message!);
     }
@@ -58,7 +57,7 @@ class AuthService {
     // ANDROID ONLY!
     String phoneNumberVN = '+84' + phoneNumber;
 
-    await _auth.verifyPhoneNumber(
+    await fireAuth.verifyPhoneNumber(
       phoneNumber: phoneNumberVN,
       verificationCompleted: (_) {},
       verificationFailed: (FirebaseAuthException e) {
@@ -100,7 +99,7 @@ class AuthService {
 
     try {
       // Sign the user in (or link) with the credential
-      await _auth.signInWithCredential(credential);
+      await fireAuth.signInWithCredential(credential);
       return true;
     } on FirebaseAuthException catch (e) {
       showSnackbar(context, e.message!);
@@ -111,8 +110,8 @@ class AuthService {
   //! SIGN OUT THE CURRENT USER
   Future<void> signOut(BuildContext context) async {
     try {
-      await _googleSignIn.disconnect();
-      await _auth.signOut();
+      _googleSignIn.disconnect();
+      await fireAuth.signOut();
     } on FirebaseException catch (e) {
       showSnackbar(context, e.message!);
     }

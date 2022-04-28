@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/models/user.dart';
+import 'package:toptop_app/providers/state.dart';
 
 import '../src/constants.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
   final _bioController = TextEditingController();
 
+  late final User currentUser;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _nameController.text = 'Tran Huy Canh';
-    _usernameController.text = 'CK001';
-    _bioController.text = 'cdncbkq';
+    currentUser = ref.read(getUserProvider(currentUser.id)).value!;
+    _usernameController.text = currentUser.username;
+    _emailController.text = currentUser.email;
+    _phoneNumberController.text = currentUser.phoneNumber;
+    _bioController.text = currentUser.bio;
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _emailController.dispose();
     _usernameController.dispose();
     _bioController.dispose();
     super.dispose();
@@ -37,6 +44,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() {});
     _isLoading = true;
     await Future.delayed(const Duration(seconds: 1));
+    await ref.read(userProvider).update(
+          id: currentUser.id,
+          userUpdated: currentUser.copyWith(
+            username: _usernameController.text.trim(),
+            bio: _bioController.text.trim(),
+          ),
+        );
     setState(() {
       _isLoading = false;
       Navigator.of(context).pop();
@@ -112,61 +126,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .copyWith(color: CustomColors.black.withOpacity(.6)),
                   ),
                 ),
-                Text(
-                  'Name',
-                  style: Theme.of(context).textTheme.caption,
+                InformationField(
+                  title: 'Username',
+                  controller: _usernameController,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      _nameController.text,
-                      style: CustomTextStyle.title3,
-                    ),
-                  ),
+                InformationField(
+                  title: 'Email',
+                  controller: _emailController,
+                  enabled: false,
                 ),
-                const Divider(
-                  color: CustomColors.grey,
-                  height: 26,
+                InformationField(
+                  title: 'Phone number',
+                  controller: _phoneNumberController,
+                  enabled: false,
                 ),
-                Text(
-                  'Username',
-                  style: Theme.of(context).textTheme.caption,
+                InformationField(
+                  title: 'Bio',
+                  controller: _bioController,
                 ),
-                GestureDetector(
-                  onTap: (() {}),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      _usernameController.text,
-                      style: CustomTextStyle.title3,
-                    ),
-                  ),
-                ),
-                const Divider(color: CustomColors.grey, height: 26),
-                Text(
-                  'Bio',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                GestureDetector(
-                  onTap: (() {}),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Text(
-                      '#' + _bioController.text,
-                      style: CustomTextStyle.title3,
-                    ),
-                  ),
-                ),
-                const Divider(color: CustomColors.grey, height: 26),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class InformationField extends StatelessWidget {
+  const InformationField({
+    Key? key,
+    required this.title,
+    required this.controller,
+    this.enabled = true,
+  }) : super(key: key);
+
+  final String title;
+  final TextEditingController controller;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      enabled: enabled,
+      decoration: InputDecoration(
+        hintText: controller.text,
+        labelText: title,
+        floatingLabelBehavior: FloatingLabelBehavior.always,
       ),
     );
   }

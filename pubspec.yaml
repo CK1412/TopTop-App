@@ -52,6 +52,10 @@ dependencies:
   cloud_firestore: ^3.1.13
   # share video
   share_plus: ^4.0.4
+  # pick image
+  image_picker: ^0.8.5
+  # storage video and image on firebase
+  firebase_storage: ^10.2.13
 
 dev_dependencies:
   flutter_test:
