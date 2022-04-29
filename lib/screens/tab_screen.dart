@@ -19,7 +19,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
   @override
   initState() {
     super.initState();
-    currentUser = ref.read(authProvider).currentUser!;
+    currentUser = ref.read(userProvider);
   }
 
   int _screenIndex = 0;

@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
-import 'models/video.dart';
 import 'screens/auth/auth_checker.dart';
-import 'services/video_service.dart';
 import 'src/custom_theme.dart';
 
 void main() async {

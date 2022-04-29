@@ -29,6 +29,7 @@ class Video {
   });
 
   Video copyWith({
+    String? id,
     List? userIdLiked,
     int? commentCount,
     int? shareCount,
@@ -40,7 +41,7 @@ class Video {
     String? userAvatarUrl,
   }) {
     return Video(
-      id: id,
+      id: id ?? this.id,
       userIdLiked: userIdLiked ?? this.userIdLiked,
       commentCount: commentCount ?? this.commentCount,
       shareCount: shareCount ?? this.shareCount,

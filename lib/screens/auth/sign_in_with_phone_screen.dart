@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:toptop_app/providers/state.dart';
+import 'package:toptop_app/services/auth_service.dart';
 
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
@@ -18,11 +18,10 @@ class SignInWithPhoneScreen extends ConsumerStatefulWidget {
 class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
   final _phoneNumberController = TextEditingController();
   bool _autoFocus = true;
+  final _auth = AuthService.instance;
 
   @override
   Widget build(BuildContext context) {
-    final _auth = ref.watch(authProvider);
-
     Future<void> _signInWithPhone() async {
       _autoFocus = false;
       FocusManager.instance.primaryFocus?.unfocus();

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/services/auth_service.dart';
+import 'package:toptop_app/services/user_service.dart';
 
-import '../../../providers/state.dart';
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
 import '../../widgets/common/loading_widget.dart';
@@ -37,6 +38,9 @@ class _VerificationOtpCodeScreenState
   bool _isLoading = false;
   String smsCode = '';
 
+  final _auth = AuthService.instance;
+  final _user = UserService.instance;
+
   @override
   void dispose() {
     super.dispose();
@@ -68,9 +72,6 @@ class _VerificationOtpCodeScreenState
 
   @override
   Widget build(BuildContext context) {
-    final _auth = ref.watch(authProvider);
-    final _user = ref.watch(userProvider);
-
     void _verifyOTP() async {
       if (_formKey.currentState!.validate()) {
         _loading();

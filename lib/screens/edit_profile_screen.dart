@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/state.dart';
+import 'package:toptop_app/services/user_service.dart';
 
 import '../src/constants.dart';
 
@@ -44,7 +45,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     setState(() {});
     _isLoading = true;
     await Future.delayed(const Duration(seconds: 1));
-    await ref.read(userProvider).update(
+    await UserService.instance.update(
           id: currentUser.id,
           userUpdated: currentUser.copyWith(
             username: _usernameController.text.trim(),

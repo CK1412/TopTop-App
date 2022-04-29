@@ -28,7 +28,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
 
   @override
   Widget build(BuildContext context) {
-    final User currentUser = ref.watch(authProvider).currentUser!;
+    final User currentUser = ref.watch(userProvider);
     final _videoService = ref.watch(videoProvider);
 
     Future<bool> _likeVideo(bool isLiked) async {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/tab_screen.dart';
+import 'package:toptop_app/services/auth_service.dart';
+import 'package:toptop_app/services/user_service.dart';
 
-import '../../../providers/state.dart';
 import '../../src/constants.dart';
 import '../../src/custom_page_route.dart';
 import '../../widgets/auth/custom_elevate_button.dart';
@@ -15,10 +16,9 @@ class SignInScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenSize = MediaQuery.of(context).size;
-
     // use this variable to access all the functions of the authentication
-    final _auth = ref.watch(authProvider);
-    final _user = ref.watch(userProvider);
+    final _auth = AuthService.instance;
+    final _user = UserService.instance;
 
     Future<void> _signInWithGoogle() async {
       await _auth.signInWithGoogle(context);

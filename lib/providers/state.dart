@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/video.dart';
+import 'package:toptop_app/providers/user_notifier.dart';
 import 'package:toptop_app/services/auth_service.dart';
 import 'package:toptop_app/services/video_service.dart';
 import 'package:toptop_app/models/user.dart' as models;
@@ -9,19 +10,23 @@ import '../services/user_service.dart';
 //! AUTH
 
 // access all the functions of the authentication
-final authProvider = Provider<AuthService>((ref) {
-  return AuthService.instance;
+// final authProvider = Provider<AuthService>((ref) {
+//   return AuthService.instance;
+// });
+
+final userProvider = StateNotifierProvider<UserNotifier, models.User>((ref) {
+  return UserNotifier();
 });
 
 // check state login or log out
 // Below is user of firebase_auth, not of me.
 final authStateProvider = StreamProvider<User?>((ref) {
-  return ref.read(authProvider).authStateChange;
+  return AuthService.instance.authStateChange;
 });
 
-final userProvider = Provider<UserService>((ref) {
-  return UserService.instance;
-});
+// final userProvider = Provider<UserService>((ref) {
+//   return UserService.instance;
+// });
 
 final videoProvider = Provider<VideoService>((ref) {
   return VideoService.instance;
@@ -46,6 +51,5 @@ final videoStateProvider = StateProvider<bool>((ref) {
 
 final getUserProvider =
     FutureProvider.family<models.User?, String>((ref, userId) async {
-  final userService = ref.read(userProvider);
-  return userService.getUser(userId);
+  return UserService.instance.getUser(userId);
 });

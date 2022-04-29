@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
-import 'package:toptop_app/providers/state.dart';
+import 'package:toptop_app/services/auth_service.dart';
 
 import '../services/instance.dart';
 import '../src/constants.dart';
@@ -178,6 +178,12 @@ class ContentBlockAbove extends StatelessWidget {
     );
   }
 
+  _logOutCurrentUser(BuildContext context) async {
+    final _auth = AuthService.instance;
+    _auth.signOut(context);
+    Navigator.of(context).pop();
+  }
+
   Widget buildMenuButton(BuildContext context) {
     return IconButton(
       onPressed: () {
@@ -246,29 +252,18 @@ class ContentBlockAbove extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        final _auth = ref.watch(authProvider);
-
-                        _logOutCurrentUser() async {
-                          _auth.signOut(context);
-                          Navigator.of(context).pop();
-                        }
-
-                        return GestureDetector(
-                          onTap: _logOutCurrentUser,
-                          child: Row(
-                            children: const [
-                              Icon(Icons.logout_rounded, size: 28),
-                              SizedBox(width: 8),
-                              Text(
-                                'Log out',
-                                style: CustomTextStyle.bodyText1,
-                              ),
-                            ],
+                    GestureDetector(
+                      onTap: () => _logOutCurrentUser(ctx),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.logout_rounded, size: 28),
+                          SizedBox(width: 8),
+                          Text(
+                            'Log out',
+                            style: CustomTextStyle.bodyText1,
                           ),
-                        );
-                      },
+                        ],
+                      ),
                     )
                   ],
                 ),

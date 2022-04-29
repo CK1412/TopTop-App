@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/state.dart';
+import 'package:toptop_app/services/auth_service.dart';
 import 'package:toptop_app/services/video_service.dart';
 import 'package:toptop_app/widgets/animations/heart_animation_widget.dart';
 import 'package:video_player/video_player.dart';
@@ -35,7 +36,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _currentUser = ref.read(authProvider).currentUser!;
+    _currentUser = AuthService.instance.currentUser!;
     _videoService = ref.read(videoProvider);
     _controller = VideoPlayerController.network(widget.video.videoUrl)
       ..initialize().then((_) {
