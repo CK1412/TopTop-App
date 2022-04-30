@@ -113,7 +113,7 @@ class ContentBlockAbove extends StatelessWidget {
               ),
               Column(
                 children: const [
-                  Text('23', style: CustomTextStyle.title1),
+                  Text('0', style: CustomTextStyle.title1),
                   Text(
                     'Likes',
                     style: CustomTextStyle.bodyText2,
@@ -231,11 +231,11 @@ class ContentBlockAbove extends StatelessWidget {
                     const SizedBox(height: 12),
                     Consumer(
                       builder: (context, ref, child) {
-                        // final _auth = ref.watch(authProvider);
-
                         _logOutCurrentUser() async {
-                          // _auth.signOut(context);
                           Navigator.of(context).pop();
+                          await ref
+                              .read(authControllerProvider.notifier)
+                              .signOut(context);
                         }
 
                         return GestureDetector(

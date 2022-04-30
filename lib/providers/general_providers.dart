@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/services/user_service.dart';
+import 'package:toptop_app/services/video_service.dart';
 
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
@@ -38,4 +39,16 @@ final userServiceProvider = Provider<UserService>((ref) {
 
 final storageServiceProvider = Provider<StorageService>((ref) {
   return StorageService(ref.read);
+});
+
+final videoServiceProvider = Provider<VideoService>((ref) {
+  return VideoService(
+    ref.read(firebaseFirestoreProvider).collection('videos'),
+  );
+});
+
+//! OTHER
+//* pause/play video
+final videoStateProvider = StateProvider<bool>((ref) {
+  return true;
 });
