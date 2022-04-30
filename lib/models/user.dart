@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class User {
   final String id;
@@ -72,6 +73,14 @@ class User {
   String toJson() => json.encode(toMap());
 
   factory User.fromJson(String source) => User.fromMap(json.decode(source));
+
+  factory User.fromFirebaseAuth(firebase_auth.User user) => User(
+        id: user.uid,
+        username: user.displayName ?? '',
+        email: user.email ?? '',
+        phoneNumber: user.phoneNumber ?? '',
+        avatarUrl: user.photoURL ?? '',
+      );
 }
 
 class UserField {

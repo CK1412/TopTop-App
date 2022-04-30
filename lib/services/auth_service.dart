@@ -1,28 +1,32 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../models/user.dart' as user_model;
+
+import '../providers/general_providers.dart';
 import '../screens/auth/verification_otp_code_screen.dart';
-import '../widgets/common/show_snackbar.dart';
-import 'instance.dart';
+import '../utils/custom_exception.dart';
+import '../utils/show_snackbar.dart';
 
 class AuthService {
-  static final AuthService instance = AuthService._internal();
-  AuthService._internal();
+  final Reader _reader;
+
+  AuthService(this._reader);
 
   final _googleSignIn = GoogleSignIn();
 
-  user_model.User? get currentUser => user_model.User(
-        id: fireAuth.currentUser!.uid,
-        username: fireAuth.currentUser?.displayName ?? '',
-        email: fireAuth.currentUser?.email ?? '',
-        phoneNumber: fireAuth.currentUser?.phoneNumber ?? '',
-        avatarUrl: fireAuth.currentUser?.photoURL ?? '',
-      );
-
   //  This getter will be returning a Stream of User object.
   //  It will be used to check if the user is logged in or not.
-  Stream<User?> get authStateChange => fireAuth.authStateChanges();
+  Stream<User?> get authStateChanges =>
+      _reader(firebaseAuthProvider).authStateChanges();
+
+  User? getCurrentUser() {
+    try {
+      return _reader(firebaseAuthProvider).currentUser;
+    } on FirebaseAuthException catch (e) {
+      throw CustomException(message: e.message);
+    }
+  }
 
   //! SIGN IN WITH GOOGLE
   Future<void> signInWithGoogle(BuildContext context) async {
@@ -43,7 +47,7 @@ class AuthService {
 
     try {
       // Once signed in, return the UserCredential
-      await fireAuth.signInWithCredential(credential);
+      await _reader(firebaseAuthProvider).signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       showSnackbar(context, e.message!);
     }
@@ -57,14 +61,15 @@ class AuthService {
     // ANDROID ONLY!
     String phoneNumberVN = '+84' + phoneNumber;
 
-    await fireAuth.verifyPhoneNumber(
+    await _reader(firebaseAuthProvider).verifyPhoneNumber(
       phoneNumber: phoneNumberVN,
       verificationCompleted: (_) {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           showSnackbar(context, 'The provided phone number is not valid.');
+        } else {
+          showSnackbar(context, e.message!);
         }
-        showSnackbar(context, e.message!);
       },
       codeSent: (String verificationId, int? resendToken) {
         // Update the UI - wait for the user to enter the SMS code
@@ -99,8 +104,13 @@ class AuthService {
 
     try {
       // Sign the user in (or link) with the credential
-      await fireAuth.signInWithCredential(credential);
-      return true;
+      final resutl =
+          await _reader(firebaseAuthProvider).signInWithCredential(credential);
+
+      if (resutl.user != null) {
+        return true;
+      }
+      return false;
     } on FirebaseAuthException catch (e) {
       showSnackbar(context, e.message!);
       return false;
@@ -111,7 +121,7 @@ class AuthService {
   Future<void> signOut(BuildContext context) async {
     try {
       _googleSignIn.disconnect();
-      await fireAuth.signOut();
+      await _reader(firebaseAuthProvider).signOut();
     } on FirebaseException catch (e) {
       showSnackbar(context, e.message!);
     }

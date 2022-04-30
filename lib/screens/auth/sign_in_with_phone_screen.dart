@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:toptop_app/services/auth_service.dart';
+import 'package:toptop_app/providers/state_notifier_providers.dart';
 
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
@@ -16,20 +16,32 @@ class SignInWithPhoneScreen extends ConsumerStatefulWidget {
 }
 
 class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   bool _autoFocus = true;
-  final _auth = AuthService.instance;
+
+  String? _validator(text) {
+    if (text!.isEmpty) {
+      return 'Please enter your phone number';
+    }
+    if (text.length < 9) {
+      return 'Phone number must be 9 or 10 digits';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     Future<void> _signInWithPhone() async {
-      _autoFocus = false;
-      FocusManager.instance.primaryFocus?.unfocus();
-      await _auth.signInWithPhone(
-        context,
-        phoneNumber: _phoneNumberController.text,
-      );
-      debugPrint('JSJDCDFSJDFNSDJF HSDUF HSDU HSD FUSDF ÚDFSDUYF SDYUF SD00');
+      if (_formKey.currentState!.validate()) {
+        _autoFocus = false;
+        FocusManager.instance.primaryFocus?.unfocus();
+
+        await ref.read(authControllerProvider.notifier).signInWithPhone(
+              context,
+              phoneNumber: _phoneNumberController.text,
+            );
+      }
     }
 
     return Scaffold(
@@ -53,15 +65,18 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                 children: [
                   Text(
                     'Enter your phone',
-                    style: CustomTextStyle.titleLarge
-                        .copyWith(color: CustomColors.white, fontSize: 34),
+                    style: CustomTextStyle.titleLarge.copyWith(
+                      color: CustomColors.white,
+                      fontSize: 34,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 20),
                     child: Text(
                       ' You will receive a 4 digit code for phone number verification.',
-                      style: CustomTextStyle.bodyText2
-                          .copyWith(color: CustomColors.white),
+                      style: CustomTextStyle.bodyText2.copyWith(
+                        color: CustomColors.white,
+                      ),
                     ),
                   ),
                   Container(
@@ -73,30 +88,34 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       horizontal: 14,
                       vertical: 4,
                     ),
-                    child: TextFormField(
-                      controller: _phoneNumberController,
-                      decoration: InputDecoration(
-                        hintText: 'VD: 565843282',
-                        border: InputBorder.none,
-                        icon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text('+84'),
-                            const SizedBox(width: 5),
-                            SvgPicture.asset(
-                              IconPath.flagVNColor,
-                              width: 26,
-                            ),
-                          ],
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        controller: _phoneNumberController,
+                        decoration: InputDecoration(
+                          hintText: 'VD: 565843282',
+                          border: InputBorder.none,
+                          icon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                IconPath.flagVNColor,
+                                width: 26,
+                              ),
+                              const SizedBox(width: 5),
+                              const Text('+84'),
+                            ],
+                          ),
                         ),
+                        textInputAction: TextInputAction.done,
+                        autofocus: _autoFocus,
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: [
+                          // Vietnam phone number only 10 numbers
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        validator: _validator,
                       ),
-                      textInputAction: TextInputAction.done,
-                      autofocus: _autoFocus,
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        // Vietnam phone number only 10 numbers
-                        LengthLimitingTextInputFormatter(10),
-                      ],
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -123,13 +142,6 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                 ],
               ),
             ),
-            // if (_isLoading)
-            //   Positioned.fill(
-            //     child: Container(
-            //       color: CustomColors.black.withOpacity(.4),
-            //       child: const LoadingWidget(),
-            //     ),
-            //   ),
           ],
         ),
       ),

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'firebase_options.dart';
 import 'screens/auth/auth_checker.dart';
-import 'src/custom_theme.dart';
+import 'src/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // showPerformanceOverlay: true,
       title: 'TopTop App',
-      theme: customThemeData,
+      theme: AppTheme.customThemeData,
       initialRoute: '/',
       routes: {
         '/': (context) => const AuthChecker(),

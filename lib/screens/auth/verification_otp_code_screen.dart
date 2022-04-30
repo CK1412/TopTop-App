@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/services/auth_service.dart';
-import 'package:toptop_app/services/user_service.dart';
+import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
-import '../../widgets/common/loading_widget.dart';
 
 class VerificationOtpCodeScreen extends ConsumerStatefulWidget {
   const VerificationOtpCodeScreen({
     Key? key,
     required this.phoneNumber,
-    this.verifycationId = '',
+    required this.verifycationId,
   }) : super(key: key);
 
   final String phoneNumber;
@@ -37,9 +36,6 @@ class _VerificationOtpCodeScreenState
 
   bool _isLoading = false;
   String smsCode = '';
-
-  final _auth = AuthService.instance;
-  final _user = UserService.instance;
 
   @override
   void dispose() {
@@ -76,16 +72,17 @@ class _VerificationOtpCodeScreenState
       if (_formKey.currentState!.validate()) {
         _loading();
         FocusManager.instance.primaryFocus?.unfocus();
-        final bool isSuccessfully = await _auth.verifyOTP(
-          context: context,
-          verificationId: widget.verifycationId,
-          smsCode: _getSmsCode,
-        );
+
+        final isSuccessfully =
+            await ref.read(authControllerProvider.notifier).verifyOTP(
+                  context,
+                  verificationId: widget.verifycationId,
+                  smsCode: _getSmsCode,
+                );
 
         if (isSuccessfully) {
           // remove all routes current
           Navigator.of(context).popUntil((ModalRoute.withName('/')));
-          _user.add(_auth.currentUser!);
         } else {
           _loading();
         }
@@ -188,12 +185,9 @@ class _VerificationOtpCodeScreenState
               ),
             ),
             if (_isLoading)
-              Positioned.fill(
-                child: Container(
-                  color: CustomColors.black.withOpacity(.4),
-                  child: const LoadingWidget(),
-                ),
-              ),
+              const CenterLoadingWidget(
+                backgroundTransparent: false,
+              )
           ],
         ),
       ),

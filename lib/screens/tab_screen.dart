@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/providers/state.dart';
-import 'package:toptop_app/services/instance.dart';
 
 import '../src/constants.dart';
-import 'message_screen.dart';
-import 'profile_screen.dart';
-import 'video_screen.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -16,24 +11,27 @@ class TabScreen extends ConsumerStatefulWidget {
 }
 
 class _TabScreenState extends ConsumerState<TabScreen> {
-  @override
-  initState() {
-    super.initState();
-    currentUser = ref.read(userProvider);
-  }
-
   int _screenIndex = 0;
 
   List screens = [
-    const VideoScreen(),
+    // const VideoScreen(),
+    const Center(
+      child: Text('haha1'),
+    ),
     const Center(
       child: Text('haha1'),
     ),
     const Center(
       child: Text('haha12'),
     ),
-    const MessageScreen(),
-    const ProfileScreen(),
+    // const MessageScreen(),
+    // const ProfileScreen(),
+    const Center(
+      child: Text('haha1'),
+    ),
+    const Center(
+      child: Text('haha12'),
+    ),
   ];
 
   @override

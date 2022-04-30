@@ -37,6 +37,7 @@ class Video {
     String? caption,
     String? videoUrl,
     String? thumbnailUrl,
+    String? userId,
     String? username,
     String? userAvatarUrl,
   }) {
@@ -49,7 +50,7 @@ class Video {
       caption: caption ?? this.caption,
       videoUrl: videoUrl ?? this.videoUrl,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-      userId: userId,
+      userId: userId ?? this.userId,
       username: username ?? this.username,
       userAvatarUrl: userAvatarUrl ?? this.userAvatarUrl,
     );

@@ -1,18 +1,17 @@
-import 'package:flutter/cupertino.dart';
-import 'package:toptop_app/models/user.dart' as models;
-import 'package:toptop_app/services/instance.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:toptop_app/models/user.dart' as user_model;
 
 class UserService {
-  static final UserService instance = UserService._internal();
-  UserService._internal();
+  final CollectionReference<Map<String, dynamic>> _collection;
 
-  final _collection = fireDatabase.collection('users');
+  UserService(this._collection);
 
   Future<bool> isNewUser(String id) async {
     final query = await _collection
         .where(
-          models.UserField.id,
-          isEqualTo: models.UserField.id,
+          user_model.UserField.id,
+          isEqualTo: user_model.UserField.id,
         )
         .get();
     final users = query.docs;
@@ -20,17 +19,17 @@ class UserService {
   }
 
   //* Get infor user by id
-  Future<models.User?> getUser(String userId) async {
+  Future<user_model.User?> getUser(String userId) async {
     final doc = await _collection.doc(userId).get();
     if (doc.exists) {
-      return models.User.fromMap(doc.data()!);
+      return user_model.User.fromMap(doc.data()!);
     } else {
       return null;
     }
   }
 
   //* Add new user
-  Future<void> add(models.User user) async {
+  Future<void> addUser(user_model.User user) async {
     final _isNewUser = await isNewUser(user.id);
 
     if (!_isNewUser) return;
@@ -44,13 +43,12 @@ class UserService {
   }
 
   // * Update user
-  Future<void> update({
-    required String id,
-    required models.User userUpdated,
+  Future<void> updateUser({
+    required String userId,
+    required user_model.User userUpdated,
   }) async {
-    currentUser = userUpdated;
     return _collection
-        .doc(id)
+        .doc(userId)
         .update(userUpdated.toMap())
         .then((value) => debugPrint("User Updated"))
         .catchError(

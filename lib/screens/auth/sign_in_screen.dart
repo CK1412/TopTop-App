@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/screens/tab_screen.dart';
-import 'package:toptop_app/services/auth_service.dart';
-import 'package:toptop_app/services/user_service.dart';
+import 'package:toptop_app/providers/state_notifier_providers.dart';
 
-import '../../src/constants.dart';
-import '../../src/custom_page_route.dart';
 import '../../widgets/auth/custom_elevate_button.dart';
+import '../tab_screen.dart';
+import '../../src/constants.dart';
+import '../../src/page_routes.dart';
 import '../../widgets/auth/gradient_background.dart';
 import 'sign_in_with_phone_screen.dart';
 
@@ -16,13 +15,17 @@ class SignInScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenSize = MediaQuery.of(context).size;
-    // use this variable to access all the functions of the authentication
-    final _auth = AuthService.instance;
-    final _user = UserService.instance;
+
+    final _authController = ref.watch(authControllerProvider.notifier);
+
+    void _signInWithPhone() {
+      Navigator.of(context).push(
+        CustomPageRoute(child: const SignInWithPhoneScreen()),
+      );
+    }
 
     Future<void> _signInWithGoogle() async {
-      await _auth.signInWithGoogle(context);
-      _user.add(_auth.currentUser!);
+      await _authController.signInWithGoogle(context);
     }
 
     void _signInWithFacebook() {
@@ -63,11 +66,7 @@ class SignInScreen extends ConsumerWidget {
                     CustomElevateButton(
                       iconPath: IconPath.phoneColor,
                       text: 'Continue with Phone',
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          CustomPageRoute(child: const SignInWithPhoneScreen()),
-                        );
-                      },
+                      onPressed: _signInWithPhone,
                     ),
                     CustomElevateButton(
                       iconPath: IconPath.googleColor,
