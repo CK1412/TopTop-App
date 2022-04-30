@@ -30,7 +30,7 @@ class UserControllerNotifier
   }
 
   //* Add new user
-  Future<void> add(user_models.User user) async {
+  Future<void> addUser(user_models.User user) async {
     final _isNewUser = await _reader(userServiceProvider).isNewUser(user.id);
 
     if (!_isNewUser) return;
@@ -44,7 +44,7 @@ class UserControllerNotifier
   }
 
   // * Update user
-  Future<void> update({
+  Future<void> updateUser({
     required String id,
     required user_models.User userUpdated,
   }) async {

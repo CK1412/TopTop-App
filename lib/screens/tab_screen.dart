@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../src/constants.dart';
+import 'profile_screen.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -25,13 +26,10 @@ class _TabScreenState extends ConsumerState<TabScreen> {
       child: Text('haha12'),
     ),
     // const MessageScreen(),
-    // const ProfileScreen(),
     const Center(
       child: Text('haha1'),
     ),
-    const Center(
-      child: Text('haha12'),
-    ),
+    const ProfileScreen(),
   ];
 
   @override

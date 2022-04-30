@@ -54,8 +54,11 @@ dependencies:
   share_plus: ^4.0.4
   # pick image
   image_picker: ^0.8.5
+  # file_picker: ^4.5.1
   # storage video and image on firebase
   firebase_storage: ^10.2.13
+  # find commonly used locations on the file system
+  # path_provider: ^2.0.9
 
 dev_dependencies:
   flutter_test:

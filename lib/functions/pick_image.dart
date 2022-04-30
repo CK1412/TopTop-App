@@ -1,19 +1,28 @@
-import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
-Future<File?> pickImage(ImageSource imageSource) async {
+// use image picker
+Future<String?> pickImage(ImageSource imageSource) async {
   final _imagePicker = ImagePicker();
+
+  // Reduce image size because you don't need too high quality images
   final XFile? imageFile = await _imagePicker.pickImage(
     source: imageSource,
-    maxHeight: 2340,
-    maxWidth: 1080,
+    imageQuality: 25,
   );
 
   if (imageFile == null) return null;
 
-  // convert XFile to File
-  File tmpImageFile = File(imageFile.path);
-
-  return tmpImageFile;
+  return imageFile.path;
 }
+
+//* use File picker
+// Future<String?> pickImage() async {
+//   final results = await FilePicker.platform.pickFiles(
+//     allowMultiple: true,
+//     type: FileType.custom,
+//     allowedExtensions: ['png', 'jpg', 'jpeg'],
+//   );
+
+//   if (results == null) return null;
+//   return results.files.first.path;
+// }
