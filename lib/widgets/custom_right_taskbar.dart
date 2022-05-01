@@ -48,7 +48,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
         currentVideo.userIdLiked.remove(currentUser?.id);
       }
 
-      await ref.read(videoControllerProvider.notifier).updateVideo(
+      ref.read(videoControllerProvider.notifier).updateVideo(
             videoId: currentVideo.id,
             videoUpdated: currentVideo.copyWith(
               userIdLiked: currentVideo.userIdLiked,
@@ -101,152 +101,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
         ),
         buildIconButton(
           iconPath: IconPath.commentFill,
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (ctx) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: const Icon(Icons.arrow_back),
-                        ),
-                        const Expanded(
-                          child: Center(
-                            child: Text(
-                              '123 comments',
-                              style: CustomTextStyle.title3,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 32)
-                      ],
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: 10,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(14),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const CustomCircleAvatar(
-                                avatarUrl: avatarUrl,
-                                radius: 16,
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'My name',
-                                      style: CustomTextStyle.title3.copyWith(
-                                        color: CustomColors.grey,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    const Text(
-                                      'Hahaha sdh h fd fhf  sf  sdfh sfhsd sf dfhd fdf f dfh sdfhs',
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    Text(
-                                      DateFormat.Md().format(DateTime.now()),
-                                      style: CustomTextStyle.title3.copyWith(
-                                        color: CustomColors.grey,
-                                        fontSize: 12,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              LikeButton(
-                                isLiked: isLikedComment,
-                                likeCount: likedCommentCount,
-                                size: 20,
-                                countPostion: CountPostion.bottom,
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: CustomColors.pink,
-                                  dotSecondaryColor: CustomColors.purple,
-                                ),
-                                likeCountPadding: const EdgeInsets.only(top: 4),
-                                likeBuilder: (bool isLiked) {
-                                  return isLiked
-                                      ? const Icon(
-                                          Icons.favorite,
-                                          color: CustomColors.pink,
-                                        )
-                                      : const Icon(
-                                          Icons.favorite_outline_outlined,
-                                          color: CustomColors.grey,
-                                        );
-                                },
-                                onTap: (isLiked) async {
-                                  isLiked = !isLiked;
-                                  if (isLiked) {
-                                    likedCommentCount++;
-                                  } else {
-                                    likedCommentCount--;
-                                  }
-                                  return isLiked;
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Divider(height: 0),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 10,
-                        right: 10,
-                        top: 10,
-                        bottom: MediaQuery.of(ctx).viewInsets.bottom,
-                      ),
-                      child: Row(
-                        children: [
-                          CustomCircleAvatar(
-                            avatarUrl: currentVideo.userAvatarUrl,
-                            radius: 16,
-                          ),
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                hintText: 'Add a comment',
-                                hintStyle: CustomTextStyle.bodyText2.copyWith(
-                                  color: CustomColors.grey,
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 4,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text('Post'),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+          onPressed: _showComment,
         ),
 
         buildText(currentVideo.commentCount, context),
@@ -323,6 +178,153 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showComment() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.arrow_back),
+                ),
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      '123 comments',
+                      style: CustomTextStyle.title3,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 32)
+              ],
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.all(14),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomCircleAvatar(
+                        avatarUrl: avatarUrl,
+                        radius: 16,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'My name',
+                              style: CustomTextStyle.title3.copyWith(
+                                color: CustomColors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            const Text(
+                              'Hahaha sdh h fd fhf  sf  sdfh sfhsd sf dfhd fdf f dfh sdfhs',
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text(
+                              DateFormat.Md().format(DateTime.now()),
+                              style: CustomTextStyle.title3.copyWith(
+                                color: CustomColors.grey,
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      LikeButton(
+                        isLiked: isLikedComment,
+                        likeCount: likedCommentCount,
+                        size: 20,
+                        countPostion: CountPostion.bottom,
+                        bubblesColor: const BubblesColor(
+                          dotPrimaryColor: CustomColors.pink,
+                          dotSecondaryColor: CustomColors.purple,
+                        ),
+                        likeCountPadding: const EdgeInsets.only(top: 4),
+                        likeBuilder: (bool isLiked) {
+                          return isLiked
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: CustomColors.pink,
+                                )
+                              : const Icon(
+                                  Icons.favorite_outline_outlined,
+                                  color: CustomColors.grey,
+                                );
+                        },
+                        onTap: (isLiked) async {
+                          isLiked = !isLiked;
+                          if (isLiked) {
+                            likedCommentCount++;
+                          } else {
+                            likedCommentCount--;
+                          }
+                          return isLiked;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const Divider(height: 0),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: MediaQuery.of(ctx).viewInsets.bottom,
+              ),
+              child: Row(
+                children: [
+                  CustomCircleAvatar(
+                    avatarUrl: currentVideo.userAvatarUrl,
+                    radius: 16,
+                  ),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Add a comment',
+                        hintStyle: CustomTextStyle.bodyText2.copyWith(
+                          color: CustomColors.grey,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Post'),
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

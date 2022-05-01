@@ -26,7 +26,7 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   late VideoPlayerController _controller;
 
-  late final User _currentUser;
+  late final User? _currentUser;
 
   late bool _isLiked;
   bool _isHeartAnimating = false;
@@ -35,8 +35,8 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   void initState() {
     super.initState();
     ref.read(userControllerProvider).whenData((user) {
-      _currentUser = user!;
-      _isLiked = widget.video.userIdLiked.contains(_currentUser.id);
+      _currentUser = user;
+      _isLiked = widget.video.userIdLiked.contains(_currentUser?.id);
     });
     _controller = VideoPlayerController.network(widget.video.videoUrl)
       ..initialize().then((_) {
@@ -69,8 +69,8 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   }
 
   //! only like video
-  Future<void> _onlyLikeVideo() async {
-    _isLiked = widget.video.userIdLiked.contains(_currentUser.id);
+  void _onlyLikeVideo() {
+    _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
     if (_isLiked) {
       _isHeartAnimating = true;
       return;
@@ -78,9 +78,9 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
     _isLiked = true;
     _isHeartAnimating = true;
-    widget.video.userIdLiked.add(_currentUser.id);
+    widget.video.userIdLiked.add(_currentUser?.id);
 
-    await ref.read(videoControllerProvider.notifier).updateVideo(
+    ref.read(videoControllerProvider.notifier).updateVideo(
           videoId: widget.video.id,
           videoUpdated: widget.video.copyWith(
             userIdLiked: widget.video.userIdLiked,

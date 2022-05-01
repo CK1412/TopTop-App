@@ -4,6 +4,7 @@ import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/future_providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/error_screen.dart';
+import 'package:toptop_app/screens/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
 import '../models/video.dart';
@@ -429,7 +430,13 @@ class VideoLikedGridView extends ConsumerWidget {
                   style: CustomTextStyle.title2,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const TabScreen(),
+                      ),
+                    );
+                  },
                   child: const Text('Discover now'),
                 ),
               ],

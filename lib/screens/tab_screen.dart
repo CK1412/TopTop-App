@@ -6,14 +6,25 @@ import 'profile_screen.dart';
 import 'videos_screen.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
-  const TabScreen({Key? key}) : super(key: key);
+  const TabScreen({
+    Key? key,
+    this.indexScreen = 0,
+  }) : super(key: key);
+
+  final int indexScreen;
 
   @override
   ConsumerState<TabScreen> createState() => _TabScreenState();
 }
 
 class _TabScreenState extends ConsumerState<TabScreen> {
-  int _screenIndex = 0;
+  late int _screenIndex;
+
+  @override
+  initState() {
+    super.initState();
+    _screenIndex = widget.indexScreen;
+  }
 
   List screens = [
     const VideosScreen(),
