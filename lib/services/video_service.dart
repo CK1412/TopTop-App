@@ -20,7 +20,7 @@ class VideoService {
     debugPrint('Add video sucessfully!');
   }
 
-  //* Get list video
+  //* Get shuffle video list
   Future<List<Video>?> getVideos() async {
     final query = await _collection.get();
 
@@ -28,7 +28,8 @@ class VideoService {
         .map(
           (doc) => Video.fromMap(doc.data()),
         )
-        .toList();
+        .toList()
+      ..shuffle();
   }
 
   //* Update video

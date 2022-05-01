@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:toptop_app/models/video.dart';
-import 'package:toptop_app/providers/state_notifier_providers.dart';
-import 'package:toptop_app/screens/error_screen.dart';
-import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
+import '../models/video.dart';
+import '../providers/state_notifier_providers.dart';
+import '../screens/error_screen.dart';
+import '../widgets/common/center_loading_widget.dart';
 import '../src/constants.dart';
 import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
@@ -18,30 +18,38 @@ class VideoScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final videosState = ref.watch(videoControllerProvider);
 
+    _refreshData() async {
+      await ref.read(videoControllerProvider.notifier).retrieveVideos();
+      ref.refresh(videoControllerProvider.future);
+    }
+
     return videosState.when(
-      data: (videos) => PageView.builder(
-        itemCount: videos.length,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) => Stack(
-          children: [
-            GestureDetector(
-              onTap: () {},
-              child: VideoPlayerWidget(
-                video: videos[index],
+      data: (videos) => RefreshIndicator(
+        onRefresh: _refreshData,
+        child: PageView.builder(
+          itemCount: videos.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) => Stack(
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: VideoPlayerWidget(
+                  video: videos[index],
+                ),
               ),
-            ),
-            Positioned(
-              right: 10,
-              bottom: 14,
-              child: CustomRightTaskbar(video: videos[index]),
-            ),
-            Positioned(
-              bottom: 14,
-              left: 10,
-              width: MediaQuery.of(context).size.width * .6,
-              child: InformationBelow(video: videos[index]),
-            ),
-          ],
+              Positioned(
+                right: 10,
+                bottom: 14,
+                child: CustomRightTaskbar(video: videos[index]),
+              ),
+              Positioned(
+                bottom: 14,
+                left: 10,
+                width: MediaQuery.of(context).size.width * .6,
+                child: InformationBelow(video: videos[index]),
+              ),
+            ],
+          ),
         ),
       ),
       error: (e, stackTrace) => ErrorScreen(e, stackTrace),

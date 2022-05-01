@@ -161,7 +161,7 @@ packages:
       name: firebase_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.2.13"
+    version: "10.2.14"
   firebase_storage_platform_interface:
     dependency: transitive
     description:
