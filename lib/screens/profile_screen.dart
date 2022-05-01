@@ -398,6 +398,7 @@ class VideosPostGridView extends ConsumerWidget {
               ),
             )
           : VideoGridView(
+              userId: userId,
               videos: videos,
             ),
       error: (e, stackTrace) => const CenterLoadingWidget(),
@@ -434,6 +435,9 @@ class VideoLikedGridView extends ConsumerWidget {
               ],
             ),
           )
-        : VideoGridView(videos: videosLiked);
+        : VideoGridView(
+            userId: userId,
+            videos: videosLiked,
+          );
   }
 }

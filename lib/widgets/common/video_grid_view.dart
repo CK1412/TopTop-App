@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/video_screen.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../models/video.dart';
+import '../../providers/providers.dart';
 import '../../src/constants.dart';
 
-class VideoGridView extends StatefulWidget {
+class VideoGridView extends ConsumerStatefulWidget {
   const VideoGridView({
     Key? key,
+    required this.userId,
     required this.videos,
   }) : super(key: key);
 
+  final String userId;
   final List<Video> videos;
 
   @override
-  State<VideoGridView> createState() => _VideoGridViewState();
+  ConsumerState<VideoGridView> createState() => _VideoGridViewState();
 }
 
-class _VideoGridViewState extends State<VideoGridView> {
+class _VideoGridViewState extends ConsumerState<VideoGridView> {
   late VideoPlayerController _controller;
   late List<Video> videos = [];
 
@@ -30,7 +34,19 @@ class _VideoGridViewState extends State<VideoGridView> {
   @override
   void dispose() {
     _controller.dispose();
+    ref.refresh(
+      videosLikedByUserProvider(widget.userId),
+    );
     super.dispose();
+  }
+
+  void _navigateToVideoScreen(Video video) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Scaffold(
+        backgroundColor: CustomColors.black,
+        body: VideoScreen(video: video),
+      ),
+    ));
   }
 
   @override
@@ -45,11 +61,7 @@ class _VideoGridViewState extends State<VideoGridView> {
       itemCount: videos.length,
       itemBuilder: (ctx, index) {
         return GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => VideoScreen(video: videos[index]),
-            ));
-          },
+          onTap: () => _navigateToVideoScreen(videos[index]),
           child: Stack(
             children: [
               VideoPlayer(

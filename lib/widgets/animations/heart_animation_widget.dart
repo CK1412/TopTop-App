@@ -43,8 +43,8 @@ class _HeartAnimationWidgetState extends State<HeartAnimationWidget>
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   Future<void> doAnimation() async {
