@@ -54,6 +54,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
               userIdLiked: currentVideo.userIdLiked,
             ),
           );
+
       return isLiked;
     }
 

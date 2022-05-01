@@ -198,11 +198,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       File(avatarPath!),
                       fit: BoxFit.cover,
                       colorBlendMode: BlendMode.srcOver,
+                      color: CustomColors.black.withOpacity(.4),
                     )
                   : Image.network(
                       currentUser.avatarUrl,
                       fit: BoxFit.cover,
                       colorBlendMode: BlendMode.srcOver,
+                      color: CustomColors.black.withOpacity(.4),
                     ),
               IconButton(
                 onPressed: _changeImage,

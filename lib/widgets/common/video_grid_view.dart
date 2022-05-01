@@ -4,7 +4,6 @@ import 'package:toptop_app/screens/video_screen.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../models/video.dart';
-import '../../providers/providers.dart';
 import '../../src/constants.dart';
 
 class VideoGridView extends ConsumerStatefulWidget {
@@ -34,9 +33,6 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
   @override
   void dispose() {
     _controller.dispose();
-    ref.refresh(
-      videosLikedByUserProvider(widget.userId),
-    );
     super.dispose();
   }
 
@@ -47,6 +43,9 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
         body: VideoScreen(video: video),
       ),
     ));
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -63,6 +62,7 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
         return GestureDetector(
           onTap: () => _navigateToVideoScreen(videos[index]),
           child: Stack(
+            fit: StackFit.expand,
             children: [
               VideoPlayer(
                 _controller = VideoPlayerController.network(

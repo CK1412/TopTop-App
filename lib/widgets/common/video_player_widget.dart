@@ -26,7 +26,7 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   late VideoPlayerController _controller;
 
-  late final User? _currentUser;
+  User? _currentUser;
 
   late bool _isLiked;
   bool _isHeartAnimating = false;
@@ -36,7 +36,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
     super.initState();
     ref.read(userControllerProvider).whenData((user) {
       _currentUser = user;
-      _isLiked = widget.video.userIdLiked.contains(_currentUser?.id);
+      _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
     });
     _controller = VideoPlayerController.network(widget.video.videoUrl)
       ..initialize().then((_) {
@@ -70,7 +70,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
   //! only like video
   void _onlyLikeVideo() {
-    _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
+    _isLiked = widget.video.userIdLiked.contains(_currentUser?.id);
     if (_isLiked) {
       _isHeartAnimating = true;
       return;
