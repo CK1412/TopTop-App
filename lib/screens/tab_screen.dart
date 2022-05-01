@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/screens/add_video_screen.dart';
 
 import '../src/constants.dart';
 import 'profile_screen.dart';
@@ -8,10 +10,10 @@ import 'videos_screen.dart';
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({
     Key? key,
-    this.indexScreen = 0,
+    this.screenIndex = 0,
   }) : super(key: key);
 
-  final int indexScreen;
+  final int screenIndex;
 
   @override
   ConsumerState<TabScreen> createState() => _TabScreenState();
@@ -23,7 +25,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
   @override
   initState() {
     super.initState();
-    _screenIndex = widget.indexScreen;
+    _screenIndex = widget.screenIndex;
   }
 
   List screens = [
@@ -31,9 +33,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
     const Center(
       child: Text('haha1'),
     ),
-    const Center(
-      child: Text('haha12'),
-    ),
+    const AddVideoScreen(),
     // const MessageScreen(),
     const Center(
       child: Text('haha1'),
@@ -45,6 +45,11 @@ class _TabScreenState extends ConsumerState<TabScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _screenIndex == 0 ? CustomColors.black : null,
+      // appBar: AppBar(
+      //   systemOverlayStyle: SystemUiOverlayStyle(
+      //     statusBarColor: _screenIndex == 0 ? Colors.transparent : Colors.black,
+      //   ),
+      // ),
       body: screens[_screenIndex],
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 26,

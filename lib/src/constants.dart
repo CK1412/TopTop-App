@@ -26,6 +26,8 @@ class IconPath {
   static const phoneColor = 'assets/icons/phone-color.svg';
   static const flagVNColor = 'assets/icons/flag_vn_color.svg';
   static const avatarPlaceHolder = 'assets/icons/avatar-placeholder.svg';
+  static const galleryColor = 'assets/icons/gallery-color.svg';
+  static const cameraColor = 'assets/icons/camera-color.svg';
 }
 
 // LOTTIE ANIMATION URL
@@ -34,6 +36,7 @@ class LottiePath {
   static const music = 'assets/lotties/music.json';
   static const barMusic = 'assets/lotties/bars-music.json';
   static const heartAnimation = 'assets/lotties/heart-animation.json';
+  static const videoEditor = 'assets/lotties/video-editor.json';
 }
 
 // TEXT STYLE

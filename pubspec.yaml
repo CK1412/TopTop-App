@@ -59,6 +59,8 @@ dependencies:
   firebase_storage: ^10.2.14
   # find commonly used locations on the file system
   # path_provider: ^2.0.9
+  # use font of GG
+  google_fonts: ^2.3.2
 
 dev_dependencies:
   flutter_test:

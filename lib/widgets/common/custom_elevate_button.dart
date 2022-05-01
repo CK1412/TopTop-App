@@ -6,13 +6,19 @@ import '../../src/constants.dart';
 class CustomElevateButton extends StatelessWidget {
   const CustomElevateButton({
     Key? key,
-    required this.iconPath,
+    this.iconPath = '',
+    this.iconData,
     required this.text,
     required this.onPressed,
+    this.backgroundColor = CustomColors.white,
+    this.foregroundColor = CustomColors.black,
   }) : super(key: key);
 
   final String iconPath;
+  final IconData? iconData;
   final String text;
+  final Color backgroundColor;
+  final Color foregroundColor;
   final VoidCallback onPressed;
 
   @override
@@ -29,7 +35,7 @@ class CustomElevateButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          primary: CustomColors.white,
+          primary: backgroundColor,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +44,9 @@ class CustomElevateButton extends StatelessWidget {
               flex: 2,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: SvgPicture.asset(iconPath, height: 34),
+                child: (iconPath.isNotEmpty)
+                    ? SvgPicture.asset(iconPath, height: 34)
+                    : Icon(iconData, size: 28),
               ),
             ),
             const SizedBox(width: 10),
@@ -50,6 +58,7 @@ class CustomElevateButton extends StatelessWidget {
                   text,
                   style: CustomTextStyle.title2.copyWith(
                     fontWeight: FontWeight.w500,
+                    color: foregroundColor,
                   ),
                 ),
               ),

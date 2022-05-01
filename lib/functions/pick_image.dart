@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 
 // use image picker
@@ -26,3 +28,15 @@ Future<String?> pickImage(ImageSource imageSource) async {
 //   if (results == null) return null;
 //   return results.files.first.path;
 // }
+
+Future<File?> pickVideo(ImageSource imageSource) async {
+  final _imagePicker = ImagePicker();
+
+  final video = await _imagePicker.pickVideo(
+    source: imageSource,
+    preferredCameraDevice: CameraDevice.front,
+  );
+
+  if (video == null) return null;
+  return File(video.path);
+}
