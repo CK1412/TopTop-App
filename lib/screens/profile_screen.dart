@@ -9,6 +9,7 @@ import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
 import '../models/video.dart';
 import '../providers/providers.dart';
+import '../providers/state_providers.dart';
 import '../src/constants.dart';
 import '../widgets/common/custom_circle_avatar.dart';
 import '../widgets/common/video_grid_view.dart';
@@ -39,7 +40,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class ContentBlockAbove extends StatelessWidget {
+class ContentBlockAbove extends ConsumerWidget {
   const ContentBlockAbove({
     Key? key,
     required this.user,
@@ -48,7 +49,7 @@ class ContentBlockAbove extends StatelessWidget {
   final User user;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.only(left: 12, right: 12),
       child: Column(
@@ -117,9 +118,14 @@ class ContentBlockAbove extends StatelessWidget {
                 ],
               ),
               Column(
-                children: const [
-                  Text('0', style: CustomTextStyle.title1),
+                children: [
                   Text(
+                    ref
+                        .watch(totalLikeVideosPostedByUserProvider(user.id))
+                        .toString(),
+                    style: CustomTextStyle.title1,
+                  ),
+                  const Text(
                     'Likes',
                     style: CustomTextStyle.bodyText2,
                   ),

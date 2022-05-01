@@ -6,5 +6,5 @@ import '../models/video.dart';
 //* get list of videos posted by users
 final videosPostedByUserProvider =
     FutureProvider.family<List<Video>?, String>((ref, userId) async {
-  return await ref.read(videoServiceProvider).getVideosPostedByUserId(userId);
+  return await ref.watch(videoServiceProvider).getVideosPostedByUserId(userId);
 });

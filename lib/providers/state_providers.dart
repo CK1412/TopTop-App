@@ -1,7 +1,22 @@
-//! OTHER
-//* pause/play video
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/models/video.dart';
+import 'package:toptop_app/providers/future_providers.dart';
 
+//* pause/play video
 final videoStateProvider = StateProvider<bool>((ref) {
   return true;
+});
+
+//* get total like of videos posted by user Id
+final totalLikeVideosPostedByUserProvider =
+    StateProvider.family<int, String>((ref, userId) {
+  List<Video>? videos;
+  ref.watch(videosPostedByUserProvider(userId)).whenData((value) {
+    videos = value;
+  });
+  var likes = videos?.map((e) => e.userIdLiked.length);
+  // final totalLike = likes?.reduce((value, element) => value + element);
+
+  return likes?.fold(0, (previousValue, element) => previousValue! + element) ??
+      0;
 });
