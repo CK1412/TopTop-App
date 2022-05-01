@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/providers/general_providers.dart';
+import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
 
 import '../models/user.dart' as user_models;

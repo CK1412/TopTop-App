@@ -55,4 +55,6 @@ class UserService {
           (error) => debugPrint("Failed to update user: $error"),
         );
   }
+
+  
 }

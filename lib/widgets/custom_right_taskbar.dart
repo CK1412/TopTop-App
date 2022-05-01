@@ -34,7 +34,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     super.initState();
     currentVideo = widget.video;
     ref.read(userControllerProvider).whenData((value) {
-      currentUser = value;
+      currentUser = value!;
     });
   }
 
@@ -43,9 +43,9 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     Future<bool> _likeVideo(bool isLiked) async {
       isLiked = !isLiked;
       if (isLiked) {
-        currentVideo.userIdLiked.add(currentUser!.id);
+        currentVideo.userIdLiked.add(currentUser?.id);
       } else {
-        currentVideo.userIdLiked.remove(currentUser!.id);
+        currentVideo.userIdLiked.remove(currentUser?.id);
       }
 
       await ref.read(videoControllerProvider.notifier).updateVideo(

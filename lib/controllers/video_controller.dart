@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/providers/general_providers.dart';
+import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
 
 import '../models/video.dart';

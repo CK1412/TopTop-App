@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../src/constants.dart';
 import 'profile_screen.dart';
-import 'video_screen.dart';
+import 'videos_screen.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
   int _screenIndex = 0;
 
   List screens = [
-    const VideoScreen(),
+    const VideosScreen(),
     const Center(
       child: Text('haha1'),
     ),

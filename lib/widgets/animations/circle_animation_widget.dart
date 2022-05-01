@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/general_providers.dart';
+import '../../providers/state_providers.dart';
 import '../common/custom_circle_avatar.dart';
 
 class CircleAnimationWidget extends StatefulWidget {

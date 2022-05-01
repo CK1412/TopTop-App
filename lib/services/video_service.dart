@@ -32,6 +32,17 @@ class VideoService {
       ..shuffle();
   }
 
+  //* Get video list posted by userId
+  Future<List<Video>?> getVideosPostedByUserId(String userId) async {
+    final query = await _collection.get();
+    final videos = query.docs
+        .map(
+          (doc) => Video.fromMap(doc.data()),
+        )
+        .toList();
+    return videos.where((video) => video.userId == userId).toList();
+  }
+
   //* Update video
   Future<void> updateVideo({
     required String videoId,

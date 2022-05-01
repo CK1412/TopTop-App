@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../providers/general_providers.dart';
+import '../providers/providers.dart';
 
 class AuthControllerNotifier extends StateNotifier<User?> {
   final Reader _reader;

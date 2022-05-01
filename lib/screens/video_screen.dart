@@ -1,59 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 import '../models/video.dart';
-import '../providers/state_notifier_providers.dart';
-import '../screens/error_screen.dart';
-import '../widgets/common/center_loading_widget.dart';
 import '../src/constants.dart';
 import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
 import '../widgets/custom_right_taskbar.dart';
 
-class VideoScreen extends ConsumerWidget {
-  const VideoScreen({Key? key}) : super(key: key);
+class VideoScreen extends StatelessWidget {
+  const VideoScreen({Key? key, required this.video}) : super(key: key);
+
+  final Video video;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final videosState = ref.watch(videoControllerProvider);
-
-    _refreshData() async {
-      await ref.read(videoControllerProvider.notifier).retrieveVideos();
-      ref.refresh(videoControllerProvider.future);
-    }
-
-    return videosState.when(
-      data: (videos) => RefreshIndicator(
-        onRefresh: _refreshData,
-        child: PageView.builder(
-          itemCount: videos.length,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) => Stack(
-            children: [
-              GestureDetector(
-                onTap: () {},
-                child: VideoPlayerWidget(
-                  video: videos[index],
-                ),
-              ),
-              Positioned(
-                right: 10,
-                bottom: 14,
-                child: CustomRightTaskbar(video: videos[index]),
-              ),
-              Positioned(
-                bottom: 14,
-                left: 10,
-                width: MediaQuery.of(context).size.width * .6,
-                child: InformationBelow(video: videos[index]),
-              ),
-            ],
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {},
+            child: VideoPlayerWidget(
+              video: video,
+            ),
           ),
-        ),
+          Positioned(
+            right: 10,
+            bottom: 14,
+            child: CustomRightTaskbar(video: video),
+          ),
+          Positioned(
+            bottom: 14,
+            left: 10,
+            width: MediaQuery.of(context).size.width * .6,
+            child: InformationBelow(video: video),
+          ),
+        ],
       ),
-      error: (e, stackTrace) => ErrorScreen(e, stackTrace),
-      loading: () => const CenterLoadingWidget(),
     );
   }
 }

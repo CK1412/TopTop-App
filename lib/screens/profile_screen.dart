@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
+import 'package:toptop_app/providers/future_providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/error_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
+import '../models/video.dart';
+import '../providers/providers.dart';
 import '../src/constants.dart';
 import '../widgets/common/custom_circle_avatar.dart';
+import '../widgets/common/video_grid_view.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -23,7 +27,7 @@ class ProfileScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ContentBlockAbove(user: user!),
-              // const ContentBlockBelow(),
+              ContentBlockBelow(userId: user.id),
             ],
           ),
           error: (e, stackTrace) => ErrorScreen(e, stackTrace),
@@ -265,125 +269,171 @@ class ContentBlockAbove extends StatelessWidget {
   }
 }
 
-// class ContentBlockBelow extends StatefulWidget {
-//   const ContentBlockBelow({
-//     Key? key,
-//   }) : super(key: key);
+class ContentBlockBelow extends ConsumerStatefulWidget {
+  const ContentBlockBelow({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
-//   @override
-//   State<ContentBlockBelow> createState() => _ContentBlockBelowState();
-// }
+  final String userId;
 
-// class _ContentBlockBelowState extends State<ContentBlockBelow> {
-//   int _tabIndex = 0;
+  @override
+  ConsumerState<ContentBlockBelow> createState() => _ContentBlockBelowState();
+}
 
-//   List tabIcons = [
-//     Icons.grid_on_rounded,
-//     Icons.favorite_border_outlined,
-//   ];
+class _ContentBlockBelowState extends ConsumerState<ContentBlockBelow> {
+  int _tabIndex = 0;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Column(
-//         children: [
-//           Row(
-//             children: List.generate(
-//               tabIcons.length,
-//               (index) => Flexible(
-//                 child: InkWell(
-//                   onTap: () {
-//                     setState(() {
-//                       _tabIndex = index;
-//                     });
-//                   },
-//                   child: AnimatedContainer(
-//                     duration: const Duration(milliseconds: 300),
-//                     curve: Curves.easeInOut,
-//                     alignment: Alignment.center,
-//                     decoration: BoxDecoration(
-//                       border: Border(
-//                         bottom: _tabIndex == index
-//                             ? const BorderSide(
-//                                 width: 2,
-//                                 color: CustomColors.black,
-//                               )
-//                             : const BorderSide(
-//                                 width: 1,
-//                                 color: CustomColors.grey,
-//                               ),
-//                       ),
-//                     ),
-//                     padding: const EdgeInsets.symmetric(vertical: 6),
-//                     child: Icon(
-//                       tabIcons[index],
-//                       color: _tabIndex == index
-//                           ? CustomColors.black
-//                           : CustomColors.grey,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: IndexedStack(
-//               sizing: StackFit.expand,
-//               index: _tabIndex,
-//               children: [
-//                 VideoScreen.videosUrl.isEmpty
-//                     ? Center(
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             const Text(
-//                               'Share your first video',
-//                               style: CustomTextStyle.title2,
-//                             ),
-//                             Padding(
-//                               padding: const EdgeInsets.only(
-//                                 top: 4,
-//                                 left: 14,
-//                                 right: 14,
-//                               ),
-//                               child: Text(
-//                                 'Record and upload video with effects, sounds, and more.',
-//                                 style: CustomTextStyle.bodyText2.copyWith(
-//                                   color: CustomColors.grey,
-//                                 ),
-//                                 textAlign: TextAlign.center,
-//                               ),
-//                             ),
-//                             TextButton(
-//                               onPressed: () {},
-//                               child: const Text('Create video'),
-//                             ),
-//                           ],
-//                         ),
-//                       )
-//                     : const VideoGridView(),
-//                 VideoScreen.videosUrl.isEmpty
-//                     ? Center(
-//                         child: Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             const Text(
-//                               'You haven\'t liked any videos yet',
-//                               style: CustomTextStyle.title2,
-//                             ),
-//                             TextButton(
-//                               onPressed: () {},
-//                               child: const Text('Discover now'),
-//                             ),
-//                           ],
-//                         ),
-//                       )
-//                     : const VideoGridView(),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+  List tabIcons = [
+    Icons.grid_on_rounded,
+    Icons.favorite_border_outlined,
+  ];
+
+  //* List of videos posted by current user
+  late List<Video>? videosPosted;
+  //* List of videos Liked by current user
+  late List<Video>? videosLiked;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Row(
+            children: List.generate(
+              tabIcons.length,
+              (index) => Flexible(
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      _tabIndex = index;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: _tabIndex == index
+                            ? const BorderSide(
+                                width: 2,
+                                color: CustomColors.black,
+                              )
+                            : const BorderSide(
+                                width: 1,
+                                color: CustomColors.grey,
+                              ),
+                      ),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    child: Icon(
+                      tabIcons[index],
+                      color: _tabIndex == index
+                          ? CustomColors.black
+                          : CustomColors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: IndexedStack(
+              sizing: StackFit.expand,
+              index: _tabIndex,
+              children: [
+                VideosPostGridView(userId: widget.userId),
+                VideoLikedGridView(userId: widget.userId),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VideosPostGridView extends ConsumerWidget {
+  const VideosPostGridView({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videosPostedState = ref.watch(videosPostedByUserProvider(userId));
+
+    return videosPostedState.when(
+      data: (videos) => videos!.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Share your first video',
+                    style: CustomTextStyle.title2,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 4,
+                      left: 14,
+                      right: 14,
+                    ),
+                    child: Text(
+                      'Record and upload video with effects, sounds, and more.',
+                      style: CustomTextStyle.bodyText2.copyWith(
+                        color: CustomColors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text('Create video'),
+                  ),
+                ],
+              ),
+            )
+          : VideoGridView(
+              videos: videos,
+            ),
+      error: (e, stackTrace) => const CenterLoadingWidget(),
+      loading: () => const CenterLoadingWidget(),
+    );
+  }
+}
+
+class VideoLikedGridView extends ConsumerWidget {
+  const VideoLikedGridView({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final videosLiked = ref.watch(videosLikedByUserProvider(userId));
+
+    return videosLiked!.isEmpty
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'You haven\'t liked any videos yet',
+                  style: CustomTextStyle.title2,
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Discover now'),
+                ),
+              ],
+            ),
+          )
+        : VideoGridView(videos: videosLiked);
+  }
+}

@@ -4,10 +4,10 @@ import 'package:lottie/lottie.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../providers/general_providers.dart';
 import '../../src/constants.dart';
 import '../animations/heart_animation_widget.dart';
 

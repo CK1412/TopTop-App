@@ -5,8 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/services/user_service.dart';
 import 'package:toptop_app/services/video_service.dart';
 
+import '../models/video.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
+import 'state_notifier_providers.dart';
 
 //! FIREBASE
 
@@ -48,7 +50,15 @@ final videoServiceProvider = Provider<VideoService>((ref) {
 });
 
 //! OTHER
-//* pause/play video
-final videoStateProvider = StateProvider<bool>((ref) {
-  return true;
+//* get list of videos liked by users
+final videosLikedByUserProvider =
+    Provider.family<List<Video>?, String>((ref, userId) {
+  final videosState = ref.watch(videoControllerProvider);
+
+  if (videosState is AsyncData) {
+    return videosState.value!
+        .where((video) => video.userIdLiked.contains(userId))
+        .toList();
+  }
+  return null;
 });
