@@ -9,15 +9,11 @@ import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import '../src/constants.dart';
 import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
+import '../widgets/custom_right_taskbar.dart';
 
 class VideoScreen extends ConsumerWidget {
   const VideoScreen({Key? key}) : super(key: key);
 
-  // static final List videosUrl = [
-  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-  // ];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final videosState = ref.watch(videoControllerProvider);
@@ -34,11 +30,11 @@ class VideoScreen extends ConsumerWidget {
                 video: videos[index],
               ),
             ),
-            // Positioned(
-            //   right: 10,
-            //   bottom: 14,
-            //   child: CustomRightTaskbar(video: videos[index]),
-            // ),
+            Positioned(
+              right: 10,
+              bottom: 14,
+              child: CustomRightTaskbar(video: videos[index]),
+            ),
             Positioned(
               bottom: 14,
               left: 10,

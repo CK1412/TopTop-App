@@ -97,7 +97,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
     return _controller.value.isInitialized
         ? GestureDetector(
             onTap: _toggleVideoState,
-            onDoubleTap: () => _onlyLikeVideo(),
+            onDoubleTap: _onlyLikeVideo,
             child: Stack(
               children: [
                 SizedBox.expand(
