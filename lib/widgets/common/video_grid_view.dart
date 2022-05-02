@@ -54,8 +54,8 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 3 / 4,
-        crossAxisSpacing: 1,
-        mainAxisSpacing: 1,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
       ),
       itemCount: videos.length,
       itemBuilder: (ctx, index) {
@@ -72,11 +72,12 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: const EdgeInsets.all(2.0),
+                  padding: const EdgeInsets.all(6),
                   child: Text(
-                    '❤️ 23K',
-                    style: CustomTextStyle.title3
-                        .copyWith(color: CustomColors.white),
+                    '❤️ ${videos[index].userIdLiked.length}',
+                    style: CustomTextStyle.title3.copyWith(
+                      color: CustomColors.white,
+                    ),
                   ),
                 ),
               )

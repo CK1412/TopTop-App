@@ -14,20 +14,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // final video = Video(
-  //   id: DateTime.now().millisecondsSinceEpoch.toString(),
-  //   songName: 'Em yêu',
-  //   thumbnailUrl: '',
-  //   userId: '',
-  //   userAvatarUrl:
-  //       'https://www.greenqueen.com.hk/wp-content/uploads/2021/06/WEF-Investments-In-Nature-Based-Solutions-Have-To-Triple-By-2030-To-Address-Climate-Change-Biodiversity-Loss.jpg',
-  //   userIdLiked: [],
-  //   username: 'Tôi đây bạn',
-  //   videoUrl:
-  //       'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-  // );
-  // VideoService.instance.add(video);
-
   // SystemChrome.setSystemUIOverlayStyle(
   //   const SystemUiOverlayStyle(
   //     statusBarColor: Colors.transparent,

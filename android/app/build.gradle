@@ -59,6 +59,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    // Reduce your application size with this configuration when use video_compress package
+    aaptOptions {
+        ignoreAssetsPattern "!x86:!*ffprobe"
+    }
 }
 
 flutter {
