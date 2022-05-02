@@ -7,7 +7,7 @@ import 'package:toptop_app/src/constants.dart';
 import 'package:toptop_app/src/page_routes.dart';
 import 'package:toptop_app/widgets/common/custom_elevate_button.dart';
 
-import '../functions/pick_image.dart';
+import '../functions/pick_file.dart';
 
 class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({Key? key}) : super(key: key);

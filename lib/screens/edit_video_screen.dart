@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
@@ -10,6 +11,7 @@ import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:video_player/video_player.dart';
 
 import '../src/constants.dart';
+import '../widgets/video_compression_progress_dialog.dart';
 
 class EditVideoScreen extends ConsumerStatefulWidget {
   const EditVideoScreen({Key? key, required this.videoFile}) : super(key: key);
@@ -24,6 +26,8 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
   late VideoPlayerController _videoController;
   late TextEditingController _captionController;
   late TextEditingController _songNameController;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -48,6 +52,8 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
   }
 
   _postVideo() async {
+    FocusScope.of(context).unfocus();
+
     final songName = _songNameController.text.trim().isNotEmpty
         ? _songNameController.text.trim()
         : 'Unknown';
@@ -55,11 +61,30 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     final videoId = DateTime.now().millisecondsSinceEpoch.toString();
 
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Dialog(
+        child: VideoCompressionProgressDialog(),
+      ),
+    );
+
+    final compressedFileInfor = await compressVideo(widget.videoFile);
+
+    //* closed dialog when compressed
+    Navigator.of(context).pop();
+
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+
+    if (compressedFileInfor == null) return;
+
     ref.read(userControllerProvider).whenData((user) async {
       await ref.read(storageServiceProvider).uploadFile(
             context,
             folderName: 'videos',
-            filePath: widget.videoFile.path,
+            filePath: compressedFileInfor.path!,
             fileName: videoId,
           );
 
@@ -78,7 +103,10 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
               userAvatarUrl: user.avatarUrl,
             ),
           );
-      Navigator.of(context).pop();
+      setState(() {
+        _isLoading = !_isLoading;
+        Navigator.of(context).pop();
+      });
     });
   }
 
@@ -110,22 +138,24 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
                   _buildVideoControlBar(),
                   _buildInputFields(),
                   const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: _postVideo,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 10,
-                      ),
-                      shape: const StadiumBorder(),
-                    ),
-                    child: Text(
-                      'Post video',
-                      style: CustomTextStyle.title2.copyWith(
-                        color: CustomColors.white,
-                      ),
-                    ),
-                  ),
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _postVideo,
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18,
+                              vertical: 10,
+                            ),
+                            shape: const StadiumBorder(),
+                          ),
+                          child: Text(
+                            'Post video',
+                            style: CustomTextStyle.title2.copyWith(
+                              color: CustomColors.white,
+                            ),
+                          ),
+                        ),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
                     child: const Text('Cancel'),
