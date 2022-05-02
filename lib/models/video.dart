@@ -16,13 +16,13 @@ class Video {
 
   Video({
     required this.id,
-    required this.userIdLiked,
+    this.userIdLiked = const [],
     this.commentCount = 0,
     this.shareCount = 0,
     required this.songName,
     this.caption = '',
     required this.videoUrl,
-    required this.thumbnailUrl,
+    this.thumbnailUrl = '',
     required this.userId,
     required this.username,
     required this.userAvatarUrl,

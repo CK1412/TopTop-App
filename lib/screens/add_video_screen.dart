@@ -55,16 +55,20 @@ class AddVideoScreen extends StatelessWidget {
               text: 'Add video from Gallery',
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
-              onPressed: () =>
-                  _pickVideoFromSrc(context, imageSource: ImageSource.gallery,),
+              onPressed: () => _pickVideoFromSrc(
+                context,
+                imageSource: ImageSource.gallery,
+              ),
             ),
             CustomElevateButton(
               iconData: Icons.camera_alt,
               text: 'Add video from Camera',
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
-              onPressed: () =>
-                  _pickVideoFromSrc(context, imageSource: ImageSource.camera),
+              onPressed: () => _pickVideoFromSrc(
+                context,
+                imageSource: ImageSource.camera,
+              ),
             ),
           ],
         ),
