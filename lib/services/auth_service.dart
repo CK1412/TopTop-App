@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../providers/providers.dart';
+import '../providers/state_notifier_providers.dart';
 import '../screens/auth/verification_otp_code_screen.dart';
 import '../utils/custom_exception.dart';
 import '../utils/show_snackbar.dart';
+import '../models/user.dart' as user_model;
 
 class AuthService {
   final Reader _reader;
@@ -106,6 +108,18 @@ class AuthService {
       // Sign the user in (or link) with the credential
       final resutl =
           await _reader(firebaseAuthProvider).signInWithCredential(credential);
+
+      if (getCurrentUser() != null) {
+        _reader(userControllerProvider.notifier).addUser(
+          user_model.User(
+            id: getCurrentUser()!.uid,
+            username: getCurrentUser()!.displayName ?? 'New User',
+            email: getCurrentUser()!.email ?? '',
+            phoneNumber: getCurrentUser()!.phoneNumber ?? '',
+            avatarUrl: getCurrentUser()!.photoURL ?? '',
+          ),
+        );
+      }
 
       if (resutl.user != null) {
         return true;

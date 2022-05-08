@@ -18,15 +18,15 @@ class AuthControllerNotifier extends StateNotifier<User?> {
     _authStateChangesSubscription =
         _reader(authServiceProvider).authStateChanges.listen(
       (user) {
-        if (state == null && user != null) {
-          state = user;
+        state = user;
+        if (user != null) {
           _reader(userControllerProvider.notifier).addUser(
             user_model.User(
-              id: state!.uid,
-              username: state?.displayName ?? 'New User',
-              email: state?.email ?? '',
-              phoneNumber: state?.phoneNumber ?? '',
-              avatarUrl: state?.photoURL ?? '',
+              id: user.uid,
+              username: user.displayName ?? 'New User',
+              email: user.email ?? '',
+              phoneNumber: user.phoneNumber ?? '',
+              avatarUrl: user.photoURL ?? '',
             ),
           );
         }
