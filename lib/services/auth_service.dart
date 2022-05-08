@@ -50,6 +50,18 @@ class AuthService {
     try {
       // Once signed in, return the UserCredential
       await _reader(firebaseAuthProvider).signInWithCredential(credential);
+
+      if (getCurrentUser() != null) {
+        _reader(userControllerProvider.notifier).addUser(
+          user_model.User(
+            id: getCurrentUser()!.uid,
+            username: getCurrentUser()!.displayName ?? 'New User',
+            email: getCurrentUser()!.email ?? '',
+            phoneNumber: getCurrentUser()!.phoneNumber ?? '',
+            avatarUrl: getCurrentUser()!.photoURL ?? '',
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       showSnackbar(context, e.message!);
     }

@@ -29,6 +29,11 @@ class NotificationService {
           (doc) => notification_model.Notification.fromMap(doc.data()),
         )
         .toList();
+
+    // sort by DateTime
+    notifications.sort(
+      (a, b) => b.sendingTime.compareTo(a.sendingTime),
+    );
     return notifications
         .where((notification) => notification.userId == userId)
         .toList();

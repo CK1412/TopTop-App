@@ -11,11 +11,10 @@ class UserService {
     final query = await _collection
         .where(
           user_model.UserField.id,
-          isEqualTo: user_model.UserField.id,
+          isEqualTo: id,
         )
         .get();
-    final users = query.docs;
-    return users.isEmpty ? true : false;
+    return query.docs.isEmpty;
   }
 
   //* Get infor user by id
@@ -55,6 +54,4 @@ class UserService {
           (error) => debugPrint("Failed to update user: $error"),
         );
   }
-
-  
 }

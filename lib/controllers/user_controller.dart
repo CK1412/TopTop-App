@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
@@ -33,12 +32,11 @@ class UserControllerNotifier
 
   //* Add new user
   Future<void> addUser(user_model.User user) async {
-    final _isNewUser = await _reader(userServiceProvider).isNewUser(user.id);
+    final bool _isNewUser =
+        await _reader(userServiceProvider).isNewUser(user.id);
 
     if (!_isNewUser) {
-      debugPrint(
-          'hahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahah');
-      _reader(notificationServiceProvider).addNotification(
+      await _reader(notificationServiceProvider).addNotification(
         notification_model.Notification(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           messageContent: 'Welcome back! We are missing you very much.',
@@ -46,24 +44,22 @@ class UserControllerNotifier
           userId: user.id,
         ),
       );
-      return;
-    }
-
-    try {
-      await _reader(userServiceProvider).addUser(user);
-      state = AsyncValue.data(user);
-      // notification
-      _reader(notificationServiceProvider).addNotification(
-        notification_model.Notification(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          messageContent:
-              'Welcome to TopTop. Wish you have moments of relaxation and fun😊.',
-          sendingTime: DateTime.now(),
-          userId: user.id,
-        ),
-      );
-    } on CustomException catch (e) {
-      state = AsyncValue.error(e);
+    } else {
+      try {
+        await _reader(userServiceProvider).addUser(user);
+        state = AsyncValue.data(user);
+        await _reader(notificationServiceProvider).addNotification(
+          notification_model.Notification(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            messageContent:
+                'Welcome to TopTop! Wish you have moments of relaxation and fun😊.',
+            sendingTime: DateTime.now(),
+            userId: user.id,
+          ),
+        );
+      } on CustomException catch (e) {
+        state = AsyncValue.error(e);
+      }
     }
   }
 

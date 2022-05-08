@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/providers/state_notifier_providers.dart';
 
 import '../providers/providers.dart';
-import '../models/user.dart' as user_model;
 
 class AuthControllerNotifier extends StateNotifier<User?> {
   final Reader _reader;
@@ -19,17 +17,6 @@ class AuthControllerNotifier extends StateNotifier<User?> {
         _reader(authServiceProvider).authStateChanges.listen(
       (user) {
         state = user;
-        if (user != null) {
-          _reader(userControllerProvider.notifier).addUser(
-            user_model.User(
-              id: user.uid,
-              username: user.displayName ?? 'New User',
-              email: user.email ?? '',
-              phoneNumber: user.phoneNumber ?? '',
-              avatarUrl: user.photoURL ?? '',
-            ),
-          );
-        }
       },
     );
   }
