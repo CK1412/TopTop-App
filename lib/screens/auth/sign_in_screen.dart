@@ -76,7 +76,7 @@ class SignInScreen extends ConsumerWidget {
                     CustomElevateButton(
                       iconPath: IconPath.facebookRoundColor,
                       text: 'Continue with Facebook',
-                      onPressed: _signInWithFacebook,
+                      onPressed: () {},
                     ),
                     const SizedBox(height: 20),
                   ],

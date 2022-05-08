@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
 
-import '../models/user.dart' as user_models;
+import '../models/user.dart' as user_model;
+import '../models/notification.dart' as notification_model;
 
 class UserControllerNotifier
-    extends StateNotifier<AsyncValue<user_models.User?>> {
+    extends StateNotifier<AsyncValue<user_model.User?>> {
   final Reader _reader;
   final String? _userId;
 
@@ -30,14 +32,36 @@ class UserControllerNotifier
   }
 
   //* Add new user
-  Future<void> addUser(user_models.User user) async {
+  Future<void> addUser(user_model.User user) async {
     final _isNewUser = await _reader(userServiceProvider).isNewUser(user.id);
 
-    if (!_isNewUser) return;
+    if (!_isNewUser) {
+      debugPrint(
+          'hahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahahhahahahhahahhahahahahahahahahahahah');
+      _reader(notificationServiceProvider).addNotification(
+        notification_model.Notification(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          messageContent: 'Welcome back! We are missing you very much.',
+          sendingTime: DateTime.now(),
+          userId: user.id,
+        ),
+      );
+      return;
+    }
 
     try {
       await _reader(userServiceProvider).addUser(user);
       state = AsyncValue.data(user);
+      // notification
+      _reader(notificationServiceProvider).addNotification(
+        notification_model.Notification(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          messageContent:
+              'Welcome to TopTop. Wish you have moments of relaxation and fun😊.',
+          sendingTime: DateTime.now(),
+          userId: user.id,
+        ),
+      );
     } on CustomException catch (e) {
       state = AsyncValue.error(e);
     }
@@ -46,7 +70,7 @@ class UserControllerNotifier
   // * Update user
   Future<void> updateUser({
     required String id,
-    required user_models.User userUpdated,
+    required user_model.User userUpdated,
   }) async {
     try {
       await _reader(userServiceProvider).updateUser(

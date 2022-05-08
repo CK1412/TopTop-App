@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/add_video_screen.dart';
+import 'package:toptop_app/screens/notifications_screen.dart';
 
 import '../src/constants.dart';
 import 'profile_screen.dart';
@@ -33,10 +34,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
       child: Text('haha1'),
     ),
     const AddVideoScreen(),
-    // const MessageScreen(),
-    const Center(
-      child: Text('haha1'),
-    ),
+    const NotificationsScreen(),
     const ProfileScreen(),
   ];
 
@@ -73,7 +71,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.message),
-            label: 'Message',
+            label: 'Notifications',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/services/notification_service.dart';
 import 'package:toptop_app/services/user_service.dart';
 import 'package:toptop_app/services/video_service.dart';
 
@@ -49,6 +50,12 @@ final videoServiceProvider = Provider<VideoService>((ref) {
   );
 });
 
+final notificationServiceProvider = Provider<NotificationService>((ref) {
+  return NotificationService(
+    ref.read(firebaseFirestoreProvider).collection('notifications'),
+  );
+});
+
 //! OTHER
 //* get list of videos liked by users
 final videosLikedByUserProvider =
@@ -62,5 +69,3 @@ final videosLikedByUserProvider =
   }
   return null;
 });
-
-
