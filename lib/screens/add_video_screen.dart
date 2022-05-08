@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +18,7 @@ class AddVideoScreen extends StatelessWidget {
     BuildContext context, {
     required ImageSource imageSource,
   }) async {
-    final videoFile = await pickVideo(imageSource);
+    final File? videoFile = await pickVideo(imageSource);
 
     if (videoFile != null) {
       Navigator.of(context).push(
@@ -55,7 +57,7 @@ class AddVideoScreen extends StatelessWidget {
               text: 'Add video from Gallery',
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
-              onPressed: () => _pickVideoFromSrc(
+              onPressed: () async => await _pickVideoFromSrc(
                 context,
                 imageSource: ImageSource.gallery,
               ),
@@ -65,7 +67,7 @@ class AddVideoScreen extends StatelessWidget {
               text: 'Add video from Camera',
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
-              onPressed: () => _pickVideoFromSrc(
+              onPressed: () async => await _pickVideoFromSrc(
                 context,
                 imageSource: ImageSource.camera,
               ),

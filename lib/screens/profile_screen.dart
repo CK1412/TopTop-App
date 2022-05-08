@@ -25,13 +25,15 @@ class ProfileScreen extends ConsumerWidget {
     return SafeArea(
       child: SizedBox.expand(
         child: currentUserState.when(
-          data: (user) => Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ContentBlockAbove(user: user!),
-              ContentBlockBelow(userId: user.id),
-            ],
-          ),
+          data: (user) => user != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ContentBlockAbove(user: user),
+                    ContentBlockBelow(userId: user.id),
+                  ],
+                )
+              : const SizedBox.shrink(),
           error: (e, stackTrace) => ErrorScreen(e, stackTrace),
           loading: () => const CenterLoadingWidget(),
         ),
@@ -46,7 +48,7 @@ class ContentBlockAbove extends ConsumerWidget {
     required this.user,
   }) : super(key: key);
 
-  final User user;
+  final User? user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,7 +62,7 @@ class ContentBlockAbove extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  user.email,
+                  user!.email,
                   style: CustomTextStyle.title1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -88,7 +90,7 @@ class ContentBlockAbove extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: CustomCircleAvatar(
-                    avatarUrl: user.avatarUrl,
+                    avatarUrl: user!.avatarUrl,
                     radius: MediaQuery.of(context).size.width * .1,
                   ),
                 ),
@@ -96,7 +98,7 @@ class ContentBlockAbove extends ConsumerWidget {
               Column(
                 children: [
                   Text(
-                    user.following.length.toString(),
+                    user!.following.length.toString(),
                     style: CustomTextStyle.title1,
                   ),
                   const Text(
@@ -108,7 +110,7 @@ class ContentBlockAbove extends ConsumerWidget {
               Column(
                 children: [
                   Text(
-                    user.followers.length.toString(),
+                    user!.followers.length.toString(),
                     style: CustomTextStyle.title1,
                   ),
                   const Text(
@@ -121,7 +123,7 @@ class ContentBlockAbove extends ConsumerWidget {
                 children: [
                   Text(
                     ref
-                        .watch(totalLikeVideosPostedByUserProvider(user.id))
+                        .watch(totalLikeVideosPostedByUserProvider(user!.id))
                         .toString(),
                     style: CustomTextStyle.title1,
                   ),
@@ -139,12 +141,12 @@ class ContentBlockAbove extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
-              '@${user.username}',
+              '@${user!.username}',
               style: CustomTextStyle.title3,
             ),
           ),
           Text(
-            '#${user.bio}',
+            '#${user!.bio}',
             style: CustomTextStyle.bodyText2,
           ),
           const SizedBox(
