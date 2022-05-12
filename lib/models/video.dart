@@ -16,7 +16,7 @@ class Video {
 
   Video({
     required this.id,
-    this.userIdLiked = const [],
+    required this.userIdLiked,
     this.commentCount = 0,
     this.shareCount = 0,
     required this.songName,

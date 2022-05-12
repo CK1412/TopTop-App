@@ -400,7 +400,11 @@ class VideosPostGridView extends ConsumerWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const TabScreen(screenIndex: 2),
+                      ));
+                    },
                     child: const Text('Create video'),
                   ),
                 ],

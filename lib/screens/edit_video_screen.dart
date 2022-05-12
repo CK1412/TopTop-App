@@ -101,6 +101,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
               username: user.username,
               caption: caption,
               userAvatarUrl: user.avatarUrl,
+              userIdLiked: [],
             ),
           );
       setState(() {

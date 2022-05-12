@@ -18,8 +18,8 @@ class User {
     required this.phoneNumber,
     this.avatarUrl = '',
     this.bio = '',
-    this.followers = const [],
-    this.following = const [],
+    required this.followers,
+    required this.following,
   });
 
   User copyWith({
@@ -80,6 +80,8 @@ class User {
         email: user.email ?? '',
         phoneNumber: user.phoneNumber ?? '',
         avatarUrl: user.photoURL ?? '',
+        followers: [],
+        following: [],
       );
 }
 

@@ -73,7 +73,10 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             ? null
                             : CustomColors.pink.withOpacity(.05),
                         child: ListTile(
-                          leading: const CircleAvatar(),
+                          leading: const CircleAvatar(
+                            backgroundImage: AssetImage(IconPath.appLogo),
+                            backgroundColor: CustomColors.blue,
+                          ),
                           title: Text(notifications[index].messageContent),
                           subtitle: Text(
                             DateFormat.yMd()

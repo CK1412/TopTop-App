@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:toptop_app/screens/comments_screen.dart';
 
-import '../models/user.dart';
 import '../models/video.dart';
 import '../src/constants.dart';
 import 'animations/circle_animation_widget.dart';
@@ -23,35 +23,32 @@ class CustomRightTaskbar extends ConsumerStatefulWidget {
 }
 
 class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
-  final isLikedComment = false;
-  var likedCommentCount = 0;
-
-  User? currentUser;
   late Video currentVideo;
 
   @override
   void initState() {
     super.initState();
     currentVideo = widget.video;
-    ref.read(userControllerProvider).whenData((value) {
-      currentUser = value!;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = ref.watch(currentUserProvider);
+
     Future<bool> _likeVideo(bool isLiked) async {
       isLiked = !isLiked;
+      var _userIdLiked = currentVideo.userIdLiked;
+
       if (isLiked) {
-        currentVideo.userIdLiked.add(currentUser?.id);
+        _userIdLiked.add(currentUser?.id);
       } else {
-        currentVideo.userIdLiked.remove(currentUser?.id);
+        _userIdLiked.remove(currentUser?.id);
       }
 
       ref.read(videoControllerProvider.notifier).updateVideo(
             videoId: currentVideo.id,
             videoUpdated: currentVideo.copyWith(
-              userIdLiked: currentVideo.userIdLiked,
+              userIdLiked: _userIdLiked,
             ),
           );
 
@@ -104,7 +101,6 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
           iconPath: IconPath.commentFill,
           onPressed: _showComment,
         ),
-
         buildText(currentVideo.commentCount, context),
         const SizedBox(
           height: 12,
@@ -186,145 +182,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     showModalBottomSheet(
       context: context,
       builder: (ctx) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.arrow_back),
-                ),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      '123 comments',
-                      style: CustomTextStyle.title3,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 32)
-              ],
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) => Padding(
-                  padding: const EdgeInsets.all(14),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomCircleAvatar(
-                        avatarUrl: avatarUrl,
-                        radius: 16,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'My name',
-                              style: CustomTextStyle.title3.copyWith(
-                                color: CustomColors.grey,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            const Text(
-                              'Hahaha sdh h fd fhf  sf  sdfh sfhsd sf dfhd fdf f dfh sdfhs',
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              DateFormat.Md().format(DateTime.now()),
-                              style: CustomTextStyle.title3.copyWith(
-                                color: CustomColors.grey,
-                                fontSize: 12,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      LikeButton(
-                        isLiked: isLikedComment,
-                        likeCount: likedCommentCount,
-                        size: 20,
-                        countPostion: CountPostion.bottom,
-                        bubblesColor: const BubblesColor(
-                          dotPrimaryColor: CustomColors.pink,
-                          dotSecondaryColor: CustomColors.purple,
-                        ),
-                        likeCountPadding: const EdgeInsets.only(top: 4),
-                        likeBuilder: (bool isLiked) {
-                          return isLiked
-                              ? const Icon(
-                                  Icons.favorite,
-                                  color: CustomColors.pink,
-                                )
-                              : const Icon(
-                                  Icons.favorite_outline_outlined,
-                                  color: CustomColors.grey,
-                                );
-                        },
-                        onTap: (isLiked) async {
-                          isLiked = !isLiked;
-                          if (isLiked) {
-                            likedCommentCount++;
-                          } else {
-                            likedCommentCount--;
-                          }
-                          return isLiked;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const Divider(height: 0),
-            Padding(
-              padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 10,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom,
-              ),
-              child: Row(
-                children: [
-                  CustomCircleAvatar(
-                    avatarUrl: currentVideo.userAvatarUrl,
-                    radius: 16,
-                  ),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Add a comment',
-                        hintStyle: CustomTextStyle.bodyText2.copyWith(
-                          color: CustomColors.grey,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Post'),
-                  )
-                ],
-              ),
-            ),
-          ],
-        );
+        return CommentsScreen(video: currentVideo);
       },
     );
   }

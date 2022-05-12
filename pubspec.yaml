@@ -79,12 +79,12 @@ flutter_icons:
   image_path: "assets/logos/toptop-logo-dark.png"
 
 flutter_native_splash:
-  color: "#FFFFFF"
-  image: assets/logos/toptop-logo-light.png
-  color_dark: "#121212"
-  image_dark: assets/logos/toptop-logo-dark.png
   android: true
   ios: true
+  color: "#FFFFFF"
+  color_dark: "#121212"
+  image: assets/logos/toptop-logo-light.png
+  image_dark: assets/logos/toptop-logo-dark.png
   android_12:
     image: assets/logos/toptop-logo-light-android12.png
     image_dark: assets/logos/toptop-logo-dark-android12.png

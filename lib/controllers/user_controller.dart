@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
@@ -25,7 +26,7 @@ class UserControllerNotifier
       if (mounted) {
         state = AsyncValue.data(user);
       }
-    } on CustomException catch (e) {
+    } on FirebaseException catch (e) {
       state = AsyncValue.error(e);
     }
   }

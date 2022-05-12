@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/services/comment_service.dart';
 import 'package:toptop_app/services/notification_service.dart';
 import 'package:toptop_app/services/user_service.dart';
 import 'package:toptop_app/services/video_service.dart';
@@ -10,6 +11,7 @@ import '../models/video.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
 import 'state_notifier_providers.dart';
+import '../models/user.dart' as user_model;
 
 //! FIREBASE
 
@@ -56,6 +58,12 @@ final notificationServiceProvider = Provider<NotificationService>((ref) {
   );
 });
 
+final commentServiceProvider = Provider<CommentService>((ref) {
+  return CommentService(
+    ref.read(firebaseFirestoreProvider).collection('comments'),
+  );
+});
+
 //! OTHER
 //* get list of videos liked by users
 final videosLikedByUserProvider =
@@ -68,4 +76,12 @@ final videosLikedByUserProvider =
         .toList();
   }
   return null;
+});
+
+final currentUserProvider = Provider<user_model.User?>((ref) {
+  return ref.watch(userControllerProvider).when(
+        data: (data) => data,
+        error: (e, stack) => null,
+        loading: () => null,
+      );
 });

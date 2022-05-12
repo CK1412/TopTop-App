@@ -28,6 +28,7 @@ class IconPath {
   static const avatarPlaceHolder = 'assets/icons/avatar-placeholder.svg';
   static const galleryColor = 'assets/icons/gallery-color.svg';
   static const cameraColor = 'assets/icons/camera-color.svg';
+  static const appLogo = 'assets/logos/toptop-logo-light.png';
 }
 
 // LOTTIE ANIMATION URL

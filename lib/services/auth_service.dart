@@ -59,6 +59,8 @@ class AuthService {
             email: getCurrentUser()!.email ?? '',
             phoneNumber: getCurrentUser()!.phoneNumber ?? '',
             avatarUrl: getCurrentUser()!.photoURL ?? '',
+            followers: [],
+            following: [],
           ),
         );
       }
@@ -130,6 +132,8 @@ class AuthService {
             phoneNumber: getCurrentUser()!.phoneNumber ?? '',
             avatarUrl: getCurrentUser()!.photoURL ??
                 'https://source.unsplash.com/400x400/?flower',
+            followers: [],
+            following: [],
           ),
         );
       }

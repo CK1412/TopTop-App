@@ -20,7 +20,7 @@ class VideoControllerNotifier extends StateNotifier<AsyncValue<List<Video>>> {
       if (mounted) {
         state = AsyncValue.data(videos!);
       }
-    } on CustomException catch (e) {
+    } on FirebaseException catch (e) {
       state = AsyncValue.error(e);
     }
   }
