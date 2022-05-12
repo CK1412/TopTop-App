@@ -12,12 +12,10 @@ class NotificationControllerNotifier extends StateNotifier<List<Notification>> {
   String? userId;
 
   NotificationControllerNotifier(this._reader) : super([]) {
-    _reader(userControllerProvider).whenData((user) {
-      if (state.isEmpty && user != null) {
-        userId = user.id;
-        retrieveNotificationsByUser(userId: userId.toString());
-      }
-    });
+    userId = _reader(authControllerProvider)!.uid;
+    if (userId != null) {
+      retrieveNotificationsByUser(userId: userId.toString());
+    }
   }
 
   Future<void> retrieveNotificationsByUser({required String userId}) async {

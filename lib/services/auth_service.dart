@@ -128,7 +128,8 @@ class AuthService {
             username: getCurrentUser()!.displayName ?? 'New User',
             email: getCurrentUser()!.email ?? '',
             phoneNumber: getCurrentUser()!.phoneNumber ?? '',
-            avatarUrl: getCurrentUser()!.photoURL ?? '',
+            avatarUrl: getCurrentUser()!.photoURL ??
+                'https://source.unsplash.com/400x400/?flower',
           ),
         );
       }

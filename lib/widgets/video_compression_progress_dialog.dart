@@ -48,9 +48,12 @@ class _VideoCompressionProgressDialogState
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: LinearProgressIndicator(
-              value: value,
-              minHeight: 12,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: LinearProgressIndicator(
+                value: value,
+                minHeight: 12,
+              ),
             ),
           ),
           ElevatedButton(
