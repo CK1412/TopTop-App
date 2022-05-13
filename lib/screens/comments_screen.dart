@@ -61,10 +61,12 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     }
     _commentController.text = '';
     await ref.read(commentControllerProvider.notifier).addComment(comment);
-    ref.read(videoControllerProvider.notifier).updateVideo(
+
+    widget.video.increaseCommentCount();
+
+    await ref.read(videoControllerProvider.notifier).updateVideo(
           videoId: widget.video.id,
-          videoUpdated:
-              widget.video.copyWith(commentCount: widget.video.commentCount++),
+          videoUpdated: widget.video,
         );
   }
 
@@ -150,13 +152,16 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                             LikeButton(
                               isLiked: _userIdLiked.contains(currentUser!.id),
                               likeCount: _userIdLiked.length,
+                              likeCountAnimationType:
+                                  LikeCountAnimationType.all,
                               size: 20,
                               countPostion: CountPostion.bottom,
                               bubblesColor: const BubblesColor(
                                 dotPrimaryColor: CustomColors.pink,
                                 dotSecondaryColor: CustomColors.purple,
                               ),
-                              likeCountPadding: const EdgeInsets.only(top: 4),
+                              likeCountPadding:
+                                  const EdgeInsets.only(top: 4, left: 4),
                               likeBuilder: (bool isLiked) {
                                 return isLiked
                                     ? const Icon(

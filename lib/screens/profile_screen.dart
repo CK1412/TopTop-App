@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/future_providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
-import 'package:toptop_app/screens/error_screen.dart';
 import 'package:toptop_app/screens/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
-import '../models/video.dart';
 import '../providers/providers.dart';
 import '../providers/state_providers.dart';
 import '../src/constants.dart';
@@ -15,28 +13,35 @@ import '../widgets/common/custom_circle_avatar.dart';
 import '../widgets/common/video_grid_view.dart';
 import 'edit_profile_screen.dart';
 
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currentUserState = ref.watch(userControllerProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   ref.refresh(videoControllerProvider.future);
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentUser = ref.watch(currentUserProvider);
 
     return SafeArea(
       child: SizedBox.expand(
-        child: currentUserState.when(
-          data: (user) => user != null
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ContentBlockAbove(user: user),
-                    ContentBlockBelow(userId: user.id),
-                  ],
-                )
-              : const SizedBox.shrink(),
-          error: (e, stackTrace) => ErrorScreen(e, stackTrace),
-          loading: () => const CenterLoadingWidget(),
-        ),
+        child: currentUser != null
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ContentBlockAbove(user: currentUser),
+                  ContentBlockBelow(userId: currentUser.id),
+                ],
+              )
+            : const SizedBox.shrink(),
       ),
     );
   }
@@ -297,11 +302,6 @@ class _ContentBlockBelowState extends ConsumerState<ContentBlockBelow> {
     Icons.grid_on_rounded,
     Icons.favorite_border_outlined,
   ];
-
-  //* List of videos posted by current user
-  late List<Video>? videosPosted;
-  //* List of videos Liked by current user
-  late List<Video>? videosLiked;
 
   @override
   Widget build(BuildContext context) {

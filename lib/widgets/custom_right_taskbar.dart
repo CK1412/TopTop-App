@@ -58,13 +58,11 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     Future<void> _shareVideo() async {
       final result = await Share.shareWithResult(currentVideo.videoUrl);
       if (result.status == ShareResultStatus.success) {
-        currentVideo.shareCount++;
+        currentVideo.increaseShareCount();
 
         await ref.read(videoControllerProvider.notifier).updateVideo(
               videoId: currentVideo.id,
-              videoUpdated: currentVideo.copyWith(
-                shareCount: currentVideo.shareCount,
-              ),
+              videoUpdated: currentVideo,
             );
       }
     }

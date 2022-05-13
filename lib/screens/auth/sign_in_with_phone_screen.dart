@@ -20,7 +20,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
   final _phoneNumberController = TextEditingController();
   bool _autoFocus = true;
 
-  String? _validator(text) {
+  String? _validator(String? text) {
     if (text!.isEmpty) {
       return 'Please enter your phone number';
     }
@@ -28,6 +28,12 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
       return 'Phone number must be 9 or 10 digits';
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _phoneNumberController.dispose();
   }
 
   @override
@@ -39,7 +45,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
 
         await ref.read(authControllerProvider.notifier).signInWithPhone(
               context,
-              phoneNumber: _phoneNumberController.text,
+              phoneNumber: _phoneNumberController.text.trim(),
             );
       }
     }
@@ -137,7 +143,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    onPressed: _signInWithPhone,
+                    onPressed: () => _signInWithPhone(),
                   ),
                 ],
               ),

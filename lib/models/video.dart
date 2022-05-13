@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 class Video {
-  String id;
-  List userIdLiked;
+  final String id;
+  final List userIdLiked;
   int commentCount;
   int shareCount;
-  String songName;
-  String caption;
-  String videoUrl;
-  String thumbnailUrl;
+  final String songName;
+  final String caption;
+  final String videoUrl;
+  final String thumbnailUrl;
   // infor user created
-  String userId;
-  String username;
-  String userAvatarUrl;
+  final String userId;
+  final String username;
+  final String userAvatarUrl;
 
   Video({
     required this.id,
@@ -27,6 +27,14 @@ class Video {
     required this.username,
     required this.userAvatarUrl,
   });
+
+  void increaseCommentCount() {
+    commentCount++;
+  }
+
+  void increaseShareCount() {
+    shareCount++;
+  }
 
   Video copyWith({
     String? id,
