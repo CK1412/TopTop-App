@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/video_screen.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../models/video.dart';
 import '../../src/constants.dart';
@@ -21,19 +20,12 @@ class VideoGridView extends ConsumerStatefulWidget {
 }
 
 class _VideoGridViewState extends ConsumerState<VideoGridView> {
-  late VideoPlayerController _controller;
   late List<Video> videos = [];
 
   @override
   void initState() {
     super.initState();
     videos = widget.videos;
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   void _navigateToVideoScreen(Video video) async {
@@ -64,10 +56,9 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              VideoPlayer(
-                _controller = VideoPlayerController.network(
-                  videos[index].videoUrl,
-                )..initialize(),
+              Image.network(
+                videos[index].thumbnailUrl,
+                fit: BoxFit.fitWidth,
               ),
               Align(
                 alignment: Alignment.bottomLeft,
