@@ -7,7 +7,9 @@ import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:toptop_app/screens/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_player/video_player.dart';
 
 import '../src/constants.dart';
@@ -81,6 +83,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
     if (compressedFileInfor == null) return;
 
     ref.read(userControllerProvider).whenData((user) async {
+      // up video to storage
       await ref.read(storageServiceProvider).uploadFile(
             context,
             folderName: 'videos',
@@ -88,9 +91,27 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
             fileName: videoId,
           );
 
+      // get video url
       final videoUrl = await ref
           .read(storageServiceProvider)
           .getDownloadUrl(folder: 'videos', fileName: videoId);
+
+      final videoThumbnail = await VideoCompress.getFileThumbnail(
+        widget.videoFile.path,
+      );
+
+      // up video thumbnail to storage
+      await ref.read(storageServiceProvider).uploadFile(
+            context,
+            folderName: 'thumbnails',
+            filePath: videoThumbnail.path,
+            fileName: videoId,
+          );
+
+      // get thumbnail url
+      final videoThumbnailUrl = await ref
+          .read(storageServiceProvider)
+          .getDownloadUrl(folder: 'thumbnails', fileName: videoId);
 
       await ref.read(videoControllerProvider.notifier).addVideo(
             Video(
@@ -102,12 +123,22 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
               caption: caption,
               userAvatarUrl: user.avatarUrl,
               userIdLiked: [],
+              thumbnailUrl: videoThumbnailUrl,
             ),
           );
-      setState(() {
-        _isLoading = !_isLoading;
-        Navigator.of(context).pop();
-      });
+      // setState(() {
+      //   _isLoading = !_isLoading;
+      // });
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const TabScreen()),
+      );
+
+      showFlushbar(
+        context: context,
+        message: 'Your video has been uploaded successfully',
+        imageFile: videoThumbnail,
+      );
     });
   }
 

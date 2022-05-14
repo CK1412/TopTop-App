@@ -28,13 +28,9 @@ class Video {
     required this.userAvatarUrl,
   });
 
-  void increaseCommentCount() {
-    commentCount++;
-  }
+  void increaseCommentCount() => commentCount++;
 
-  void increaseShareCount() {
-    shareCount++;
-  }
+  void increaseShareCount() => shareCount++;
 
   Video copyWith({
     String? id,
