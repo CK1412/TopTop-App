@@ -103,7 +103,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
       // up video thumbnail to storage
       await ref.read(storageServiceProvider).uploadFile(
             context,
-            folderName: 'thumbnails',
+            folderName: 'video-thumbnails',
             filePath: videoThumbnail.path,
             fileName: videoId,
           );
@@ -111,7 +111,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
       // get thumbnail url
       final videoThumbnailUrl = await ref
           .read(storageServiceProvider)
-          .getDownloadUrl(folder: 'thumbnails', fileName: videoId);
+          .getDownloadUrl(folder: 'video-thumbnails', fileName: videoId);
 
       await ref.read(videoControllerProvider.notifier).addVideo(
             Video(

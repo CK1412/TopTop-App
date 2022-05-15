@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/video_screen.dart';
@@ -56,9 +57,13 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.network(
-                videos[index].thumbnailUrl,
+              CachedNetworkImage(
+                imageUrl: videos[index].thumbnailUrl,
                 fit: BoxFit.fitWidth,
+                placeholder: (context, url) => Container(
+                  color: CustomColors.grey.withOpacity(.3),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Align(
                 alignment: Alignment.bottomLeft,

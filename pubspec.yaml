@@ -30,31 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  # using icon svg
-  flutter_svg: ^1.0.3
-  # format date
-  intl: ^0.17.0
-  # animation like button
-  like_button: ^2.0.4
-  # lottie is a graphic Lib
-  lottie: ^1.2.2
-  # play video
-  video_player: ^2.3.0
-  # state management
-  flutter_riverpod: ^1.0.3
-  # share video
-  share_plus: ^4.0.4
-  # pick image
-  image_picker: ^0.8.5
-  # file_picker: ^4.5.1
-  # find commonly used locations on the file system
-  # path_provider: ^2.0.9
-  # use font of GG
-  google_fonts: ^2.3.2
-  # compress video
-  video_compress: ^3.1.0
-  # create top snackbar
-  another_flushbar: ^1.10.28
 
   # auth using firebase
   firebase_auth: ^3.3.17
@@ -67,7 +42,35 @@ dependencies:
   # storage video and image on firebase
   firebase_storage: ^10.2.15
 
+  # using icon svg
+  flutter_svg: ^1.0.3
+  # lottie is a graphic Lib
+  lottie: ^1.2.2
+  # use font of GG
+  google_fonts: ^2.3.2
+
+  # format date
+  intl: ^0.17.0
+  # animation like button
+  like_button: ^2.0.4
+  # create top snackbar
+  another_flushbar: ^1.10.28
+
+  # play video
+  video_player: ^2.3.0
+  # share video
+  share_plus: ^4.0.4
+  # pick image
+  image_picker: ^0.8.5
+  # compress video
+  video_compress: ^3.1.0
+  # keep images in the cache directory
+  cached_network_image: ^3.2.0
+
+  # create a splash screen
   flutter_native_splash: ^2.1.6
+  # state management
+  flutter_riverpod: ^1.0.3
 
 dev_dependencies:
   flutter_test:

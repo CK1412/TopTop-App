@@ -257,7 +257,7 @@ class ContentBlockAbove extends ConsumerWidget {
                         }
 
                         return GestureDetector(
-                          onTap: _logOutCurrentUser,
+                          onTap: () => _logOutCurrentUser(),
                           child: Row(
                             children: const [
                               Icon(Icons.logout_rounded, size: 28),

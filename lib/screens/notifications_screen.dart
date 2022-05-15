@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/src/constants.dart';
+import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import '../models/notification.dart' as notification_model;
 
 class NotificationsScreen extends ConsumerStatefulWidget {
@@ -42,7 +43,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     return SafeArea(
       child: SizedBox.expand(
         child: notifications!.isEmpty
-            ? const SizedBox.shrink()
+            ? const CenterLoadingWidget(
+                backgroundTransparent: false,
+              )
             : Column(
                 children: [
                   Container(
