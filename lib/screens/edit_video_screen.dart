@@ -10,7 +10,8 @@ import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:video_compress/video_compress.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
+import 'package:cached_video_player/cached_video_player.dart';
 
 import '../src/constants.dart';
 import '../widgets/video_compression_progress_dialog.dart';
@@ -26,6 +27,7 @@ class EditVideoScreen extends ConsumerStatefulWidget {
 
 class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
   late VideoPlayerController _videoController;
+  // late CachedVideoPlayerController _videoController;
   late TextEditingController _captionController;
   late TextEditingController _songNameController;
 

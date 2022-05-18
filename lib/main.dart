@@ -22,7 +22,7 @@ void main() async {
   //     statusBarColor: Colors.transparent,
   //   ),
   // );
-  await _configEmulatorFirebase();
+  // await _configEmulatorFirebase();
 
   runApp(
     const ProviderScope(child: MyApp()),
@@ -30,7 +30,7 @@ void main() async {
 }
 
 Future _configEmulatorFirebase() async {
-  var myIp = '192.168.0.105';
+  var myIp = '192.168.0.104';
   // auth
   await FirebaseAuth.instance.useAuthEmulator(myIp, 9099);
   debugPrint('use emulator firebaseAuth');

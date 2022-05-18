@@ -1,12 +1,15 @@
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/models/video.dart';
+import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
-import 'package:video_player/video_player.dart';
+// import 'package:video_player/video_player.dart';
 
 import '../../src/constants.dart';
 import '../animations/heart_animation_widget.dart';
@@ -25,6 +28,7 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   late VideoPlayerController _controller;
+  // late CachedVideoPlayerController _controller;
 
   User? _currentUser;
 
@@ -34,11 +38,15 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    ref.read(userControllerProvider).whenData((user) {
-      _currentUser = user;
-      _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
-    });
-    _controller = VideoPlayerController.network(widget.video.videoUrl)
+    _currentUser = ref.read(currentUserProvider);
+    _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
+    // ref.read(userControllerProvider).whenData((user) {
+    //   _currentUser = user;
+    //   _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
+    // });
+    _controller = VideoPlayerController.network(
+      widget.video.videoUrl,
+    )
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});

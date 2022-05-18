@@ -57,7 +57,18 @@ dependencies:
   another_flushbar: ^1.10.28
 
   # play video
-  video_player: ^2.3.0
+  # video_player: ^2.4.2
+  cached_video_player:
+    git:
+      url: https://github.com/CK1412/flutter_cached_video_player.git
+      ref: master
+  # video_player:
+  #   git:
+  #     url: https://github.com/CK1412/plugins.git
+  #     ref: caching
+  #     path: packages/video_player/video_player/
+  # support cached video
+  # better_player: ^0.0.82
   # share video
   share_plus: ^4.0.4
   # pick image

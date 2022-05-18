@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
@@ -17,6 +18,7 @@ class VideoControllerNotifier extends StateNotifier<AsyncValue<List<Video>>> {
     if (isRefreshing) state = const AsyncValue.loading();
     try {
       final videos = await _reader(videoServiceProvider).getVideos();
+      debugPrint('Get video from firestore');
       if (mounted) {
         state = AsyncValue.data(videos!);
       }
