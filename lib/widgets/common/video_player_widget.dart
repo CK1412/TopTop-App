@@ -38,12 +38,17 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _currentUser = ref.read(currentUserProvider);
-    _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
-    // ref.read(userControllerProvider).whenData((user) {
-    //   _currentUser = user;
-    //   _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
-    // });
+    Future.delayed(
+      Duration.zero,
+      () {
+        _currentUser = ref.read(currentUserProvider);
+      },
+    ).then((_) {
+      if (_currentUser != null) {
+        _isLiked = widget.video.userIdLiked.contains(_currentUser!.id);
+      }
+    });
+
     _controller = VideoPlayerController.network(
       widget.video.videoUrl,
     )

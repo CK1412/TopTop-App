@@ -21,12 +21,6 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   ref.refresh(videoControllerProvider.future);
-  // }
-
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);

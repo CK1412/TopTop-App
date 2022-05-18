@@ -41,8 +41,9 @@ class CustomCircleAvatar extends StatelessWidget {
         radius: radius,
         backgroundImage: imageProvider,
       ),
-      placeholder: (context, url) => Container(
-        color: CustomColors.grey.withOpacity(.3),
+      placeholder: (context, url) => CircleAvatar(
+        radius: radius,
+        backgroundColor: CustomColors.grey.withOpacity(.3),
       ),
       errorWidget: (context, url, error) => const Icon(Icons.error),
     );

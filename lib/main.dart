@@ -22,7 +22,7 @@ void main() async {
   //     statusBarColor: Colors.transparent,
   //   ),
   // );
-  // await _configEmulatorFirebase();
+  await _configEmulatorFirebase();
 
   runApp(
     const ProviderScope(child: MyApp()),
