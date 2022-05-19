@@ -18,7 +18,7 @@ class UserService {
   }
 
   //* Get infor user by id
-  Future<user_model.User?> getUser(String userId) async {
+  Future<user_model.User?> getUserByID(String userId) async {
     final doc = await _collection.doc(userId).get();
     if (doc.exists) {
       return user_model.User.fromMap(doc.data()!);

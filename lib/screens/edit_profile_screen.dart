@@ -31,7 +31,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    ref.read(userControllerProvider).whenData((user) {
+    ref.read(currentUserControllerProvider).whenData((user) {
       currentUser = user!;
       _usernameController.text = currentUser.username;
       _emailController.text = currentUser.email;
@@ -75,7 +75,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 fileName: currentUser.id,
               );
 
-      await ref.read(userControllerProvider.notifier).updateUser(
+      await ref.read(currentUserControllerProvider.notifier).updateUser(
             id: currentUser.id,
             userUpdated: currentUser.copyWith(
               username: _usernameController.text.trim(),
@@ -84,7 +84,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             ),
           );
     } else {
-      await ref.read(userControllerProvider.notifier).updateUser(
+      await ref.read(currentUserControllerProvider.notifier).updateUser(
             id: currentUser.id,
             userUpdated: currentUser.copyWith(
               username: _usernameController.text.trim(),

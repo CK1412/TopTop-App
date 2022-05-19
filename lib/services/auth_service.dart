@@ -52,7 +52,7 @@ class AuthService {
       await _reader(firebaseAuthProvider).signInWithCredential(credential);
 
       if (getCurrentUser() != null) {
-        _reader(userControllerProvider.notifier).addUser(
+        _reader(currentUserControllerProvider.notifier).addUser(
           user_model.User(
             id: getCurrentUser()!.uid,
             username: getCurrentUser()!.displayName ?? 'New User',
@@ -124,7 +124,7 @@ class AuthService {
           await _reader(firebaseAuthProvider).signInWithCredential(credential);
 
       if (getCurrentUser() != null) {
-        _reader(userControllerProvider.notifier).addUser(
+        _reader(currentUserControllerProvider.notifier).addUser(
           user_model.User(
             id: getCurrentUser()!.uid,
             username: getCurrentUser()!.displayName ?? 'New User',

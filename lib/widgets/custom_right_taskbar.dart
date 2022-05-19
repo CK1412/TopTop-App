@@ -8,6 +8,7 @@ import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/comments_screen.dart';
 
 import '../models/video.dart';
+import '../models/user.dart' as user_model;
 import '../src/constants.dart';
 import 'animations/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
@@ -22,18 +23,88 @@ class CustomRightTaskbar extends ConsumerStatefulWidget {
       _CustomRightTaskbarState();
 }
 
-class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
+class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
+    with TickerProviderStateMixin {
   late Video currentVideo;
+  user_model.User? currentUser;
+  user_model.User? videoUser;
+  bool isFollowed = false;
+
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..forward();
+
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeIn,
+    );
+
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    currentUser = ref.read(currentUserProvider);
     currentVideo = widget.video;
+    await ref
+        .read(userServiceProvider)
+        .getUserByID(currentVideo.userId)
+        .then((user) => videoUser = user);
+
+    if (currentUser == null) return;
+
+    // check if is current user, don't show follow icon
+    if (videoUser!.id == currentUser!.id) {
+      setState(() {
+        isFollowed = true;
+      });
+      return;
+    }
+    isFollowed = videoUser!.followers.contains(currentUser!.id);
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var currentUser = ref.watch(currentUserProvider);
+    void _followUserAccount() {
+      setState(() {
+        isFollowed = true;
+      });
+
+      if (currentUser == null) return;
+
+      // update user posted video
+      videoUser!.followers.add(currentUser!.id);
+      final videoUserUpdated =
+          videoUser!.copyWith(followers: videoUser!.followers);
+
+      ref.read(userServiceProvider).updateUser(
+            userId: videoUser!.id,
+            userUpdated: videoUserUpdated,
+          );
+
+      // update current user
+      currentUser!.following.add(videoUser!.id);
+      final currentUserUpdated =
+          currentUser!.copyWith(following: currentUser!.following);
+
+      ref.read(currentUserControllerProvider.notifier).updateUser(
+            id: currentUser!.id,
+            userUpdated: currentUserUpdated,
+          );
+    }
 
     Future<bool> _likeVideo(bool isLiked) async {
       isLiked = !isLiked;
@@ -71,10 +142,10 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        buildAvatar(),
-        const SizedBox(
-          height: 14,
-        ),
+        buildAvatar(onPressed: _followUserAccount),
+        // const SizedBox(
+        //   height: 14,
+        // ),
         LikeButton(
           isLiked: currentVideo.userIdLiked.contains(currentUser?.id),
           size: 40,
@@ -137,13 +208,14 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
     );
   }
 
-  Widget buildAvatar() {
-    return SizedBox(
-      height: 60,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          CircleAvatar(
+  Widget buildAvatar({required VoidCallback onPressed}) {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Container(
+          height: 74,
+          alignment: Alignment.topCenter,
+          child: CircleAvatar(
             radius: 25,
             backgroundColor: CustomColors.white,
             child: Padding(
@@ -154,25 +226,29 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar> {
               ),
             ),
           ),
+        ),
+        if (isFollowed == false)
           Positioned(
-            bottom: 0,
+            bottom: 17,
             height: 22,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                elevation: 0,
-                padding: const EdgeInsets.all(2),
-                primary: CustomColors.pink,
-                onPrimary: CustomColors.white,
-              ),
-              onPressed: () {},
-              child: const FittedBox(
-                child: Icon(Icons.add),
+            child: FadeTransition(
+              opacity: _animation,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  elevation: 0,
+                  padding: const EdgeInsets.all(2),
+                  primary: CustomColors.pink,
+                  onPrimary: CustomColors.white,
+                ),
+                onPressed: onPressed,
+                child: const FittedBox(
+                  child: Icon(Icons.add),
+                ),
               ),
             ),
           ),
-        ],
-      ),
+      ],
     );
   }
 

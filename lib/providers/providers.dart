@@ -79,7 +79,7 @@ final videosLikedByUserProvider =
 });
 
 final currentUserProvider = Provider<user_model.User?>((ref) {
-  return ref.watch(userControllerProvider).when(
+  return ref.watch(currentUserControllerProvider).when(
         data: (data) => data,
         error: (e, stack) => null,
         loading: () => null,

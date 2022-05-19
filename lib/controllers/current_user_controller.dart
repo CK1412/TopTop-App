@@ -6,12 +6,12 @@ import 'package:toptop_app/utils/custom_exception.dart';
 import '../models/user.dart' as user_model;
 import '../models/notification.dart' as notification_model;
 
-class UserControllerNotifier
+class CurrentUserControllerNotifier
     extends StateNotifier<AsyncValue<user_model.User?>> {
   final Reader _reader;
   final String? _userId;
 
-  UserControllerNotifier(this._reader, this._userId)
+  CurrentUserControllerNotifier(this._reader, this._userId)
       : super(const AsyncValue.loading()) {
     if (_userId != null) {
       retrieveUser();
@@ -21,7 +21,7 @@ class UserControllerNotifier
   Future<void> retrieveUser({bool isRefreshing = false}) async {
     if (isRefreshing) state = const AsyncValue.loading();
     try {
-      final user = await _reader(userServiceProvider).getUser(_userId!);
+      final user = await _reader(userServiceProvider).getUserByID(_userId!);
       //? amouted like the user != null
       if (mounted) {
         state = AsyncValue.data(user);

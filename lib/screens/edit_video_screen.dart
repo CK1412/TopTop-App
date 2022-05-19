@@ -84,7 +84,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     if (compressedFileInfor == null) return;
 
-    ref.read(userControllerProvider).whenData((user) async {
+    ref.read(currentUserControllerProvider).whenData((user) async {
       // up video to storage
       await ref.read(storageServiceProvider).uploadFile(
             context,
