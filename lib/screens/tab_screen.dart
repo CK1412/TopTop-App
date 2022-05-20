@@ -4,6 +4,7 @@ import 'package:toptop_app/screens/add_video_screen.dart';
 import 'package:toptop_app/screens/discover_screen.dart';
 import 'package:toptop_app/screens/notifications_screen.dart';
 
+import '../providers/state_providers.dart';
 import '../src/constants.dart';
 import 'profile_screen.dart';
 import 'videos_screen.dart';
@@ -79,6 +80,11 @@ class _TabScreenState extends ConsumerState<TabScreen> {
         ],
         currentIndex: _screenIndex,
         onTap: (newIndex) {
+          //! reset search state
+          if (newIndex == 1) {
+            ref.read(searchStateProvider.notifier).state =
+                SearchState.buildInitData;
+          }
           setState(() {
             _screenIndex = newIndex;
           });

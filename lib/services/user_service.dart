@@ -27,6 +27,16 @@ class UserService {
     }
   }
 
+  Future<List<user_model.User>> getAllUser() async {
+    final query = await _collection.get();
+
+    return query.docs
+        .map(
+          (doc) => user_model.User.fromMap(doc.data()),
+        )
+        .toList();
+  }
+
   //* Add new user
   Future<void> addUser(user_model.User user) async {
     final _isNewUser = await isNewUser(user.id);

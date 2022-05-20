@@ -61,10 +61,12 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
 
     // check if is current user, don't show follow icon
     if (videoUser!.id == currentUser!.id) {
-      setState(() {
-        isFollowed = true;
-      });
-      return;
+      if (mounted) {
+        setState(() {
+          isFollowed = true;
+        });
+        return;
+      }
     }
     isFollowed = videoUser!.followers.contains(currentUser!.id);
     setState(() {});

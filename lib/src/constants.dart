@@ -86,3 +86,9 @@ class CustomTextStyle {
     letterSpacing: .25,
   );
 }
+
+enum SearchState {
+  buildInitData,
+  buildSuggest,
+  buildResult,
+}
