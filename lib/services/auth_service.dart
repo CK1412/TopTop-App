@@ -61,6 +61,8 @@ class AuthService {
             avatarUrl: getCurrentUser()!.photoURL ?? '',
             followers: [],
             following: [],
+            createdDate: DateTime.now(),
+            recentUpdatedDate: DateTime.now(),
           ),
         );
       }
@@ -134,6 +136,8 @@ class AuthService {
                 'https://source.unsplash.com/400x400/?flower',
             followers: [],
             following: [],
+            createdDate: DateTime.now(),
+            recentUpdatedDate: DateTime.now(),
           ),
         );
       }

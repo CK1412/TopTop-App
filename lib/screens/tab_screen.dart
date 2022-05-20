@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/add_video_screen.dart';
+import 'package:toptop_app/screens/discover_screen.dart';
 import 'package:toptop_app/screens/notifications_screen.dart';
 
 import '../src/constants.dart';
@@ -30,9 +31,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   List screens = [
     const VideosScreen(),
-    const Center(
-      child: Text('haha1'),
-    ),
+    const DiscoverScreen(),
     const AddVideoScreen(),
     const NotificationsScreen(),
     const ProfileScreen(),

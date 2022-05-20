@@ -9,7 +9,8 @@ class Video {
   final String caption;
   final String videoUrl;
   final String thumbnailUrl;
-  final DateTime createdTime;
+  final DateTime createdDate;
+  final DateTime recentUpdatedDate;
   // infor user created
   final String userId;
   final String username;
@@ -23,8 +24,9 @@ class Video {
     required this.songName,
     this.caption = '',
     required this.videoUrl,
-    this.thumbnailUrl = '',
-    required this.createdTime,
+    required this.thumbnailUrl,
+    required this.createdDate,
+    required this.recentUpdatedDate,
     required this.userId,
     required this.username,
     required this.userAvatarUrl,
@@ -43,7 +45,8 @@ class Video {
     String? caption,
     String? videoUrl,
     String? thumbnailUrl,
-    DateTime? createdTime,
+    DateTime? createdDate,
+    required DateTime recentUpdatedDate,
     String? userId,
     String? username,
     String? userAvatarUrl,
@@ -57,7 +60,8 @@ class Video {
       caption: caption ?? this.caption,
       videoUrl: videoUrl ?? this.videoUrl,
       thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
-      createdTime: createdTime ?? this.createdTime,
+      createdDate: createdDate ?? this.createdDate,
+      recentUpdatedDate: recentUpdatedDate,
       userId: userId ?? this.userId,
       username: username ?? this.username,
       userAvatarUrl: userAvatarUrl ?? this.userAvatarUrl,
@@ -74,7 +78,8 @@ class Video {
       VideoField.caption: caption,
       VideoField.videoUrl: videoUrl,
       VideoField.thumbnailUrl: thumbnailUrl,
-      VideoField.createdTime: createdTime.millisecondsSinceEpoch,
+      VideoField.createdDate: createdDate.millisecondsSinceEpoch,
+      VideoField.recentUpdatedDate: recentUpdatedDate.millisecondsSinceEpoch,
       VideoField.userId: userId,
       VideoField.username: username,
       VideoField.userAvatarUrl: userAvatarUrl,
@@ -91,8 +96,11 @@ class Video {
       caption: map[VideoField.caption] ?? '',
       videoUrl: map[VideoField.videoUrl] ?? '',
       thumbnailUrl: map[VideoField.thumbnailUrl] ?? '',
-      createdTime: DateTime.fromMillisecondsSinceEpoch(
-        map[VideoField.createdTime],
+      createdDate: DateTime.fromMillisecondsSinceEpoch(
+        map[VideoField.createdDate],
+      ),
+      recentUpdatedDate: DateTime.fromMillisecondsSinceEpoch(
+        map[VideoField.recentUpdatedDate],
       ),
       userId: map[VideoField.userId] ?? '',
       username: map[VideoField.username] ?? '',
@@ -114,7 +122,8 @@ class VideoField {
   static const String caption = 'caption';
   static const String videoUrl = 'videoUrl';
   static const String thumbnailUrl = 'thumbnailUrl';
-  static const String createdTime = 'createdTime';
+  static const String createdDate = 'createdDate';
+  static const String recentUpdatedDate = 'recentUpdatedDate';
   static const String userId = 'userId';
   static const String username = 'username';
   static const String userAvatarUrl = 'userAvatarUrl';

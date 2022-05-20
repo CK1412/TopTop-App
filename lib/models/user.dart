@@ -10,16 +10,20 @@ class User {
   final String bio;
   final List followers;
   final List following;
+  final DateTime createdDate;
+  final DateTime recentUpdatedDate;
 
   User({
     required this.id,
     required this.username,
     required this.email,
     required this.phoneNumber,
-    this.avatarUrl = '',
+    required this.avatarUrl,
     this.bio = '',
     required this.followers,
     required this.following,
+    required this.createdDate,
+    required this.recentUpdatedDate,
   });
 
   User copyWith({
@@ -31,6 +35,8 @@ class User {
     String? bio,
     List? followers,
     List? following,
+    DateTime? createdDate,
+    required DateTime recentUpdatedDate,
   }) {
     return User(
       id: id ?? this.id,
@@ -41,6 +47,8 @@ class User {
       bio: bio ?? this.bio,
       followers: followers ?? this.followers,
       following: following ?? this.following,
+      createdDate: createdDate ?? this.createdDate,
+      recentUpdatedDate: recentUpdatedDate,
     );
   }
 
@@ -54,6 +62,8 @@ class User {
       UserField.bio: bio,
       UserField.followers: followers,
       UserField.following: following,
+      UserField.createdDate: createdDate.millisecondsSinceEpoch,
+      UserField.recentUpdatedDate: recentUpdatedDate.millisecondsSinceEpoch,
     };
   }
 
@@ -67,6 +77,12 @@ class User {
       bio: map[UserField.bio] ?? '',
       followers: List.from(map[UserField.followers]),
       following: List.from(map[UserField.following]),
+      createdDate: DateTime.fromMillisecondsSinceEpoch(
+        map[UserField.createdDate],
+      ),
+      recentUpdatedDate: DateTime.fromMillisecondsSinceEpoch(
+        map[UserField.recentUpdatedDate],
+      ),
     );
   }
 
@@ -82,6 +98,8 @@ class User {
         avatarUrl: user.photoURL ?? '',
         followers: [],
         following: [],
+        createdDate: DateTime.now(),
+        recentUpdatedDate: DateTime.now(),
       );
 }
 
@@ -94,4 +112,6 @@ class UserField {
   static const String bio = 'bio';
   static const String followers = 'followers';
   static const String following = 'following';
+  static const String createdDate = 'createdDate';
+  static const String recentUpdatedDate = 'recentUpdatedDate';
 }

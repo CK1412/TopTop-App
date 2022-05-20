@@ -97,6 +97,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
           videoId: widget.video.id,
           videoUpdated: widget.video.copyWith(
             userIdLiked: widget.video.userIdLiked,
+            recentUpdatedDate: DateTime.now(),
           ),
         );
   }

@@ -87,8 +87,10 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
 
       // update user posted video
       videoUser!.followers.add(currentUser!.id);
-      final videoUserUpdated =
-          videoUser!.copyWith(followers: videoUser!.followers);
+      final videoUserUpdated = videoUser!.copyWith(
+        followers: videoUser!.followers,
+        recentUpdatedDate: DateTime.now(),
+      );
 
       ref.read(userServiceProvider).updateUser(
             userId: videoUser!.id,
@@ -97,8 +99,10 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
 
       // update current user
       currentUser!.following.add(videoUser!.id);
-      final currentUserUpdated =
-          currentUser!.copyWith(following: currentUser!.following);
+      final currentUserUpdated = currentUser!.copyWith(
+        following: currentUser!.following,
+        recentUpdatedDate: DateTime.now(),
+      );
 
       ref.read(currentUserControllerProvider.notifier).updateUser(
             id: currentUser!.id,
@@ -120,6 +124,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
             videoId: currentVideo.id,
             videoUpdated: currentVideo.copyWith(
               userIdLiked: _userIdLiked,
+              recentUpdatedDate: DateTime.now(),
             ),
           );
 

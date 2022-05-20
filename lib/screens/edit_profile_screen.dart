@@ -81,6 +81,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               username: _usernameController.text.trim(),
               bio: _bioController.text.trim(),
               avatarUrl: avatarUrl,
+              recentUpdatedDate: DateTime.now(),
             ),
           );
     } else {
@@ -89,6 +90,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             userUpdated: currentUser.copyWith(
               username: _usernameController.text.trim(),
               bio: _bioController.text.trim(),
+              recentUpdatedDate: DateTime.now(),
             ),
           );
     }
