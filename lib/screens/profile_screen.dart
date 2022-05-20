@@ -290,68 +290,38 @@ class ContentBlockBelow extends ConsumerStatefulWidget {
 }
 
 class _ContentBlockBelowState extends ConsumerState<ContentBlockBelow> {
-  int _tabIndex = 0;
+  final int _tabIndex = 0;
 
-  List tabIcons = [
-    Icons.grid_on_rounded,
-    Icons.favorite_border_outlined,
-  ];
+  // List tabIcons = [
+  //   Icons.grid_on_rounded,
+  //   Icons.favorite_border_outlined,
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: List.generate(
-              tabIcons.length,
-              (index) => Flexible(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      _tabIndex = index;
-                    });
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: _tabIndex == index
-                            ? const BorderSide(
-                                width: 2,
-                                color: CustomColors.black,
-                              )
-                            : const BorderSide(
-                                width: 1,
-                                color: CustomColors.grey,
-                              ),
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Icon(
-                      tabIcons[index],
-                      color: _tabIndex == index
-                          ? CustomColors.black
-                          : CustomColors.grey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: IndexedStack(
-              sizing: StackFit.expand,
-              index: _tabIndex,
-              children: [
-                VideosPostGridView(userId: widget.userId),
-                VideoLikedGridView(userId: widget.userId),
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            const TabBar(
+              indicatorColor: CustomColors.pink,
+              labelColor: CustomColors.black,
+              tabs: [
+                Tab(icon: Icon(Icons.grid_on_rounded)),
+                Tab(icon: Icon(Icons.favorite_border_outlined)),
               ],
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                children: [
+                  VideosPostGridView(userId: widget.userId),
+                  VideoLikedGridView(userId: widget.userId),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
