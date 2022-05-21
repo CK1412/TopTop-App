@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/src/constants.dart';
@@ -10,6 +11,7 @@ import '../models/user.dart' as user_model;
 import '../providers/state_notifier_providers.dart';
 import '../widgets/common/center_loading_widget.dart';
 import '../widgets/common/custom_circle_avatar.dart';
+import '../widgets/common/dismiss_keyboard.dart';
 import 'error_screen.dart';
 import 'video_screen.dart';
 
@@ -22,12 +24,15 @@ class DiscoverScreen extends ConsumerStatefulWidget {
 
 class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
   late TextEditingController _searchEditingController;
+  late FocusNode _focusNode;
+
   List<user_model.User> users = [];
 
   @override
   void initState() {
     super.initState();
     _searchEditingController = TextEditingController();
+    _focusNode = FocusNode();
     ref.read(userServiceProvider).getAllUser().then((value) {
       users = value;
     });
@@ -36,6 +41,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
   @override
   void dispose() {
     _searchEditingController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -43,101 +49,152 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
   Widget build(BuildContext context) {
     final videosState = ref.watch(videoControllerProvider);
 
-    Widget buildContentSearch(List<Video> videos) {
-      SearchState result = ref.watch(searchStateProvider);
-
-      switch (result) {
-        case SearchState.buildInitData:
-          return videos.isEmpty
-              ? const SizedBox.shrink()
-              : Flexible(
-                  child: VideoGridView(videos: videos),
-                );
-        case SearchState.buildSuggest:
-        case SearchState.buildResult:
-          final _searchText =
-              _searchEditingController.text.trim().toLowerCase();
-          final List<Video> resultVideos = _searchText.isEmpty
-              ? []
-              : videos
-                  .where(
-                    (video) =>
-                        video.caption.toLowerCase().contains(_searchText),
-                  )
-                  .toList();
-          final resultUsers = _searchText.isEmpty
-              ? []
-              : users
-                  .where(
-                    (user) =>
-                        user.username.toLowerCase().contains(_searchText) &&
-                        user.id != ref.read(currentUserProvider)!.id,
-                  )
-                  .toList();
-          return Flexible(
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  const TabBar(
-                    labelColor: CustomColors.black,
-                    unselectedLabelColor: CustomColors.grey,
-                    indicatorColor: CustomColors.pink,
-                    tabs: [
-                      Tab(text: 'Videos'),
-                      Tab(text: 'People'),
-                    ],
-                  ),
-                  Flexible(
-                    child: TabBarView(
-                      children: [
-                        resultVideos.isNotEmpty
-                            ? VideoGridView(videos: resultVideos)
-                            : const Center(
-                                child: Text('No matching results were found'),
-                              ),
-                        resultUsers.isNotEmpty
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: resultUsers.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    leading: CustomCircleAvatar(
-                                      avatarUrl: resultUsers[index].avatarUrl,
-                                      radius: 20,
-                                    ),
-                                    title: Text(resultUsers[index].username),
-                                    subtitle: Text(
-                                      '${users[index].followers.length} followers',
-                                    ),
-                                  );
-                                },
-                              )
-                            : const Center(
-                                child: Text('No matching results were found'),
-                              ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        default:
-          return const SizedBox.shrink();
-      }
+    List<Video> filterVideos(
+      List<Video> videos,
+      String textFilter, {
+      bool isStandardizedVietNamese = false,
+    }) {
+      return isStandardizedVietNamese
+          ? videos
+              .where(
+                (video) => nonAccentVietnamese(video.caption)
+                    .toLowerCase()
+                    .contains(textFilter),
+              )
+              .toList()
+          : videos
+              .where(
+                (video) => video.caption.toLowerCase().contains(textFilter),
+              )
+              .toList();
     }
 
-    return SafeArea(
-      child: Column(
-        children: [
-          SearchBox(_searchEditingController),
-          videosState.when(
-            data: (videos) => buildContentSearch(videos),
-            error: (e, stackTrace) => ErrorScreen(e, stackTrace),
-            loading: () => const CenterLoadingWidget(),
-          )
-        ],
+    List<user_model.User> filterUsers(
+      List<user_model.User> users,
+      String textFilter, {
+      bool isStandardizedVietNamese = false,
+    }) {
+      return isStandardizedVietNamese
+          ? users
+              .where(
+                (user) =>
+                    nonAccentVietnamese(user.username)
+                        .toLowerCase()
+                        .contains(textFilter) &&
+                    user.id != ref.read(currentUserProvider)!.id,
+              )
+              .toList()
+          : users
+              .where(
+                (user) =>
+                    user.username.toLowerCase().contains(textFilter) &&
+                    user.id != ref.read(currentUserProvider)!.id,
+              )
+              .toList();
+    }
+
+    Widget buildContentSearch(List<Video> videos) {
+      final _searchText = ref.watch(searchTextProvider.state).state;
+      debugPrint('Build content search');
+      if (!_focusNode.hasFocus && _searchText == '') {
+        return videos.isEmpty
+            ? const SizedBox.shrink()
+            : Flexible(
+                child: VideoGridView(videos: videos),
+              );
+      }
+
+      // filter without standardizing Vietnamese
+      final List<Video> firstVideos =
+          _searchText.isEmpty ? [] : filterVideos(videos, _searchText);
+      final firstUsers =
+          _searchText.isEmpty ? [] : filterUsers(users, _searchText);
+
+      // filter with standardizing Vietnamese
+      final List<Video> secondVideos = _searchText.isEmpty
+          ? []
+          : filterVideos(videos, _searchText, isStandardizedVietNamese: true);
+      final secondUsers = _searchText.isEmpty
+          ? []
+          : filterUsers(users, _searchText, isStandardizedVietNamese: true);
+
+      // merge 2 lists into one
+      final List<Video> resultVideos = [...firstVideos];
+      for (var video in secondVideos) {
+        if (!firstVideos.contains(video)) resultVideos.add(video);
+      }
+
+      final resultUsers = [...firstUsers];
+      for (var user in secondUsers) {
+        if (!firstUsers.contains(user)) resultUsers.add(user);
+      }
+
+      return Flexible(
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              const TabBar(
+                labelColor: CustomColors.black,
+                unselectedLabelColor: CustomColors.grey,
+                indicatorColor: CustomColors.pink,
+                tabs: [
+                  Tab(text: 'Videos'),
+                  Tab(text: 'People'),
+                ],
+              ),
+              Flexible(
+                child: TabBarView(
+                  children: [
+                    resultVideos.isNotEmpty
+                        ? VideoGridView(videos: resultVideos)
+                        : const Center(
+                            child: Text('No matching results were found'),
+                          ),
+                    resultUsers.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: resultUsers.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: CustomCircleAvatar(
+                                  avatarUrl: resultUsers[index].avatarUrl,
+                                  radius: 20,
+                                ),
+                                title: Text(resultUsers[index].username),
+                                subtitle: Text(
+                                  '${users[index].followers.length} followers',
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Text('No matching results were found'),
+                          ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return DismissKeyboard(
+      child: SafeArea(
+        child: Column(
+          children: [
+            SearchBox(
+              searchEditingController: _searchEditingController,
+              focusNode: _focusNode,
+            ),
+            videosState.when(
+              data: (videos) => buildContentSearch(videos),
+              error: (e, stackTrace) => ErrorScreen(e, stackTrace),
+              loading: () => const CenterLoadingWidget(),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -199,29 +256,20 @@ class VideoGridView extends StatelessWidget {
 }
 
 class SearchBox extends ConsumerStatefulWidget {
-  const SearchBox(this.searchEditingController, {Key? key}) : super(key: key);
+  const SearchBox({
+    Key? key,
+    required this.searchEditingController,
+    required this.focusNode,
+  }) : super(key: key);
 
   final TextEditingController searchEditingController;
+  final FocusNode focusNode;
 
   @override
   ConsumerState<SearchBox> createState() => _SearchBoxState();
 }
 
 class _SearchBoxState extends ConsumerState<SearchBox> {
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -236,7 +284,8 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
                 setState(() {
                   ref.read(searchStateProvider.notifier).state =
                       SearchState.buildInitData;
-                  _focusNode.unfocus();
+                  ref.refresh(searchTextProvider);
+                  widget.focusNode.unfocus();
                 });
               },
               icon: const Icon(Icons.arrow_back),
@@ -258,7 +307,7 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
               },
               child: TextField(
                 controller: widget.searchEditingController,
-                focusNode: _focusNode,
+                focusNode: widget.focusNode,
                 decoration: InputDecoration(
                   hintText: 'Search',
                   filled: true,
@@ -275,6 +324,9 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
                 onTap: () {
                   ref.read(searchStateProvider.notifier).state =
                       SearchState.buildSuggest;
+                },
+                onChanged: (value) {
+                  ref.read(searchTextProvider.notifier).state = value;
                 },
                 onSubmitted: (value) {
                   ref.read(searchStateProvider.notifier).state =
@@ -302,7 +354,7 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
               ),
             ),
             duration: const Duration(milliseconds: 300),
-            crossFadeState: _focusNode.hasFocus
+            crossFadeState: widget.focusNode.hasFocus
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
             firstCurve: Curves.easeInBack,

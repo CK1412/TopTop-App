@@ -243,15 +243,15 @@ class ContentBlockAbove extends ConsumerWidget {
                     const SizedBox(height: 12),
                     Consumer(
                       builder: (context, ref, child) {
-                        _logOutCurrentUser() async {
+                        void _logOutCurrentUser() {
                           Navigator.of(context).pop();
-                          await ref
+                          ref
                               .read(authControllerProvider.notifier)
                               .signOut(context);
                         }
 
                         return GestureDetector(
-                          onTap: () => _logOutCurrentUser(),
+                          onTap: _logOutCurrentUser,
                           child: Row(
                             children: const [
                               Icon(Icons.logout_rounded, size: 28),
@@ -290,13 +290,6 @@ class ContentBlockBelow extends ConsumerStatefulWidget {
 }
 
 class _ContentBlockBelowState extends ConsumerState<ContentBlockBelow> {
-  final int _tabIndex = 0;
-
-  // List tabIcons = [
-  //   Icons.grid_on_rounded,
-  //   Icons.favorite_border_outlined,
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Expanded(

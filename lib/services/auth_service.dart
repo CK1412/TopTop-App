@@ -155,8 +155,10 @@ class AuthService {
   //! SIGN OUT THE CURRENT USER
   Future<void> signOut(BuildContext context) async {
     try {
-      _googleSignIn.disconnect();
-      await _reader(firebaseAuthProvider).signOut();
+      if (await _googleSignIn.isSignedIn()) {
+        await _googleSignIn.disconnect();
+      }
+      _reader(firebaseAuthProvider).signOut();
     } on FirebaseException catch (e) {
       showSnackbar(context, e.message!);
     }
