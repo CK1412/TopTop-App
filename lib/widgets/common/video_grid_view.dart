@@ -33,7 +33,7 @@ class _VideoGridViewState extends ConsumerState<VideoGridView> {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => Scaffold(
         backgroundColor: CustomColors.black,
-        body: VideoScreen(video: video),
+        body: VideoScreen(video: video, isProfileScreen: true),
       ),
     ));
     if (mounted) {

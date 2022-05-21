@@ -72,3 +72,32 @@ String nonAccentVietnamese(String str) {
   str = str.replaceAll(RegExp("Đ"), "D");
   return str;
 }
+
+Future<bool?> showConfirmDialog({
+  required BuildContext context,
+  required String title,
+  String content = '',
+  required String actionName,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: content.isNotEmpty ? Text(content) : null,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+          child: Text(actionName),
+        ),
+      ],
+    ),
+  );
+}

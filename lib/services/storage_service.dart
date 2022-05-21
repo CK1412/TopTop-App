@@ -37,4 +37,18 @@ class StorageService {
         .ref('$folder/$fileName')
         .getDownloadURL();
   }
+
+  Future<void> deleteFile(
+    BuildContext context, {
+    required String folderName,
+    required String fileName,
+  }) async {
+    try {
+      await _reader(firebaseStorageProvider)
+          .ref('$folderName/$fileName')
+          .delete();
+    } on FirebaseException catch (e) {
+      showSnackbar(context, e.message!);
+    }
+  }
 }

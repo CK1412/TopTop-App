@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 import '../models/video.dart';
@@ -7,13 +8,18 @@ import '../widgets/common/text_expand_widget.dart';
 import '../widgets/common/video_player_widget.dart';
 import '../widgets/custom_right_taskbar.dart';
 
-class VideoScreen extends StatelessWidget {
-  const VideoScreen({Key? key, required this.video}) : super(key: key);
+class VideoScreen extends ConsumerWidget {
+  const VideoScreen({
+    Key? key,
+    required this.video,
+    this.isProfileScreen = false,
+  }) : super(key: key);
 
   final Video video;
+  final bool isProfileScreen;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox.expand(
       child: Stack(
         children: [
@@ -26,7 +32,8 @@ class VideoScreen extends StatelessWidget {
           Positioned(
             right: 10,
             bottom: 14,
-            child: CustomRightTaskbar(video: video),
+            child: CustomRightTaskbar(
+                video: video, isProfileScreen: isProfileScreen),
           ),
           Positioned(
             bottom: 14,

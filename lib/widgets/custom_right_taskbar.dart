@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/comments_screen.dart';
+import 'package:toptop_app/screens/video_option_screen.dart';
 
 import '../models/video.dart';
 import '../models/user.dart' as user_model;
@@ -14,9 +15,14 @@ import 'animations/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
 
 class CustomRightTaskbar extends ConsumerStatefulWidget {
-  const CustomRightTaskbar({Key? key, required this.video}) : super(key: key);
+  const CustomRightTaskbar({
+    Key? key,
+    required this.video,
+    this.isProfileScreen = false,
+  }) : super(key: key);
 
   final Video video;
+  final bool isProfileScreen;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -187,9 +193,25 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
           onPressed: _shareVideo,
         ),
         buildText(currentVideo.shareCount, context),
-        const SizedBox(
-          height: 16,
-        ),
+
+        (currentVideo.userId == currentUser?.id && widget.isProfileScreen)
+            ? Column(
+                children: [
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  buildIconButton(
+                    iconPath: IconPath.ellipsis,
+                    onPressed: _showOption,
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                ],
+              )
+            : const SizedBox(
+                height: 16,
+              ),
         CircleAnimationWidget(avatarUrl: currentVideo.userAvatarUrl),
       ],
     );
@@ -259,12 +281,17 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
     );
   }
 
+  void _showOption() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => VideoOptionScreen(video: currentVideo),
+    );
+  }
+
   void _showComment() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) {
-        return CommentsScreen(video: currentVideo);
-      },
+      builder: (ctx) => CommentsScreen(video: currentVideo),
     );
   }
 }

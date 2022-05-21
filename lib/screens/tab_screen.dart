@@ -82,8 +82,8 @@ class _TabScreenState extends ConsumerState<TabScreen> {
         onTap: (newIndex) {
           //! reset search state
           if (newIndex == 1) {
-            ref.read(searchStateProvider.notifier).state =
-                SearchState.buildInitData;
+            ref.refresh(searchStateProvider);
+            ref.refresh(searchTextProvider);
           }
           setState(() {
             _screenIndex = newIndex;
