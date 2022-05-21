@@ -4,15 +4,15 @@ import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/future_providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
-import 'package:toptop_app/screens/tab_screen.dart';
+import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
-import '../providers/providers.dart';
-import '../providers/state_providers.dart';
-import '../src/constants.dart';
-import '../widgets/common/custom_circle_avatar.dart';
-import '../widgets/common/video_grid_view.dart';
-import 'edit_profile_screen.dart';
+import '../../providers/providers.dart';
+import '../../providers/state_providers.dart';
+import '../../src/constants.dart';
+import '../../widgets/common/custom_circle_avatar.dart';
+import '../../widgets/common/video_grid_view.dart';
+import '../edit_profile_screen.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

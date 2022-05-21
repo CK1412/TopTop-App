@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 
 import '../../widgets/common/custom_elevate_button.dart';
-import '../tab_screen.dart';
+import '../tab/tab_screen.dart';
 import '../../src/constants.dart';
 import '../../src/page_routes.dart';
 import '../../widgets/auth/gradient_background.dart';

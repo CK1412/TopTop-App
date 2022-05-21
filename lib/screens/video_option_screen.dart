@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
-import 'package:toptop_app/screens/tab_screen.dart';
+import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
 import '../models/video.dart';

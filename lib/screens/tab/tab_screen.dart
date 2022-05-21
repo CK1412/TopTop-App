@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/screens/discover_screen.dart';
-import 'package:toptop_app/screens/notifications_screen.dart';
+import 'package:toptop_app/screens/tab/discover_screen.dart';
+import 'package:toptop_app/screens/tab/notifications_screen.dart';
 
-import '../providers/state_providers.dart';
-import '../src/constants.dart';
+import '../../providers/state_providers.dart';
+import '../../src/constants.dart';
 import 'add_video_screen.dart';
 import 'profile_screen.dart';
-import 'videos_screen.dart';
+import '../videos_screen.dart';
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({

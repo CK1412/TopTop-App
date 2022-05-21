@@ -6,14 +6,14 @@ import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/src/constants.dart';
 
-import '../models/video.dart';
-import '../models/user.dart' as user_model;
-import '../providers/state_notifier_providers.dart';
-import '../widgets/common/center_loading_widget.dart';
-import '../widgets/common/custom_circle_avatar.dart';
-import '../widgets/common/dismiss_keyboard.dart';
-import 'error_screen.dart';
-import 'video_screen.dart';
+import '../../models/video.dart';
+import '../../models/user.dart' as user_model;
+import '../../providers/state_notifier_providers.dart';
+import '../../widgets/common/center_loading_widget.dart';
+import '../../widgets/common/custom_circle_avatar.dart';
+import '../../widgets/common/dismiss_keyboard.dart';
+import '../error_screen.dart';
+import '../video_screen.dart';
 
 class DiscoverScreen extends ConsumerStatefulWidget {
   const DiscoverScreen({Key? key}) : super(key: key);

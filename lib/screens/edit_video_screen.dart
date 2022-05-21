@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
-import 'package:toptop_app/screens/tab_screen.dart';
+import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:video_compress/video_compress.dart';
 // import 'package:video_player/video_player.dart';
@@ -57,8 +57,9 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
     _songNameController.dispose();
   }
 
-  _postVideo() async {
+  Future<void> _postVideo() async {
     FocusScope.of(context).unfocus();
+    _videoController.pause();
 
     final songName = _songNameController.text.trim().isNotEmpty
         ? _songNameController.text.trim()
@@ -77,14 +78,13 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     final compressedFileInfor = await compressVideo(widget.videoFile);
 
-    //* closed dialog when compressed
+    if (compressedFileInfor == null) return;
+
     Navigator.of(context).pop();
 
     setState(() {
       _isLoading = !_isLoading;
     });
-
-    if (compressedFileInfor == null) return;
 
     final typeVideo = getFileType(compressedFileInfor.path.toString());
 
@@ -192,7 +192,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
                   _isLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
-                          onPressed: _postVideo,
+                          onPressed: () => _postVideo(),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 18,

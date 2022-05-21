@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/src/constants.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
-import '../models/notification.dart' as notification_model;
+import '../../models/notification.dart' as notification_model;
 
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
