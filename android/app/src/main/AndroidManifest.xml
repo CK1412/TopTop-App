@@ -38,4 +38,6 @@
      player had error com.google.android.exoplayer2.ExoPlaybackException: MediaCodecVideoRenderer error,
       index=0, format=Format(1, null, null, video/avc, avc1.64001F, -1, null, [1280, 720, 2 -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>  
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>  
+    
 </manifest>

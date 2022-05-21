@@ -33,7 +33,9 @@ class VideoScreen extends ConsumerWidget {
             right: 10,
             bottom: 14,
             child: CustomRightTaskbar(
-                video: video, isProfileScreen: isProfileScreen),
+              video: video,
+              isProfileScreen: isProfileScreen,
+            ),
           ),
           Positioned(
             bottom: 14,

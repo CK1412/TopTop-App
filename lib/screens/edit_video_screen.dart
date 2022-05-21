@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/functions/functions.dart';
-import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/tab_screen.dart';
@@ -13,7 +13,9 @@ import 'package:video_compress/video_compress.dart';
 // import 'package:video_player/video_player.dart';
 import 'package:cached_video_player/cached_video_player.dart';
 
+import '../models/video.dart';
 import '../src/constants.dart';
+import '../utils/custom_flushbar.dart';
 import '../widgets/video_compression_progress_dialog.dart';
 
 class EditVideoScreen extends ConsumerStatefulWidget {
@@ -38,7 +40,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
     super.initState();
     _captionController = TextEditingController();
     _songNameController = TextEditingController();
-    _videoController = VideoPlayerController.file(widget.videoFile)
+    _videoController = VideoPlayerController.file(File(widget.videoFile.path))
       ..initialize().then((_) => setState(() {
             // necessary
           }))
@@ -84,36 +86,48 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     if (compressedFileInfor == null) return;
 
+    final typeVideo = getFileType(compressedFileInfor.path.toString());
+
     ref.read(currentUserControllerProvider).whenData((user) async {
+      // Notify the user that the video is being uploaded
+      FlushbarHelper.createLoading(
+        title: 'Video uploading...  ',
+        linearProgressIndicator: const LinearProgressIndicator(),
+        message: 'Please wait a moment!',
+      ).show(context);
+
       // up video to storage
       await ref.read(storageServiceProvider).uploadFile(
             context,
             folderName: 'videos',
             filePath: compressedFileInfor.path!,
-            fileName: videoId,
+            fileName: '$videoId.$typeVideo',
           );
 
       // get video url
       final videoUrl = await ref
           .read(storageServiceProvider)
-          .getDownloadUrl(folder: 'videos', fileName: videoId);
+          .getDownloadUrl(folder: 'videos', fileName: '$videoId.$typeVideo');
 
       final videoThumbnail = await VideoCompress.getFileThumbnail(
         widget.videoFile.path,
       );
+      final typeThumbnail = getFileType(videoThumbnail.path);
 
       // up video thumbnail to storage
       await ref.read(storageServiceProvider).uploadFile(
             context,
             folderName: 'video-thumbnails',
             filePath: videoThumbnail.path,
-            fileName: videoId,
+            fileName: '$videoId.$typeThumbnail',
           );
 
       // get thumbnail url
-      final videoThumbnailUrl = await ref
-          .read(storageServiceProvider)
-          .getDownloadUrl(folder: 'video-thumbnails', fileName: videoId);
+      final videoThumbnailUrl =
+          await ref.read(storageServiceProvider).getDownloadUrl(
+                folder: 'video-thumbnails',
+                fileName: '$videoId.$typeThumbnail',
+              );
 
       await ref.read(videoControllerProvider.notifier).addVideo(
             Video(
@@ -128,6 +142,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
               thumbnailUrl: videoThumbnailUrl,
               createdDate: DateTime.now(),
               recentUpdatedDate: DateTime.now(),
+              type: typeVideo,
             ),
           );
       // setState(() {
@@ -138,11 +153,11 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
         MaterialPageRoute(builder: (context) => const TabScreen()),
       );
 
-      showFlushbar(
+      flushbarMessage(
         context: context,
         message: 'Your video has been uploaded successfully',
         imageFile: videoThumbnail,
-      );
+      ).show(context);
     });
   }
 

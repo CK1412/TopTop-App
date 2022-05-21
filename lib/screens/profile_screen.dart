@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/future_providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
@@ -243,11 +244,17 @@ class ContentBlockAbove extends ConsumerWidget {
                     const SizedBox(height: 12),
                     Consumer(
                       builder: (context, ref, child) {
-                        void _logOutCurrentUser() {
-                          Navigator.of(context).pop();
-                          ref
-                              .read(authControllerProvider.notifier)
-                              .signOut(context);
+                        Future<void> _logOutCurrentUser() async {
+                          final isLogOutAction = await showConfirmDialog(
+                              context: context,
+                              title: 'Log out?',
+                              actionName: 'Log out');
+                          if (isLogOutAction == true) {
+                            Navigator.of(context).pop();
+                            ref
+                                .read(authControllerProvider.notifier)
+                                .signOut(context);
+                          }
                         }
 
                         return GestureDetector(

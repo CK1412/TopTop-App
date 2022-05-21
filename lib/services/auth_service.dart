@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +8,6 @@ import '../providers/providers.dart';
 import '../providers/state_notifier_providers.dart';
 import '../screens/auth/verification_otp_code_screen.dart';
 import '../utils/custom_exception.dart';
-import '../utils/show_snackbar.dart';
 import '../models/user.dart' as user_model;
 
 class AuthService {
@@ -67,7 +67,7 @@ class AuthService {
         );
       }
     } on FirebaseAuthException catch (e) {
-      showSnackbar(context, e.message!);
+      FlushbarHelper.createError(message: e.message!).show(context);
     }
   }
 
@@ -84,9 +84,11 @@ class AuthService {
       verificationCompleted: (_) {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          showSnackbar(context, 'The provided phone number is not valid.');
+          FlushbarHelper.createError(
+            message: 'The provided phone number is not valid.',
+          ).show(context);
         } else {
-          showSnackbar(context, e.message!);
+          FlushbarHelper.createError(message: e.message!).show(context);
         }
       },
       codeSent: (String verificationId, int? resendToken) {
@@ -99,10 +101,10 @@ class AuthService {
             ),
           ),
         );
-        showSnackbar(
-          context,
-          'We\'ve sent a code sent to your phone. Wait for the message',
-        );
+        FlushbarHelper.createError(
+          message:
+              'We\'ve sent a code sent to your phone. Wait for the message',
+        ).show(context);
       },
       timeout: const Duration(seconds: 90),
       codeAutoRetrievalTimeout: (String verificationId) {},
@@ -147,7 +149,7 @@ class AuthService {
       }
       return false;
     } on FirebaseAuthException catch (e) {
-      showSnackbar(context, e.message!);
+      FlushbarHelper.createError(message: e.message!).show(context);
       return false;
     }
   }
@@ -160,7 +162,7 @@ class AuthService {
       }
       _reader(firebaseAuthProvider).signOut();
     } on FirebaseException catch (e) {
-      showSnackbar(context, e.message!);
+      FlushbarHelper.createError(message: e.message!).show(context);
     }
   }
 }

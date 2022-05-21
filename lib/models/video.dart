@@ -15,6 +15,7 @@ class Video {
   final String userId;
   final String username;
   final String userAvatarUrl;
+  final String type;
 
   Video({
     required this.id,
@@ -30,6 +31,7 @@ class Video {
     required this.userId,
     required this.username,
     required this.userAvatarUrl,
+    required this.type,
   });
 
   void increaseCommentCount() => commentCount++;
@@ -50,6 +52,7 @@ class Video {
     String? userId,
     String? username,
     String? userAvatarUrl,
+    String? type,
   }) {
     return Video(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class Video {
       userId: userId ?? this.userId,
       username: username ?? this.username,
       userAvatarUrl: userAvatarUrl ?? this.userAvatarUrl,
+      type: type ?? this.type,
     );
   }
 
@@ -83,6 +87,7 @@ class Video {
       VideoField.userId: userId,
       VideoField.username: username,
       VideoField.userAvatarUrl: userAvatarUrl,
+      VideoField.type: type,
     };
   }
 
@@ -105,6 +110,7 @@ class Video {
       userId: map[VideoField.userId] ?? '',
       username: map[VideoField.username] ?? '',
       userAvatarUrl: map[VideoField.userAvatarUrl] ?? '',
+      type: map[VideoField.type] ?? '',
     );
   }
 
@@ -127,4 +133,5 @@ class VideoField {
   static const String userId = 'userId';
   static const String username = 'username';
   static const String userAvatarUrl = 'userAvatarUrl';
+  static const String type = 'type';
 }
