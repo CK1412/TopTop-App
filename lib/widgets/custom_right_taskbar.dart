@@ -33,7 +33,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
     with TickerProviderStateMixin {
   late Video currentVideo;
   user_model.User? currentUser;
-  user_model.User? videoUser;
+  user_model.User? postedVideoUser;
   bool isFollowed = false;
 
   late final AnimationController _animationController;
@@ -61,20 +61,11 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
     await ref
         .read(userServiceProvider)
         .getUserByID(currentVideo.userId)
-        .then((user) => videoUser = user);
+        .then((user) => postedVideoUser = user);
 
     if (currentUser == null) return;
 
-    // check if is current user, don't show follow icon
-    if (videoUser!.id == currentUser!.id) {
-      if (mounted) {
-        setState(() {
-          isFollowed = true;
-        });
-        return;
-      }
-    }
-    isFollowed = videoUser!.followers.contains(currentUser!.id);
+    isFollowed = postedVideoUser!.followers.contains(currentUser!.id);
     setState(() {});
   }
 
@@ -94,19 +85,19 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
       if (currentUser == null) return;
 
       // update user posted video
-      videoUser!.followers.add(currentUser!.id);
-      final videoUserUpdated = videoUser!.copyWith(
-        followers: videoUser!.followers,
+      postedVideoUser!.followers.add(currentUser!.id);
+      final videoUserUpdated = postedVideoUser!.copyWith(
+        followers: postedVideoUser!.followers,
         recentUpdatedDate: DateTime.now(),
       );
 
       ref.read(userServiceProvider).updateUser(
-            userId: videoUser!.id,
+            userId: postedVideoUser!.id,
             userUpdated: videoUserUpdated,
           );
 
       // update current user
-      currentUser!.following.add(videoUser!.id);
+      currentUser!.following.add(postedVideoUser!.id);
       final currentUserUpdated = currentUser!.copyWith(
         following: currentUser!.following,
         recentUpdatedDate: DateTime.now(),
@@ -256,7 +247,8 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
             ),
           ),
         ),
-        if (isFollowed == false)
+        if (isFollowed == false &&
+            currentVideo.userId != ref.watch(currentUserProvider)?.id)
           Positioned(
             bottom: 17,
             height: 22,
