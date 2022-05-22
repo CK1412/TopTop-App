@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +8,6 @@ import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
-// import 'package:video_player/video_player.dart';
 
 import '../../src/constants.dart';
 import '../animations/heart_animation_widget.dart';

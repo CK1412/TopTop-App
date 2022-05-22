@@ -8,9 +8,9 @@ import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 
 import '../../providers/providers.dart';
-import '../../providers/state_providers.dart';
 import '../../src/constants.dart';
 import '../../widgets/common/custom_circle_avatar.dart';
+import '../../widgets/common/user_interaction_information.dart';
 import '../../widgets/common/video_grid_view.dart';
 import '../edit_profile_screen.dart';
 
@@ -71,7 +71,7 @@ class ContentBlockAbove extends ConsumerWidget {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 decoration: const BoxDecoration(
@@ -95,47 +95,11 @@ class ContentBlockAbove extends ConsumerWidget {
                   ),
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    user!.following.length.toString(),
-                    style: CustomTextStyle.title1,
-                  ),
-                  const Text(
-                    'Following',
-                    style: CustomTextStyle.bodyText2,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    user!.followers.length.toString(),
-                    style: CustomTextStyle.title1,
-                  ),
-                  const Text(
-                    'Followers',
-                    style: CustomTextStyle.bodyText2,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    ref
-                        .watch(totalLikeVideosPostedByUserProvider(user!.id))
-                        .toString(),
-                    style: CustomTextStyle.title1,
-                  ),
-                  const Text(
-                    'Likes',
-                    style: CustomTextStyle.bodyText2,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                width: 10,
-              ),
+              Expanded(
+                child: UserInteractionInformation(
+                  user: user,
+                ),
+              )
             ],
           ),
           Padding(
@@ -375,7 +339,6 @@ class VideosPostGridView extends ConsumerWidget {
               ),
             )
           : VideoGridView(
-              userId: userId,
               videos: videos,
             ),
       error: (e, stackTrace) => const CenterLoadingWidget(),
@@ -419,7 +382,6 @@ class VideoLikedGridView extends ConsumerWidget {
             ),
           )
         : VideoGridView(
-            userId: userId,
             videos: videosLiked,
           );
   }

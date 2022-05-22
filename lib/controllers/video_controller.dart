@@ -9,9 +9,7 @@ import '../models/video.dart';
 class VideoControllerNotifier extends StateNotifier<AsyncValue<List<Video>>> {
   final Reader _reader;
   VideoControllerNotifier(this._reader) : super(const AsyncValue.loading()) {
-    if (state.value == null) {
-      retrieveVideos();
-    }
+    retrieveVideos();
   }
 
   Future<void> retrieveVideos({bool isRefreshing = false}) async {

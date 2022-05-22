@@ -6,7 +6,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/comments_screen.dart';
+import 'package:toptop_app/screens/other_user_profile_screen.dart';
+import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/screens/video_option_screen.dart';
+import 'package:toptop_app/src/page_routes.dart';
 
 import '../models/video.dart';
 import '../models/user.dart' as user_model;
@@ -119,7 +122,9 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
         _userIdLiked.remove(currentUser?.id);
       }
 
-      ref.read(videoControllerProvider.notifier).updateVideo(
+      setState(() {});
+
+      await ref.read(videoControllerProvider.notifier).updateVideo(
             videoId: currentVideo.id,
             videoUpdated: currentVideo.copyWith(
               userIdLiked: _userIdLiked,
@@ -146,7 +151,21 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        buildAvatar(onPressed: _followUserAccount),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              (currentUser?.id != currentVideo.userId)
+                  ? CustomPageRoute(
+                      child:
+                          OtherUserProfileScreen(userId: currentVideo.userId),
+                    )
+                  : MaterialPageRoute(
+                      builder: (context) => const TabScreen(screenIndex: 4),
+                    ),
+            );
+          },
+          child: buildAvatar(onPressed: _followUserAccount),
+        ),
         // const SizedBox(
         //   height: 14,
         // ),
@@ -283,7 +302,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
   void _showComment() {
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => CommentsScreen(video: currentVideo),
-    );
+      builder: (ctx) => CommentsScreen(video: widget.video),
+    ).whenComplete(() => setState(() {}));
   }
 }

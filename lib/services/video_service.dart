@@ -32,6 +32,17 @@ class VideoService {
       ..shuffle();
   }
 
+  //* get video by id
+  Future<Video?> getVideoById(
+    String videoId,
+  ) async {
+    final doc = await _collection.doc(videoId).get();
+    if (doc.exists) {
+      return Video.fromMap(doc.data()!);
+    }
+    return null;
+  }
+
   //* Update video
   Future<void> updateVideo({
     required String videoId,

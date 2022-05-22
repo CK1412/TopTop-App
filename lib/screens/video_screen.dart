@@ -25,9 +25,7 @@ class VideoScreen extends ConsumerWidget {
         children: [
           GestureDetector(
             onTap: () {},
-            child: VideoPlayerWidget(
-              video: video,
-            ),
+            child: VideoPlayerWidget(video: video),
           ),
           Positioned(
             right: 10,
