@@ -7,7 +7,7 @@
         {
             "name": "toptop_app",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         },
         {
             "name": "toptop_app (profile mode)",
@@ -20,6 +20,8 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        }
+        },
+        
+        
     ]
 }

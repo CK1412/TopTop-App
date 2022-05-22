@@ -80,6 +80,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     if (compressedFileInfor == null) return;
 
+    // dismiss diaglog
     Navigator.of(context).pop();
 
     setState(() {
@@ -157,7 +158,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
         context: context,
         message: 'Your video has been uploaded successfully',
         imageFile: videoThumbnail,
-      ).show(context);
+      ).show(context).then((_) => VideoCompress.deleteAllCache());
     });
   }
 

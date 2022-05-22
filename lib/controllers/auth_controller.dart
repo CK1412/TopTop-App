@@ -16,7 +16,11 @@ class AuthControllerNotifier extends StateNotifier<User?> {
     _authStateChangesSubscription =
         _reader(authServiceProvider).authStateChanges.listen(
       (user) {
-        state = user;
+        if (user == null) {
+          state = null;
+        } else {
+          state = user;
+        }
       },
     );
   }

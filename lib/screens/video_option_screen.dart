@@ -13,7 +13,7 @@ import '../src/constants.dart';
 import '../utils/custom_exception.dart';
 import '../utils/custom_flushbar.dart';
 
-class VideoOptionScreen extends ConsumerWidget {
+class VideoOptionScreen extends ConsumerStatefulWidget {
   const VideoOptionScreen({
     Key? key,
     required this.video,
@@ -22,7 +22,23 @@ class VideoOptionScreen extends ConsumerWidget {
   final Video video;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _VideoOptionScreenState();
+}
+
+class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
+  late Video video;
+
+  bool _enableDownloadButton = true;
+
+  @override
+  void initState() {
+    super.initState();
+    video = widget.video;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     Future<bool> _deleteVideo() async {
       final bool isDeleteAction = await showConfirmDialog(
             context: context,
@@ -37,7 +53,7 @@ class VideoOptionScreen extends ConsumerWidget {
 
       await ref
           .read(videoControllerProvider.notifier)
-          .deleteVideo(videoId: video.id);
+          .deleteVideo(videoId: widget.video.id);
 
       flushbarMessage(
         context: context,
@@ -63,12 +79,29 @@ class VideoOptionScreen extends ConsumerWidget {
       final path = '${tempDir.path}/${video.id}.${video.type}';
 
       try {
-        flushbarProgress(
+        setState(() {
+          _enableDownloadButton = false;
+        });
+        var _flushbarProgress = flushbarProgress(
           title: 'Please wait a moment!',
-          message: 'Video is downloading in the background...',
+          message: 'Video is downloading...',
           linearProgressIndicator: const LinearProgressIndicator(),
-        ).show(context);
-        await Dio().download(video.videoUrl, path);
+          duration: const Duration(seconds: 10),
+        );
+        _flushbarProgress.show(context);
+
+        await Dio().download(
+          video.videoUrl,
+          path,
+          onReceiveProgress: (received, total) {
+            if (received == total) {
+              setState(() {
+                _enableDownloadButton = true;
+                _flushbarProgress.dismiss();
+              });
+            }
+          },
+        );
 
         debugPrint('Path video: $path');
 
@@ -103,7 +136,8 @@ class VideoOptionScreen extends ConsumerWidget {
             buildTextButton(
               iconData: Icons.download_outlined,
               text: 'Download',
-              onPressed: () => downloadVideoToGallery(),
+              onPressed:
+                  _enableDownloadButton ? () => downloadVideoToGallery() : null,
             ),
             buildTextButton(
               iconData: Icons.delete_outline_rounded,
@@ -140,7 +174,7 @@ class VideoOptionScreen extends ConsumerWidget {
   Widget buildTextButton({
     required IconData iconData,
     required String text,
-    required VoidCallback onPressed,
+    required VoidCallback? onPressed,
   }) {
     return TextButton(
       onPressed: onPressed,
