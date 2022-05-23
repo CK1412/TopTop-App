@@ -48,6 +48,8 @@ dependencies:
   lottie: ^1.2.2
   # use font of GG
   google_fonts: ^2.3.2
+  # icon lib
+  font_awesome_flutter: ^10.1.0
 
   # format date
   intl: ^0.17.0

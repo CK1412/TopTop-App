@@ -21,15 +21,13 @@ class IconPath {
   static const loaderColor = 'assets/icons/loader-color.svg';
   static const googleColor = 'assets/icons/google-color.svg';
   static const facebookRoundColor = 'assets/icons/facebook-round-color.svg';
-  static const chatSquareTextFill = 'assets/icons/chat-square-text-fill.svg';
-  static const chatSquareText = 'assets/icons/chat-square-text.svg';
+  // static const chatSquareTextFill = 'assets/icons/chat-square-text-fill.svg';
+  // static const chatSquareText = 'assets/icons/chat-square-text.svg';
   static const phoneColor = 'assets/icons/phone-color.svg';
   static const flagVNColor = 'assets/icons/flag_vn_color.svg';
-  static const avatarPlaceHolder = 'assets/icons/avatar-placeholder.svg';
   static const galleryColor = 'assets/icons/gallery-color.svg';
   static const cameraColor = 'assets/icons/camera-color.svg';
   static const appLogo = 'assets/logos/toptop-logo-light.png';
-  static const ellipsis = 'assets/icons/ellipsis-h.svg';
 }
 
 // LOTTIE ANIMATION URL

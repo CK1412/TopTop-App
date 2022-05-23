@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
@@ -133,14 +134,14 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
         ),
         Row(
           children: [
-            buildTextButton(
-              iconData: Icons.download_outlined,
+            buildIconTextButton(
+              iconData: FontAwesomeIcons.download,
               text: 'Download',
               onPressed:
                   _enableDownloadButton ? () => downloadVideoToGallery() : null,
             ),
-            buildTextButton(
-              iconData: Icons.delete_outline_rounded,
+            buildIconTextButton(
+              iconData: FontAwesomeIcons.trashCan,
               text: 'Detete',
               onPressed: () {
                 _deleteVideo().then((isDeleteAction) {
@@ -171,7 +172,7 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
     );
   }
 
-  Widget buildTextButton({
+  Widget buildIconTextButton({
     required IconData iconData,
     required String text,
     required VoidCallback? onPressed,
@@ -183,7 +184,10 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
           CircleAvatar(
             backgroundColor: CustomColors.grey.withOpacity(.15),
             foregroundColor: CustomColors.black,
-            child: Icon(iconData),
+            child: FaIcon(
+              iconData,
+              size: 18,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8),

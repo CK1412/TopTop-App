@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:toptop_app/providers/providers.dart';
@@ -37,7 +38,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
   late Video currentVideo;
   user_model.User? currentUser;
   user_model.User? postedVideoUser;
-  bool isFollowed = false;
+  bool? isFollowed;
 
   late final AnimationController _animationController;
   late final Animation<double> _animation;
@@ -46,7 +47,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
+      duration: const Duration(microseconds: 300),
       vsync: this,
     )..forward();
 
@@ -59,17 +60,15 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
   }
 
   Future<void> _loadData() async {
-    currentUser = ref.read(currentUserProvider);
     currentVideo = widget.video;
-    await ref
-        .read(userServiceProvider)
-        .getUserByID(currentVideo.userId)
-        .then((user) => postedVideoUser = user);
+    currentUser = await ref.read(currentUserProvider);
+    postedVideoUser =
+        await ref.read(userServiceProvider).getUserByID(currentVideo.userId);
 
-    if (currentUser == null) return;
-
-    isFollowed = postedVideoUser!.followers.contains(currentUser!.id);
-    setState(() {});
+    isFollowed = postedVideoUser?.followers.contains(currentUser?.id);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -101,6 +100,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
 
       // update current user
       currentUser!.following.add(postedVideoUser!.id);
+
       final currentUserUpdated = currentUser!.copyWith(
         following: currentUser!.following,
         recentUpdatedDate: DateTime.now(),
@@ -156,8 +156,9 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
             Navigator.of(context).push(
               (currentUser?.id != currentVideo.userId)
                   ? CustomPageRoute(
-                      child:
-                          OtherUserProfileScreen(userId: currentVideo.userId),
+                      child: OtherUserProfileScreen(
+                        userId: currentVideo.userId,
+                      ),
                     )
                   : MaterialPageRoute(
                       builder: (context) => const TabScreen(screenIndex: 4),
@@ -210,9 +211,14 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
                   const SizedBox(
                     height: 12,
                   ),
-                  buildIconButton(
-                    iconPath: IconPath.ellipsis,
+                  IconButton(
+                    padding: EdgeInsets.zero,
                     onPressed: _showOption,
+                    icon: const FaIcon(
+                      FontAwesomeIcons.ellipsis,
+                      color: CustomColors.white,
+                      size: 32,
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
@@ -267,7 +273,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
           ),
         ),
         if (isFollowed == false &&
-            currentVideo.userId != ref.watch(currentUserProvider)?.id)
+            currentVideo.userId != ref.watch(currentUserProvider)!.id)
           Positioned(
             bottom: 17,
             height: 22,

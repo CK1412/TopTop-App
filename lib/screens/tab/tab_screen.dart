@@ -52,11 +52,13 @@ class _TabScreenState extends ConsumerState<TabScreen> {
         iconSize: 26,
         items: [
           const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: 'Home',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search_outlined),
+            activeIcon: Icon(Icons.search),
             label: 'Discover',
           ),
           BottomNavigationBarItem(
@@ -70,11 +72,13 @@ class _TabScreenState extends ConsumerState<TabScreen> {
             label: '',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.message),
+            icon: Icon(Icons.message_outlined),
+            activeIcon: Icon(Icons.message),
             label: 'Notifications',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
             label: 'Me',
           ),
         ],

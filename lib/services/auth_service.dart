@@ -159,8 +159,10 @@ class AuthService {
     try {
       if (await _googleSignIn.isSignedIn()) {
         await _googleSignIn.disconnect();
+        _reader(firebaseAuthProvider).signOut();
+      } else {
+        _reader(firebaseAuthProvider).signOut();
       }
-      _reader(firebaseAuthProvider).signOut();
     } on FirebaseException catch (e) {
       FlushbarHelper.createError(message: e.message!).show(context);
     }
