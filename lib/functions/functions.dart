@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:video_compress/video_compress.dart';
 
 String getFileType(String fileName) {
@@ -75,4 +76,12 @@ void showSnackbarMessage(BuildContext context, String text) {
       content: Text(text),
     ),
   );
+}
+
+Future<void> openUrl(String urlString) async {
+  if (await canLaunchUrlString(urlString)) {
+    await launchUrlString(urlString);
+  } else {
+    throw 'Could not launch $urlString';
+  }
 }

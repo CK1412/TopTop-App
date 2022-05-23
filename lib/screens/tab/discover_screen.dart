@@ -13,6 +13,7 @@ import '../../widgets/common/center_loading_widget.dart';
 import '../../widgets/common/custom_circle_avatar.dart';
 import '../../widgets/common/dismiss_keyboard.dart';
 import '../error_screen.dart';
+import '../other_user_profile_screen.dart';
 import '../video_screen.dart';
 
 class DiscoverScreen extends ConsumerStatefulWidget {
@@ -124,7 +125,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
         if (!firstVideos.contains(video)) resultVideos.add(video);
       }
 
-      final resultUsers = [...firstUsers];
+      final List<user_model.User> resultUsers = [...firstUsers];
       for (var user in secondUsers) {
         if (!firstUsers.contains(user)) resultUsers.add(user);
       }
@@ -163,8 +164,18 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                                 ),
                                 title: Text(resultUsers[index].username),
                                 subtitle: Text(
-                                  '${users[index].followers.length} followers',
+                                  '${resultUsers[index].followers.length} followers',
                                 ),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          OtherUserProfileScreen(
+                                        userId: resultUsers[index].id,
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                           )
@@ -281,12 +292,12 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
             firstChild: const SizedBox(width: 12),
             secondChild: IconButton(
               onPressed: () {
-                setState(() {
-                  ref.read(searchStateProvider.notifier).state =
-                      SearchState.buildInitData;
-                  ref.refresh(searchTextProvider);
-                  widget.focusNode.unfocus();
-                });
+                ref.read(searchStateProvider.notifier).state =
+                    SearchState.buildInitData;
+                ref.refresh(searchTextProvider);
+                widget.focusNode.unfocus();
+                widget.searchEditingController.clear();
+                setState(() {});
               },
               icon: const Icon(Icons.arrow_back),
             ),

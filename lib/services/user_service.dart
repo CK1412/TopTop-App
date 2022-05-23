@@ -53,11 +53,11 @@ class UserService {
 
   // * Update user
   Future<void> updateUser({
-    required String userId,
+    required String id,
     required user_model.User userUpdated,
   }) async {
     return _collection
-        .doc(userId)
+        .doc(id)
         .update(userUpdated.toMap())
         .then((value) => debugPrint("User Updated"))
         .catchError(

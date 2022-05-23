@@ -43,7 +43,7 @@ class UserInteractionInformation extends ConsumerWidget {
                   style: CustomTextStyle.title1,
                 ),
                 const Text(
-                  'Followers',
+                  'Follower',
                   style: CustomTextStyle.bodyText2,
                 ),
               ],

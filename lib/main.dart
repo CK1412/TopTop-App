@@ -22,8 +22,10 @@ void main() async {
   // SystemChrome.setSystemUIOverlayStyle(
   //   const SystemUiOverlayStyle(
   //     statusBarColor: Colors.transparent,
+
   //   ),
   // );
+
   if (useFirebaseEmulator) {
     await _configFirebaseEmulator();
   }

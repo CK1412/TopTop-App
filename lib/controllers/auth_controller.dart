@@ -16,11 +16,7 @@ class AuthControllerNotifier extends StateNotifier<User?> {
     _authStateChangesSubscription =
         _reader(authServiceProvider).authStateChanges.listen(
       (user) {
-        if (user == null) {
-          state = null;
-        } else {
-          state = user;
-        }
+        state = user;
       },
     );
   }
@@ -59,5 +55,6 @@ class AuthControllerNotifier extends StateNotifier<User?> {
 
   Future<void> signOut(BuildContext context) async {
     await _reader(authServiceProvider).signOut(context);
+    state = null;
   }
 }

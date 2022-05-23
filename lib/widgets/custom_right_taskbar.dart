@@ -14,6 +14,7 @@ import 'package:toptop_app/src/page_routes.dart';
 
 import '../models/video.dart';
 import '../models/user.dart' as user_model;
+import '../providers/state_providers.dart';
 import '../src/constants.dart';
 import 'animations/circle_animation_widget.dart';
 import 'common/custom_circle_avatar.dart';
@@ -94,7 +95,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
       );
 
       ref.read(userServiceProvider).updateUser(
-            userId: postedVideoUser!.id,
+            id: postedVideoUser!.id,
             userUpdated: videoUserUpdated,
           );
 
@@ -152,18 +153,30 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              (currentUser?.id != currentVideo.userId)
-                  ? CustomPageRoute(
-                      child: OtherUserProfileScreen(
-                        userId: currentVideo.userId,
-                      ),
-                    )
-                  : MaterialPageRoute(
-                      builder: (context) => const TabScreen(screenIndex: 4),
-                    ),
-            );
+          onTap: () async {
+            if (currentUser?.id != currentVideo.userId) {
+              // pause video
+              ref.read(videoStateProvider.notifier).state = false;
+              ref.read(videoPlayerControllerProvider)!.pause();
+
+              await Navigator.of(context).push(
+                CustomPageRoute(
+                  child: OtherUserProfileScreen(
+                    userId: currentVideo.userId,
+                  ),
+                ),
+              );
+
+              // continue play video
+              ref.refresh(videoStateProvider);
+              ref.read(videoPlayerControllerProvider)!.play();
+            } else {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const TabScreen(screenIndex: 4),
+                ),
+              );
+            }
           },
           child: buildAvatar(onPressed: _followUserAccount),
         ),

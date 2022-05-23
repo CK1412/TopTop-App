@@ -82,6 +82,8 @@ dependencies:
   dio: ^4.0.6
   # save download file locally
   path_provider: ^2.0.10
+  # open url
+  url_launcher: ^6.1.2
 
 dev_dependencies:
   flutter_test:

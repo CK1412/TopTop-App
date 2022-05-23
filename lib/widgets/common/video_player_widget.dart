@@ -53,11 +53,12 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
+        ref.read(videoStateProvider.notifier).state = true;
+        ref.read(videoPlayerControllerProvider.notifier).state = _controller;
       })
       ..play()
       ..setVolume(1)
-      ..setLooping(true)
-          .then((value) => ref.read(videoStateProvider.notifier).state = true);
+      ..setLooping(true);
   }
 
   @override
@@ -71,10 +72,10 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
     setState(() {
       if (_controller.value.isPlaying) {
         _controller.pause();
-        ref.read(videoStateProvider.state).state = false;
+        ref.read(videoStateProvider.notifier).state = false;
       } else {
         _controller.play();
-        ref.read(videoStateProvider.state).state = true;
+        ref.read(videoStateProvider.notifier).state = true;
       }
     });
   }
@@ -123,7 +124,8 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
                   ),
                 ),
                 Visibility(
-                  visible: !_controller.value.isPlaying,
+                  // visible: !_controller.value.isPlaying,
+                  visible: !ref.watch(videoStateProvider.notifier).state,
                   child: const Align(
                     alignment: Alignment.center,
                     child: Icon(

@@ -213,11 +213,20 @@ class ContentBlockAbove extends ConsumerWidget {
                               context: context,
                               title: 'Log out?',
                               actionName: 'Log out');
+
                           if (isLogOutAction == true) {
                             Navigator.of(context).pop();
-                            ref
+                            await ref
                                 .read(authControllerProvider.notifier)
                                 .signOut(context);
+
+                            // Navigator.of(context).pushAndRemoveUntil(
+                            //   MaterialPageRoute<void>(
+                            //     builder: (BuildContext context) =>
+                            //         const AuthChecker(),
+                            //   ),
+                            //   ModalRoute.withName('/'),
+                            // );
                           }
                         }
 

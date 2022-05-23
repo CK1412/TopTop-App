@@ -71,7 +71,7 @@ class CurrentUserControllerNotifier
   }) async {
     try {
       await _reader(userServiceProvider).updateUser(
-        userId: userUpdated.id,
+        id: userUpdated.id,
         userUpdated: userUpdated,
       );
       state = AsyncValue.data(userUpdated);

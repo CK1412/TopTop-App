@@ -1,3 +1,4 @@
+import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/future_providers.dart';
@@ -7,6 +8,12 @@ import '../src/constants.dart';
 //* pause/play video
 final videoStateProvider = StateProvider<bool>((ref) {
   return true;
+});
+
+//* keep controller of current video
+final videoPlayerControllerProvider =
+    StateProvider<VideoPlayerController?>((ref) {
+  return null;
 });
 
 //* get total like of videos posted by user Id

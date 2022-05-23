@@ -12,6 +12,7 @@ class User {
   final List following;
   final DateTime createdDate;
   final DateTime recentUpdatedDate;
+  final String instagramLink;
 
   User({
     required this.id,
@@ -24,6 +25,7 @@ class User {
     required this.following,
     required this.createdDate,
     required this.recentUpdatedDate,
+    this.instagramLink = '',
   });
 
   User copyWith({
@@ -37,6 +39,7 @@ class User {
     List? following,
     DateTime? createdDate,
     required DateTime recentUpdatedDate,
+    String? instagramLink,
   }) {
     return User(
       id: id ?? this.id,
@@ -49,6 +52,7 @@ class User {
       following: following ?? this.following,
       createdDate: createdDate ?? this.createdDate,
       recentUpdatedDate: recentUpdatedDate,
+      instagramLink: instagramLink ?? this.instagramLink,
     );
   }
 
@@ -64,6 +68,7 @@ class User {
       UserField.following: following,
       UserField.createdDate: createdDate.millisecondsSinceEpoch,
       UserField.recentUpdatedDate: recentUpdatedDate.millisecondsSinceEpoch,
+      UserField.instagramLink: instagramLink,
     };
   }
 
@@ -83,6 +88,7 @@ class User {
       recentUpdatedDate: DateTime.fromMillisecondsSinceEpoch(
         map[UserField.recentUpdatedDate],
       ),
+      instagramLink: map[UserField.instagramLink] ?? '',
     );
   }
 
@@ -114,4 +120,5 @@ class UserField {
   static const String following = 'following';
   static const String createdDate = 'createdDate';
   static const String recentUpdatedDate = 'recentUpdatedDate';
+  static const String instagramLink = 'instagramLink';
 }
