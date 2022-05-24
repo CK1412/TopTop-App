@@ -15,6 +15,8 @@ class CurrentUserControllerNotifier
       : super(const AsyncValue.loading()) {
     if (_userId != null) {
       retrieveUser();
+    } else {
+      state = const AsyncLoading();
     }
   }
 

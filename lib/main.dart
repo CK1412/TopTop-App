@@ -36,7 +36,7 @@ void main() async {
 }
 
 Future _configFirebaseEmulator() async {
-  var myIp = '192.168.0.101';
+  var myIp = '192.168.0.103';
   // auth
   await FirebaseAuth.instance.useAuthEmulator(myIp, 9099);
   debugPrint('use emulator firebaseAuth');

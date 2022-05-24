@@ -53,7 +53,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
-        ref.read(videoStateProvider.notifier).state = true;
+        ref.refresh(videoStateProvider);
         ref.read(videoPlayerControllerProvider.notifier).state = _controller;
       })
       ..play()
@@ -68,16 +68,15 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
     _controller.dispose();
   }
 
-  void _toggleVideoState() {
-    setState(() {
-      if (_controller.value.isPlaying) {
-        _controller.pause();
-        ref.read(videoStateProvider.notifier).state = false;
-      } else {
-        _controller.play();
-        ref.read(videoStateProvider.notifier).state = true;
-      }
-    });
+  void _toggleVideoState() async {
+    if (_controller.value.isPlaying) {
+      ref.read(videoStateProvider.notifier).state = false;
+      await _controller.pause();
+    } else {
+      ref.read(videoStateProvider.notifier).state = true;
+      await _controller.play();
+    }
+    setState(() {});
   }
 
   //! only like video
@@ -105,11 +104,11 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   Widget build(BuildContext context) {
     final _videoSize = _controller.value.size;
     BoxFit _fit =
-        (_videoSize.width > _videoSize.height) ? BoxFit.contain : BoxFit.cover;
+        (_videoSize.width >= _videoSize.height) ? BoxFit.contain : BoxFit.cover;
 
     return _controller.value.isInitialized
         ? GestureDetector(
-            onTap: _toggleVideoState,
+            onTap: () => _toggleVideoState(),
             onDoubleTap: _onlyLikeVideo,
             child: Stack(
               children: [
@@ -125,6 +124,10 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
                 ),
                 Visibility(
                   // visible: !_controller.value.isPlaying,
+                  // visible: !ref
+                  //     .watch(videoPlayerControllerProvider)!
+                  //     .value
+                  //     .isPlaying,
                   visible: !ref.watch(videoStateProvider.notifier).state,
                   child: const Align(
                     alignment: Alignment.center,

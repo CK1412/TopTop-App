@@ -67,9 +67,10 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
         await ref.read(userServiceProvider).getUserByID(currentVideo.userId);
 
     isFollowed = postedVideoUser?.followers.contains(currentUser?.id);
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      setState(() {});
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    //   setState(() {});
+    // });
+    setState(() {});
   }
 
   @override
@@ -148,101 +149,106 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
       }
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        GestureDetector(
-          onTap: () async {
-            if (currentUser?.id != currentVideo.userId) {
-              // pause video
-              ref.read(videoStateProvider.notifier).state = false;
-              ref.read(videoPlayerControllerProvider)!.pause();
+    return FutureBuilder(
+      future: _loadData(),
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () async {
+                if (currentUser?.id != currentVideo.userId) {
+                  // pause video
+                  ref.read(videoStateProvider.notifier).state = false;
+                  ref.read(videoPlayerControllerProvider)!.pause();
 
-              await Navigator.of(context).push(
-                CustomPageRoute(
-                  child: OtherUserProfileScreen(
-                    userId: currentVideo.userId,
-                  ),
-                ),
-              );
-
-              // continue play video
-              ref.refresh(videoStateProvider);
-              ref.read(videoPlayerControllerProvider)!.play();
-            } else {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const TabScreen(screenIndex: 4),
-                ),
-              );
-            }
-          },
-          child: buildAvatar(onPressed: _followUserAccount),
-        ),
-        // const SizedBox(
-        //   height: 14,
-        // ),
-        LikeButton(
-          isLiked: currentVideo.userIdLiked.contains(currentUser?.id),
-          size: 40,
-          bubblesColor: const BubblesColor(
-            dotPrimaryColor: CustomColors.pink,
-            dotSecondaryColor: CustomColors.purple,
-          ),
-          likeBuilder: (bool isLiked) {
-            return Icon(
-              Icons.favorite,
-              color: isLiked ? CustomColors.pink : CustomColors.white,
-              size: 40,
-            );
-          },
-          onTap: _likeVideo,
-        ),
-        buildText(currentVideo.userIdLiked.length, context),
-        const SizedBox(
-          height: 12,
-        ),
-        buildIconButton(
-          iconPath: IconPath.commentFill,
-          onPressed: _showComment,
-        ),
-        buildText(currentVideo.commentCount, context),
-        const SizedBox(
-          height: 12,
-        ),
-        //! share button
-        buildIconButton(
-          iconPath: IconPath.shareFill,
-          onPressed: _shareVideo,
-        ),
-        buildText(currentVideo.shareCount, context),
-
-        (currentVideo.userId == currentUser?.id && widget.isProfileScreen)
-            ? Column(
-                children: [
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: _showOption,
-                    icon: const FaIcon(
-                      FontAwesomeIcons.ellipsis,
-                      color: CustomColors.white,
-                      size: 32,
+                  await Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: OtherUserProfileScreen(
+                        userId: currentVideo.userId,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                ],
-              )
-            : const SizedBox(
-                height: 16,
+                  );
+
+                  // continue play video
+                  ref.refresh(videoStateProvider);
+                  ref.read(videoPlayerControllerProvider)!.play();
+                } else {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const TabScreen(screenIndex: 4),
+                    ),
+                  );
+                }
+              },
+              child: buildAvatar(onPressed: _followUserAccount),
+            ),
+            // const SizedBox(
+            //   height: 14,
+            // ),
+            LikeButton(
+              isLiked: currentVideo.userIdLiked.contains(currentUser?.id),
+              size: 40,
+              bubblesColor: const BubblesColor(
+                dotPrimaryColor: CustomColors.pink,
+                dotSecondaryColor: CustomColors.purple,
               ),
-        CircleAnimationWidget(avatarUrl: currentVideo.userAvatarUrl),
-      ],
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  Icons.favorite,
+                  color: isLiked ? CustomColors.pink : CustomColors.white,
+                  size: 40,
+                );
+              },
+              onTap: _likeVideo,
+            ),
+            buildText(currentVideo.userIdLiked.length, context),
+            const SizedBox(
+              height: 12,
+            ),
+            buildIconButton(
+              iconPath: IconPath.commentFill,
+              onPressed: _showComment,
+            ),
+            buildText(currentVideo.commentCount, context),
+            const SizedBox(
+              height: 12,
+            ),
+            //! share button
+            buildIconButton(
+              iconPath: IconPath.shareFill,
+              onPressed: _shareVideo,
+            ),
+            buildText(currentVideo.shareCount, context),
+
+            (currentVideo.userId == currentUser?.id && widget.isProfileScreen)
+                ? Column(
+                    children: [
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: _showOption,
+                        icon: const FaIcon(
+                          FontAwesomeIcons.ellipsis,
+                          color: CustomColors.white,
+                          size: 32,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                    ],
+                  )
+                : const SizedBox(
+                    height: 16,
+                  ),
+            CircleAnimationWidget(avatarUrl: currentVideo.userAvatarUrl),
+          ],
+        );
+      },
     );
   }
 
@@ -285,8 +291,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
             ),
           ),
         ),
-        if (isFollowed == false &&
-            currentVideo.userId != ref.watch(currentUserProvider)!.id)
+        if (isFollowed == false && currentVideo.userId != currentUser?.id)
           Positioned(
             bottom: 17,
             height: 22,

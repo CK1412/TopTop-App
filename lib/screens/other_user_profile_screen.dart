@@ -135,19 +135,21 @@ class _OtherUserProfileScreenState
                     ],
                   ),
                 ),
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  alignment: Alignment.center,
-                  child: Text(userPostedVideo.bio),
-                ),
+                if (userPostedVideo.bio.isNotEmpty)
+                  Container(
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    alignment: Alignment.center,
+                    child: Text(userPostedVideo.bio),
+                  ),
+                const Divider(),
                 Expanded(
                     child: videosPostedState.when(
                   data: (videosPosted) => videosPosted!.isEmpty
                       ? const Center(
                           child: Text(
                             'This user has not posted any videos yet.',
-                            style: CustomTextStyle.title2,
+                            style: CustomTextStyle.bodyText1,
                           ),
                         )
                       : VideoGridView(

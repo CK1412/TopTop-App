@@ -9,6 +9,7 @@ import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
+import 'package:toptop_app/widgets/common/dismiss_keyboard.dart';
 import 'package:video_compress/video_compress.dart';
 // import 'package:video_player/video_player.dart';
 import 'package:cached_video_player/cached_video_player.dart';
@@ -164,59 +165,65 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _videoController.value.isInitialized
-          ? SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width,
-                    constraints: const BoxConstraints(
-                      maxHeight: 600,
-                      maxWidth: 600,
+    return DismissKeyboard(
+      child: Scaffold(
+        body: _videoController.value.isInitialized
+            ? SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
+                      constraints: const BoxConstraints(
+                        maxHeight: 600,
+                        maxWidth: 600,
+                      ),
+                      alignment: Alignment.center,
+                      child: AspectRatio(
+                        aspectRatio: _videoController.value.aspectRatio,
+                        child: VideoPlayer(_videoController),
+                      ),
                     ),
-                    child: VideoPlayer(_videoController),
-                  ),
-                  SizedBox(
-                    height: 5,
-                    child: VideoProgressIndicator(
-                      _videoController,
-                      allowScrubbing: true,
-                      padding: EdgeInsets.zero,
+                    SizedBox(
+                      height: 5,
+                      child: VideoProgressIndicator(
+                        _videoController,
+                        allowScrubbing: true,
+                        padding: EdgeInsets.zero,
+                      ),
                     ),
-                  ),
-                  _buildVideoControlBar(),
-                  _buildInputFields(),
-                  const SizedBox(height: 12),
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: () => _postVideo(),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 18,
-                              vertical: 10,
+                    _buildVideoControlBar(),
+                    _buildInputFields(),
+                    const SizedBox(height: 12),
+                    _isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () => _postVideo(),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 10,
+                              ),
+                              shape: const StadiumBorder(),
                             ),
-                            shape: const StadiumBorder(),
-                          ),
-                          child: Text(
-                            'Post video',
-                            style: CustomTextStyle.title2.copyWith(
-                              color: CustomColors.white,
+                            child: Text(
+                              'Post video',
+                              style: CustomTextStyle.title2.copyWith(
+                                color: CustomColors.white,
+                              ),
                             ),
                           ),
-                        ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancel'),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            )
-          : const CenterLoadingWidget(),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Cancel'),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              )
+            : const CenterLoadingWidget(),
+      ),
     );
   }
 
