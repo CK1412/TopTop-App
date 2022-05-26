@@ -8,9 +8,10 @@ class CustomPageRoute extends PageRouteBuilder {
     required this.child,
     this.direction = AxisDirection.left,
   }) : super(
-            transitionDuration: const Duration(milliseconds: 500),
-            reverseTransitionDuration: const Duration(milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => child);
+          transitionDuration: const Duration(milliseconds: 500),
+          reverseTransitionDuration: const Duration(milliseconds: 500),
+          pageBuilder: (context, animation, secondaryAnimation) => child,
+        );
 
   Offset get getBeginOffset {
     switch (direction) {

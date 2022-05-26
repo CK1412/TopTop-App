@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/utils/custom_exception.dart';
@@ -34,7 +35,7 @@ class CurrentUserControllerNotifier
   }
 
   //* Add new user
-  Future<void> addUser(user_model.User user) async {
+  Future<void> addUser(BuildContext context, user_model.User user) async {
     final bool _isNewUser =
         await _reader(userServiceProvider).isNewUser(user.id);
 
@@ -55,7 +56,7 @@ class CurrentUserControllerNotifier
           notification_model.Notification(
             id: DateTime.now().millisecondsSinceEpoch.toString(),
             messageContent:
-                'Welcome to TopTop! Wish you have moments of relaxation and fun😊.',
+                'Welcome to TopTop! Wish you have moments of relaxation and fun.',
             sendingTime: DateTime.now(),
             userId: user.id,
           ),

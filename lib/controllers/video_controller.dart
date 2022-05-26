@@ -18,7 +18,7 @@ class VideoControllerNotifier extends StateNotifier<AsyncValue<List<Video>>> {
       final videos = await _reader(videoServiceProvider).getVideos();
       debugPrint('Get video from firestore');
       if (mounted) {
-        state = AsyncValue.data(videos!);
+        state = AsyncValue.data(videos ?? []);
       }
     } on FirebaseException catch (e) {
       state = AsyncValue.error(e);

@@ -8,6 +8,7 @@ import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/widgets/common/dismiss_keyboard.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../src/constants.dart';
 
@@ -121,7 +122,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit profile'),
+          title: Text(AppLocalizations.of(context)!.edit_profile),
           actions: [
             _isLoading
                 ? Container(
@@ -153,32 +154,33 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     padding: const EdgeInsets.only(top: 8.0, bottom: 20),
                     alignment: Alignment.center,
                     child: Text(
-                      'Change profile photo',
-                      style: CustomTextStyle.bodyText2
-                          .copyWith(color: CustomColors.black.withOpacity(.6)),
+                      AppLocalizations.of(context)!.change_profile_photo,
+                      style: CustomTextStyle.bodyText2.copyWith(
+                        color: CustomColors.black.withOpacity(.6),
+                      ),
                     ),
                   ),
                   InformationField(
-                    title: 'Username',
+                    title: AppLocalizations.of(context)!.username,
                     controller: _usernameController,
                   ),
                   InformationField(
-                    title: 'Email',
+                    title: AppLocalizations.of(context)!.email,
                     controller: _emailController,
                     enabled: false,
                   ),
                   InformationField(
-                    title: 'Phone number',
+                    title: AppLocalizations.of(context)!.phone_number,
                     controller: _phoneNumberController,
                     enabled: false,
                   ),
                   InformationField(
-                    title: 'Bio',
+                    title: AppLocalizations.of(context)!.bio,
                     controller: _bioController,
                     lengthLimit: 100,
                   ),
                   InformationField(
-                    title: 'Instagram username',
+                    title: AppLocalizations.of(context)!.instagram_username,
                     controller: _instagramUsernameController,
                     lengthLimit: 30,
                   ),

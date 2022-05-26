@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/src/constants.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../models/notification.dart' as notification_model;
 
 class NotificationsScreen extends ConsumerStatefulWidget {
@@ -52,7 +53,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     alignment: Alignment.center,
                     child: Text(
-                      'Notifications',
+                      AppLocalizations.of(context)!.notifications,
                       style: CustomTextStyle.title1
                           .copyWith(fontWeight: FontWeight.w500),
                     ),
@@ -65,7 +66,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                           notifications.any((e) => e.viewingStatus == false)
                               ? () => _markReadAll(notifications)
                               : null,
-                      child: const Text('Mark as read all'),
+                      child: Text(
+                        AppLocalizations.of(context)!.mark_as_read_all,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -80,7 +83,10 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             backgroundImage: AssetImage(IconPath.appLogo),
                             backgroundColor: CustomColors.blue,
                           ),
-                          title: Text(notifications[index].messageContent),
+                          title: Text(
+                            getMessageContent(
+                                notifications[index].messageContent),
+                          ),
                           subtitle: Text(
                             DateFormat.yMd()
                                 .add_jm()
@@ -97,5 +103,14 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
               ),
       ),
     );
+  }
+
+  String getMessageContent(String message) {
+    if (message ==
+        'Welcome to TopTop! Wish you have moments of relaxation and fun') {
+      return '${AppLocalizations.of(context)!.welcome_to_TopTop_Wish_you_have_moments_of_relaxation_and_fun}.';
+    } else {
+      return '${AppLocalizations.of(context)!.welcome_back_We_are_missing_you_very_much}.';
+    }
   }
 }

@@ -8,7 +8,8 @@ class NotificationService {
 
   //* Add new notification
   Future<void> addNotification(
-      notification_model.Notification notification) async {
+    notification_model.Notification notification,
+  ) async {
     await _collection
         .doc(notification.id)
         .set(

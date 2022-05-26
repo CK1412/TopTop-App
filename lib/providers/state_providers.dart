@@ -30,11 +30,12 @@ final totalLikeVideosPostedByUserProvider =
       0;
 });
 
-// //* build layout search state
+//* build layout search state
 final searchStateProvider = StateProvider<SearchState>((ref) {
   return SearchState.buildInitData;
 });
 
+//* search Text
 final searchTextProvider = StateProvider<String>((ref) {
   return '';
 });

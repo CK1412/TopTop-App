@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:toptop_app/src/constants.dart';
 import 'package:video_compress/video_compress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../src/constants.dart';
 
 class VideoCompressionProgressDialog extends StatefulWidget {
   const VideoCompressionProgressDialog({Key? key}) : super(key: key);
@@ -42,8 +44,8 @@ class _VideoCompressionProgressDialogState
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            'Compressing video...',
+          Text(
+            '${AppLocalizations.of(context)!.compressing_video}...',
             style: CustomTextStyle.bodyText1,
           ),
           Padding(
@@ -61,7 +63,7 @@ class _VideoCompressionProgressDialogState
               VideoCompress.cancelCompression();
               Navigator.of(context).pop();
             },
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
         ],
       ),

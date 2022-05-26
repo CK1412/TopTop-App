@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-const avatarUrl =
-    'https://upload.wikimedia.org/wikipedia/commons/d/d6/IU_for_Chamisul_advertising_campaign_2020_07_%28cropped%29.png';
-
 // COLOR
 class CustomColors {
   static const Color black = Colors.black;

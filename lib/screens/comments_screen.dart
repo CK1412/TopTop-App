@@ -6,6 +6,7 @@ import 'package:toptop_app/models/comment.dart';
 import 'package:toptop_app/models/video.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../src/constants.dart';
 import '../widgets/common/center_loading_widget.dart';
@@ -88,7 +89,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
               Expanded(
                 child: Center(
                   child: Text(
-                    '${comments!.length} comments',
+                    '${comments!.length} ${AppLocalizations.of(context)!.comments}',
                     style: CustomTextStyle.title3,
                   ),
                 ),
@@ -98,8 +99,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
           ),
           Expanded(
             child: comments.isEmpty
-                ? const Center(
-                    child: Text('No comment.'),
+                ? Center(
+                    child: Text('${AppLocalizations.of(context)!.no_comment}.'),
                   )
                 : ListView.builder(
                     itemCount: comments.length,
@@ -217,7 +218,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                   child: TextField(
                     controller: _commentController,
                     decoration: InputDecoration(
-                      hintText: 'Add a comment',
+                      hintText: AppLocalizations.of(context)!.add_a_comment,
                       hintStyle: CustomTextStyle.bodyText2.copyWith(
                         color: CustomColors.grey,
                       ),
@@ -231,7 +232,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                 ),
                 TextButton(
                   onPressed: () => addComment(),
-                  child: const Text('Post'),
+                  child: Text(AppLocalizations.of(context)!.post),
                 )
               ],
             ),

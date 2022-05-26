@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:video_compress/video_compress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 String getFileType(String fileName) {
   return fileName.split('.').last;
@@ -57,7 +58,7 @@ Future<bool?> showConfirmDialog({
           onPressed: () {
             Navigator.of(context).pop(false);
           },
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         ElevatedButton(
           onPressed: () {

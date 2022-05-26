@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
@@ -22,10 +23,10 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
 
   String? _validator(String? text) {
     if (text!.isEmpty) {
-      return 'Please enter your phone number';
+      return AppLocalizations.of(context)!.please_enter_your_phone_number;
     }
     if (text.length < 9) {
-      return 'Phone number must be 9 or 10 digits';
+      return AppLocalizations.of(context)!.phone_number_must_be_9_or_10_digits;
     }
     return null;
   }
@@ -70,7 +71,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Enter your phone',
+                    AppLocalizations.of(context)!.enter_your_phone,
                     style: CustomTextStyle.titleLarge.copyWith(
                       color: CustomColors.white,
                       fontSize: 34,
@@ -79,7 +80,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 20),
                     child: Text(
-                      ' You will receive a 4 digit code for phone number verification.',
+                      ' ${AppLocalizations.of(context)!.you_will_receive_a_4_digit_code_for_phone_number_verification}.',
                       style: CustomTextStyle.bodyText2.copyWith(
                         color: CustomColors.white,
                       ),
@@ -99,7 +100,8 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       child: TextFormField(
                         controller: _phoneNumberController,
                         decoration: InputDecoration(
-                          hintText: 'VD: 565843282',
+                          hintText:
+                              '${AppLocalizations.of(context)!.ex}: 565843282',
                           border: InputBorder.none,
                           icon: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -138,7 +140,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       ),
                     ),
                     child: Text(
-                      'Continue',
+                      AppLocalizations.of(context)!.continue_,
                       style: CustomTextStyle.title2.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

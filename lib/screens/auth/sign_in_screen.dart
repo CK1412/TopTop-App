@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widgets/common/custom_elevate_button.dart';
 import '../tab/tab_screen.dart';
@@ -51,31 +52,32 @@ class SignInScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Hello!\nWe are TopTop.',
+                      '${AppLocalizations.of(context)!.welcome_to_TopTop}.',
                       style: CustomTextStyle.titleLarge
                           .copyWith(color: CustomColors.white, fontSize: 34),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 20),
                       child: Text(
-                        'Create an account or login to begin adventure.',
+                        '${AppLocalizations.of(context)!.create_an_account_or_log_in_to_get_started}.',
                         style: CustomTextStyle.bodyText2
                             .copyWith(color: CustomColors.white),
                       ),
                     ),
                     CustomElevateButton(
                       iconPath: IconPath.phoneColor,
-                      text: 'Continue with Phone',
+                      text: AppLocalizations.of(context)!.continue_with_Phone,
                       onPressed: _signInWithPhone,
                     ),
                     CustomElevateButton(
                       iconPath: IconPath.googleColor,
-                      text: 'Continue with Google',
+                      text: AppLocalizations.of(context)!.continue_with_Google,
                       onPressed: _signInWithGoogle,
                     ),
                     CustomElevateButton(
                       iconPath: IconPath.facebookRoundColor,
-                      text: 'Continue with Facebook',
+                      text:
+                          AppLocalizations.of(context)!.continue_with_Facebook,
                       onPressed: () {},
                     ),
                     const SizedBox(height: 20),

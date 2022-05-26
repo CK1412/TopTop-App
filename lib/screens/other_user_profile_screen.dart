@@ -7,6 +7,7 @@ import 'package:toptop_app/screens/error_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:toptop_app/widgets/common/custom_circle_avatar.dart';
 import 'package:toptop_app/widgets/common/user_interaction_information.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../functions/functions.dart';
 import '../providers/state_notifier_providers.dart';
@@ -94,7 +95,7 @@ class _OtherUserProfileScreenState
                             maximumSize: const Size(240, 44),
                           ),
                           onPressed: () => _followOrUnfollow(isFollow: true),
-                          child: const Text('Follow'),
+                          child: Text(AppLocalizations.of(context)!.follow),
                         ),
                         secondChild: OutlinedButton(
                           style: OutlinedButton.styleFrom(
@@ -103,7 +104,7 @@ class _OtherUserProfileScreenState
                             maximumSize: const Size(240, 44),
                           ),
                           onPressed: () => _followOrUnfollow(isFollow: false),
-                          child: const Text('Unfollow'),
+                          child: Text(AppLocalizations.of(context)!.unfollow),
                         ),
                         duration: const Duration(milliseconds: 300),
                         crossFadeState:
@@ -121,7 +122,8 @@ class _OtherUserProfileScreenState
                           if (userPostedVideo.instagramLink.isEmpty) {
                             showSnackbarMessage(
                               context,
-                              'This user hasn\'t added instagram link yet',
+                              AppLocalizations.of(context)!
+                                  .this_user_has_not_added_instagram_link_yet,
                             );
                           } else {
                             openUrl(userPostedVideo.instagramLink);
@@ -146,9 +148,10 @@ class _OtherUserProfileScreenState
                 Expanded(
                     child: videosPostedState.when(
                   data: (videosPosted) => videosPosted!.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            'This user has not posted any videos yet.',
+                            AppLocalizations.of(context)!
+                                .this_user_has_not_posted_any_videos_yet,
                             style: CustomTextStyle.bodyText1,
                           ),
                         )

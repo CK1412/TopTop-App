@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/user.dart' as user_model;
 import '../../providers/state_providers.dart';
 import '../../src/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserInteractionInformation extends ConsumerWidget {
   const UserInteractionInformation({
@@ -26,8 +27,8 @@ class UserInteractionInformation extends ConsumerWidget {
                   user!.following.length.toString(),
                   style: CustomTextStyle.title1,
                 ),
-                const Text(
-                  'Following',
+                Text(
+                  AppLocalizations.of(context)!.following,
                   style: CustomTextStyle.bodyText2,
                 ),
               ],
@@ -42,8 +43,8 @@ class UserInteractionInformation extends ConsumerWidget {
                   user!.followers.length.toString(),
                   style: CustomTextStyle.title1,
                 ),
-                const Text(
-                  'Follower',
+                Text(
+                  AppLocalizations.of(context)!.followers,
                   style: CustomTextStyle.bodyText2,
                 ),
               ],
@@ -60,8 +61,8 @@ class UserInteractionInformation extends ConsumerWidget {
                       .toString(),
                   style: CustomTextStyle.title1,
                 ),
-                const Text(
-                  'Likes',
+                Text(
+                  AppLocalizations.of(context)!.likes,
                   style: CustomTextStyle.bodyText2,
                 ),
               ],

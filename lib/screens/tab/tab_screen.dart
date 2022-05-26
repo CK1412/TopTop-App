@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/screens/tab/discover_screen.dart';
 import 'package:toptop_app/screens/tab/notifications_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../providers/state_providers.dart';
 import '../../src/constants.dart';
@@ -51,15 +52,15 @@ class _TabScreenState extends ConsumerState<TabScreen> {
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 26,
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: AppLocalizations.of(context)!.home,
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.search_outlined),
-            activeIcon: Icon(Icons.search),
-            label: 'Discover',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.search_outlined),
+            activeIcon: const Icon(Icons.search),
+            label: AppLocalizations.of(context)!.discover,
           ),
           BottomNavigationBarItem(
             icon: CustomAddIcon(
@@ -71,15 +72,15 @@ class _TabScreenState extends ConsumerState<TabScreen> {
             ),
             label: '',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.message_outlined),
-            activeIcon: Icon(Icons.message),
-            label: 'Notifications',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.message_outlined),
+            activeIcon: const Icon(Icons.message),
+            label: AppLocalizations.of(context)!.notifications,
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Me',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person_outline),
+            activeIcon: const Icon(Icons.person),
+            label: AppLocalizations.of(context)!.me,
           ),
         ],
         currentIndex: _screenIndex,

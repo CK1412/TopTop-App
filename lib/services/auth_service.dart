@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../providers/providers.dart';
 import '../providers/state_notifier_providers.dart';
@@ -53,6 +54,7 @@ class AuthService {
 
       if (getCurrentUser() != null) {
         _reader(currentUserControllerProvider.notifier).addUser(
+          context,
           user_model.User(
             id: getCurrentUser()!.uid,
             username: getCurrentUser()!.displayName ?? 'New User',
@@ -85,7 +87,8 @@ class AuthService {
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           FlushbarHelper.createError(
-            message: 'The provided phone number is not valid.',
+            message: AppLocalizations.of(context)!
+                .the_provided_phone_number_is_not_valid,
           ).show(context);
         } else {
           FlushbarHelper.createError(message: e.message!).show(context);
@@ -101,9 +104,9 @@ class AuthService {
             ),
           ),
         );
-        FlushbarHelper.createError(
-          message:
-              'We\'ve sent a code sent to your phone. Wait for the message',
+        FlushbarHelper.createInformation(
+          message: AppLocalizations.of(context)!
+              .we_have_sent_a_code_sent_to_your_phone_Wait_for_the_message,
         ).show(context);
       },
       timeout: const Duration(seconds: 90),
@@ -129,6 +132,7 @@ class AuthService {
 
       if (getCurrentUser() != null) {
         _reader(currentUserControllerProvider.notifier).addUser(
+          context,
           user_model.User(
             id: getCurrentUser()!.uid,
             username: getCurrentUser()!.displayName ?? 'New User',

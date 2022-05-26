@@ -8,6 +8,7 @@ import 'package:toptop_app/screens/edit_video_screen.dart';
 import 'package:toptop_app/src/constants.dart';
 import 'package:toptop_app/src/page_routes.dart';
 import 'package:toptop_app/widgets/common/custom_elevate_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../functions/pick_file.dart';
 
@@ -43,7 +44,7 @@ class AddVideoScreen extends StatelessWidget {
               LottiePath.videoEditor,
             ),
             Text(
-              'Make a video of your own \nand share it with everyone.',
+              '${AppLocalizations.of(context)!.make_a_video_of_your_own_and_share_it_with_everyone}.',
               style: GoogleFonts.lato(
                 color: CustomColors.black,
                 fontSize: 24,
@@ -54,7 +55,7 @@ class AddVideoScreen extends StatelessWidget {
             const SizedBox(height: 60),
             CustomElevateButton(
               iconData: Icons.video_library,
-              text: 'Add video from Gallery',
+              text: AppLocalizations.of(context)!.add_video_from_Gallery,
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
               onPressed: () async => await _pickVideoFromSrc(
@@ -64,7 +65,7 @@ class AddVideoScreen extends StatelessWidget {
             ),
             CustomElevateButton(
               iconData: Icons.camera_alt,
-              text: 'Add video from Camera',
+              text: AppLocalizations.of(context)!.add_video_from_Camera,
               backgroundColor: CustomColors.pink,
               foregroundColor: CustomColors.white,
               onPressed: () async => await _pickVideoFromSrc(

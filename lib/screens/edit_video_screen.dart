@@ -11,8 +11,8 @@ import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:toptop_app/widgets/common/dismiss_keyboard.dart';
 import 'package:video_compress/video_compress.dart';
-// import 'package:video_player/video_player.dart';
 import 'package:cached_video_player/cached_video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/video.dart';
 import '../src/constants.dart';
@@ -30,7 +30,6 @@ class EditVideoScreen extends ConsumerStatefulWidget {
 
 class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
   late VideoPlayerController _videoController;
-  // late CachedVideoPlayerController _videoController;
   late TextEditingController _captionController;
   late TextEditingController _songNameController;
 
@@ -64,7 +63,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     final songName = _songNameController.text.trim().isNotEmpty
         ? _songNameController.text.trim()
-        : 'Unknown';
+        : AppLocalizations.of(context)!.unknown;
     final caption = _captionController.text.trim();
 
     final videoId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -93,9 +92,9 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
     ref.read(currentUserControllerProvider).whenData((user) async {
       // Notify the user that the video is being uploaded
       FlushbarHelper.createLoading(
-        title: 'Video uploading...  ',
+        title: '${AppLocalizations.of(context)!.video_is_uploading}...  ',
         linearProgressIndicator: const LinearProgressIndicator(),
-        message: 'Please wait a moment!',
+        message: '${AppLocalizations.of(context)!.please_wait_a_moment}!',
       ).show(context);
 
       // up video to storage
@@ -157,7 +156,9 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
       flushbarMessage(
         context: context,
-        message: 'Your video has been uploaded successfully',
+        title: AppLocalizations.of(context)!.message,
+        message:
+            AppLocalizations.of(context)!.video_has_been_uploaded_successfully,
         imageFile: videoThumbnail,
       ).show(context).then((_) => VideoCompress.deleteAllCache());
     });
@@ -208,7 +209,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
                               shape: const StadiumBorder(),
                             ),
                             child: Text(
-                              'Post video',
+                              AppLocalizations.of(context)!.post_video,
                               style: CustomTextStyle.title2.copyWith(
                                 color: CustomColors.white,
                               ),
@@ -216,7 +217,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
                           ),
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(AppLocalizations.of(context)!.cancel),
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -238,13 +239,13 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
         children: [
           CustomTextField(
             controller: _songNameController,
-            label: 'Song name',
+            label: AppLocalizations.of(context)!.song_name,
             limitText: 40,
           ),
           const SizedBox(height: 20),
           CustomTextField(
             controller: _captionController,
-            label: 'Caption for video',
+            label: AppLocalizations.of(context)!.caption_for_video,
             limitText: 150,
             textInputAction: TextInputAction.done,
           ),

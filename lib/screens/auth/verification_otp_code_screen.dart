@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
@@ -110,14 +111,14 @@ class _VerificationOtpCodeScreenState
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'OTP Verification',
+                    AppLocalizations.of(context)!.oTP_verification,
                     style: CustomTextStyle.titleLarge
                         .copyWith(color: CustomColors.white, fontSize: 34),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 20),
                     child: Text(
-                      'You will receive a 4 digit code for phone number verification.',
+                      '${AppLocalizations.of(context)!.you_will_receive_a_4_digit_code_for_phone_number_verification}.',
                       style: CustomTextStyle.bodyText2
                           .copyWith(color: CustomColors.white),
                     ),
@@ -148,7 +149,7 @@ class _VerificationOtpCodeScreenState
                             ),
                           ),
                           child: Text(
-                            'Resend',
+                            AppLocalizations.of(context)!.resend,
                             style: CustomTextStyle.title2.copyWith(
                               fontWeight: FontWeight.w500,
                               color: CustomColors.white,
@@ -173,7 +174,7 @@ class _VerificationOtpCodeScreenState
                           ),
                           onPressed: _verifyOTP,
                           child: Text(
-                            'Confirm',
+                            AppLocalizations.of(context)!.confirm,
                             style: CustomTextStyle.title2
                                 .copyWith(fontWeight: FontWeight.w500),
                           ),

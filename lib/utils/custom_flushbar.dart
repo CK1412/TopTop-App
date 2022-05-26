@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../src/constants.dart';
 
 Flushbar flushbarMessage({
   required BuildContext context,
-  String title = 'Message',
+  required String? title,
   required String message,
   String imageUrl = '',
   File? imageFile,
   int displaySeconds = 3,
 }) {
   return Flushbar(
-    title: title,
+    title: title ?? AppLocalizations.of(context)!.message,
     duration: Duration(seconds: displaySeconds),
     flushbarPosition: FlushbarPosition.TOP,
     backgroundColor: CustomColors.white,

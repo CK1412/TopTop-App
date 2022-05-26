@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/models/user.dart';
 import 'package:toptop_app/providers/future_providers.dart';
-import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:toptop_app/screens/settings_screen.dart';
 import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../providers/providers.dart';
 import '../../src/constants.dart';
+import '../../src/page_routes.dart';
 import '../../widgets/common/custom_circle_avatar.dart';
 import '../../widgets/common/user_interaction_information.dart';
 import '../../widgets/common/video_grid_view.dart';
@@ -124,7 +125,7 @@ class ContentBlockAbove extends ConsumerWidget {
                   builder: (context) => const EditProfileScreen(),
                 ));
               },
-              child: const Text('Edit profile'),
+              child: Text(AppLocalizations.of(context)!.edit_profile),
               style: OutlinedButton.styleFrom(
                 primary: CustomColors.black,
                 side: BorderSide(
@@ -164,83 +165,26 @@ class ContentBlockAbove extends ConsumerWidget {
                       ),
                       margin: const EdgeInsets.only(top: 10, bottom: 20),
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: const [
-                          Icon(Icons.settings, size: 28),
-                          SizedBox(width: 8),
-                          Text(
-                            'Settings',
-                            style: CustomTextStyle.bodyText1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: const [
-                          Icon(Icons.analytics_outlined, size: 28),
-                          SizedBox(width: 8),
-                          Text(
-                            'Abs',
-                            style: CustomTextStyle.bodyText1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: const [
-                          Icon(Icons.qr_code_rounded, size: 28),
-                          SizedBox(width: 8),
-                          Text(
-                            'QR code',
-                            style: CustomTextStyle.bodyText1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Consumer(
-                      builder: (context, ref, child) {
-                        Future<void> _logOutCurrentUser() async {
-                          final isLogOutAction = await showConfirmDialog(
-                              context: context,
-                              title: 'Log out?',
-                              actionName: 'Log out');
-
-                          if (isLogOutAction == true) {
-                            await ref
-                                .read(authControllerProvider.notifier)
-                                .signOut(context);
-
-                            // remove all routes current
-                            Navigator.of(context).popUntil(
-                              (ModalRoute.withName('/')),
-                            );
-                          }
-                        }
-
-                        return GestureDetector(
-                          onTap: _logOutCurrentUser,
-                          child: Row(
-                            children: const [
-                              Icon(Icons.logout_rounded, size: 28),
-                              SizedBox(width: 8),
-                              Text(
-                                'Log out',
-                                style: CustomTextStyle.bodyText1,
-                              ),
-                            ],
-                          ),
+                    buildListTile(
+                      iconData: Icons.settings,
+                      title: AppLocalizations.of(context)!.settings,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          CustomPageRoute(child: const SettingsScreen()),
                         );
                       },
-                    )
+                    ),
+                    buildListTile(
+                      iconData: Icons.analytics_outlined,
+                      title: AppLocalizations.of(context)!.abs,
+                      onPressed: () {},
+                    ),
+                    buildListTile(
+                      iconData: Icons.qr_code_rounded,
+                      title: AppLocalizations.of(context)!.qR_code,
+                      onPressed: () {},
+                    ),
                   ],
                 ),
               ),
@@ -249,6 +193,22 @@ class ContentBlockAbove extends ConsumerWidget {
         );
       },
       icon: const Icon(Icons.menu),
+    );
+  }
+
+  ListTile buildListTile({
+    required IconData iconData,
+    required String title,
+    required VoidCallback onPressed,
+  }) {
+    return ListTile(
+      leading: Icon(iconData, size: 28),
+      title: Text(title),
+      // dense: true,
+      minLeadingWidth: 20,
+      contentPadding: EdgeInsets.zero,
+      onTap: onPressed,
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -3),
     );
   }
 }
@@ -314,8 +274,8 @@ class VideosPostGridView extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Share your first video',
+                  Text(
+                    AppLocalizations.of(context)!.share_your_first_video,
                     style: CustomTextStyle.title2,
                   ),
                   Padding(
@@ -325,7 +285,8 @@ class VideosPostGridView extends ConsumerWidget {
                       right: 14,
                     ),
                     child: Text(
-                      'Record and upload video with effects, sounds, and more.',
+                      AppLocalizations.of(context)!
+                          .record_and_upload_video_with_effects_sounds_and_more,
                       style: CustomTextStyle.bodyText2.copyWith(
                         color: CustomColors.grey,
                       ),
@@ -338,7 +299,7 @@ class VideosPostGridView extends ConsumerWidget {
                         builder: (context) => const TabScreen(screenIndex: 2),
                       ));
                     },
-                    child: const Text('Create video'),
+                    child: Text(AppLocalizations.of(context)!.create_video),
                   ),
                 ],
               ),
@@ -369,8 +330,9 @@ class VideoLikedGridView extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'You haven\'t liked any videos yet',
+                Text(
+                  AppLocalizations.of(context)!
+                      .you_have_not_liked_any_videos_yet,
                   style: CustomTextStyle.title2,
                 ),
                 TextButton(
@@ -381,7 +343,7 @@ class VideoLikedGridView extends ConsumerWidget {
                       ),
                     );
                   },
-                  child: const Text('Discover now'),
+                  child: Text(AppLocalizations.of(context)!.discover_now),
                 ),
               ],
             ),

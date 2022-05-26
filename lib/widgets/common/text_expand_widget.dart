@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../src/constants.dart';
 
 class TextExpandWidget extends StatefulWidget {
@@ -58,7 +58,9 @@ class _TextExpandWidgetState extends State<TextExpandWidget> {
                 alignment: Alignment.centerRight,
                 child: InkWell(
                   child: Text(
-                    flag ? "See more" : "Hide",
+                    flag
+                        ? AppLocalizations.of(context)!.see_more
+                        : AppLocalizations.of(context)!.hide,
                     style: CustomTextStyle.title3
                         .copyWith(color: widget.textColor),
                   ),

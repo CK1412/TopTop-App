@@ -7,6 +7,7 @@ import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:toptop_app/screens/tab/tab_screen.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/video.dart';
 import '../providers/providers.dart';
@@ -43,8 +44,8 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
     Future<bool> _deleteVideo() async {
       final bool isDeleteAction = await showConfirmDialog(
             context: context,
-            title: 'Delete?',
-            actionName: 'Delete',
+            title: '${AppLocalizations.of(context)!.delete}?',
+            actionName: AppLocalizations.of(context)!.delete,
           ) ??
           false;
 
@@ -58,7 +59,8 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
 
       flushbarMessage(
         context: context,
-        message: 'Delete video successfully',
+        title: AppLocalizations.of(context)!.message,
+        message: AppLocalizations.of(context)!.delete_video_successfully,
         imageUrl: video.thumbnailUrl,
       ).show(context);
 
@@ -84,8 +86,8 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
           _enableDownloadButton = false;
         });
         var _flushbarProgress = flushbarProgress(
-          title: 'Please wait a moment!',
-          message: 'Video is downloading...',
+          title: '${AppLocalizations.of(context)!.please_wait_a_moment}!',
+          message: '${AppLocalizations.of(context)!.video_is_downloading}...',
           linearProgressIndicator: const LinearProgressIndicator(),
           duration: const Duration(seconds: 10),
         );
@@ -111,7 +113,8 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
         if (isSuccess == true) {
           flushbarMessage(
             context: context,
-            message: 'Video is saved to Gallery',
+            title: AppLocalizations.of(context)!.message,
+            message: AppLocalizations.of(context)!.video_is_saved_to_Gallery,
             imageUrl: video.thumbnailUrl,
           ).show(context);
         }
@@ -127,8 +130,8 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           alignment: Alignment.center,
-          child: const Text(
-            'More',
+          child: Text(
+            AppLocalizations.of(context)!.more,
             style: CustomTextStyle.title3,
           ),
         ),
@@ -136,13 +139,13 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
           children: [
             buildIconTextButton(
               iconData: FontAwesomeIcons.download,
-              text: 'Download',
+              text: AppLocalizations.of(context)!.download,
               onPressed:
                   _enableDownloadButton ? () => downloadVideoToGallery() : null,
             ),
             buildIconTextButton(
               iconData: FontAwesomeIcons.trashCan,
-              text: 'Detete',
+              text: AppLocalizations.of(context)!.delete,
               onPressed: () {
                 _deleteVideo().then((isDeleteAction) {
                   if (isDeleteAction == true) {
@@ -166,7 +169,7 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
       ],
     );

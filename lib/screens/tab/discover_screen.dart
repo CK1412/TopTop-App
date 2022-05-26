@@ -5,6 +5,7 @@ import 'package:toptop_app/functions/functions.dart';
 import 'package:toptop_app/providers/providers.dart';
 import 'package:toptop_app/providers/state_providers.dart';
 import 'package:toptop_app/src/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../models/video.dart';
 import '../../models/user.dart' as user_model;
@@ -135,13 +136,13 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
           length: 2,
           child: Column(
             children: [
-              const TabBar(
+              TabBar(
                 labelColor: CustomColors.black,
                 unselectedLabelColor: CustomColors.grey,
                 indicatorColor: CustomColors.pink,
                 tabs: [
-                  Tab(text: 'Videos'),
-                  Tab(text: 'People'),
+                  Tab(text: AppLocalizations.of(context)!.videos),
+                  Tab(text: AppLocalizations.of(context)!.people),
                 ],
               ),
               Flexible(
@@ -149,8 +150,11 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                   children: [
                     resultVideos.isNotEmpty
                         ? VideoGridView(videos: resultVideos)
-                        : const Center(
-                            child: Text('No matching results were found'),
+                        : Center(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .no_matching_results_were_found,
+                            ),
                           ),
                     resultUsers.isNotEmpty
                         ? ListView.builder(
@@ -164,7 +168,7 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                                 ),
                                 title: Text(resultUsers[index].username),
                                 subtitle: Text(
-                                  '${resultUsers[index].followers.length} followers',
+                                  '${resultUsers[index].followers.length} ${AppLocalizations.of(context)!.followers}',
                                 ),
                                 onTap: () {
                                   Navigator.of(context).push(
@@ -179,8 +183,11 @@ class _DiscoverScreenState extends ConsumerState<DiscoverScreen> {
                               );
                             },
                           )
-                        : const Center(
-                            child: Text('No matching results were found'),
+                        : Center(
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .no_matching_results_were_found,
+                            ),
                           ),
                   ],
                 ),
@@ -320,7 +327,7 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
                 controller: widget.searchEditingController,
                 focusNode: widget.focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Search',
+                  hintText: AppLocalizations.of(context)!.search,
                   filled: true,
                   fillColor: CustomColors.grey.withOpacity(.2),
                   border: const OutlineInputBorder(
@@ -357,7 +364,7 @@ class _SearchBoxState extends ConsumerState<SearchBox> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
               ),
               child: Text(
-                'Search',
+                AppLocalizations.of(context)!.search,
                 style: CustomTextStyle.title2.copyWith(
                   color: CustomColors.pink,
                   fontWeight: FontWeight.w500,
