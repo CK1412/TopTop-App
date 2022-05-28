@@ -44,9 +44,11 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
         _autoFocus = false;
         FocusManager.instance.primaryFocus?.unfocus();
 
+        String phoneNumberVN = '+84' + _phoneNumberController.text.trim();
+
         await ref.read(authControllerProvider.notifier).signInWithPhone(
               context,
-              phoneNumber: _phoneNumberController.text.trim(),
+              phoneNumber: phoneNumberVN,
             );
       }
     }
@@ -77,15 +79,7 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
                       fontSize: 34,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 20),
-                    child: Text(
-                      ' ${AppLocalizations.of(context)!.you_will_receive_a_4_digit_code_for_phone_number_verification}.',
-                      style: CustomTextStyle.bodyText2.copyWith(
-                        color: CustomColors.white,
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 16),
                   Container(
                     decoration: BoxDecoration(
                       color: CustomColors.white,

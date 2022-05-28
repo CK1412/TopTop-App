@@ -5,7 +5,7 @@
     "continue_with_Google" : "Đăng nhập với Google",
     "continue_with_Facebook" : "Đăng nhập với Facebook",
     "enter_your_phone" : "Nhập số điện thoại của bạn",
-    "you_will_receive_a_4_digit_code_for_phone_number_verification" : "Bạn sẽ nhận được một mã 4 chữ số để xác minh số điện thoại",
+    "enter_the_code_sent_to_the_number" : "Nhập mã được gửi đến số",
     "continue_" : "Tiếp tục",
     "please_enter_your_phone_number" : "Xin vui lòng nhập số điện thoại của bạn",
     "phone_number_must_be_9_or_10_digits" : "Số điện thoại phải có 9 hoặc 10 chữ số",
@@ -86,6 +86,7 @@
     "video_is_saved_to_Gallery" : "Video đã được lưu vào thư viện",
     "video_is_uploading" : "Video đang tải lên",
     "video_has_been_uploaded_successfully" : "Video đã được tải lên thành công",
-    "oTP_verification" : "OTP Xác thực",
-    "ex" : "VD"
+    "verification" : "Xác thực",
+    "ex" : "VD",
+    "did_not_receive_code" : "Không nhận được mã"
 }

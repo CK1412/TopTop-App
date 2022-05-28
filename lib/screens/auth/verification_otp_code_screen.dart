@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:toptop_app/providers/state_notifier_providers.dart';
+import 'package:pinput/pinput.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../providers/state_notifier_providers.dart';
 import '../../src/constants.dart';
 import '../../widgets/auth/gradient_background.dart';
 
@@ -26,14 +26,8 @@ class VerificationOtpCodeScreen extends ConsumerStatefulWidget {
 class _VerificationOtpCodeScreenState
     extends ConsumerState<VerificationOtpCodeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _formKey = GlobalKey<FormState>();
-
-  final _numberInputOneController = TextEditingController();
-  final _numberInputTwoController = TextEditingController();
-  final _numberInputThreeController = TextEditingController();
-  final _numberInputFourController = TextEditingController();
-  final _numberInputFiveController = TextEditingController();
-  final _numberInputSixController = TextEditingController();
+  final pinController = TextEditingController();
+  final focusNode = FocusNode();
 
   bool _isLoading = false;
   String smsCode = '';
@@ -42,23 +36,8 @@ class _VerificationOtpCodeScreenState
   void dispose() {
     super.dispose();
     _isLoading = false;
-    _numberInputOneController.dispose();
-    _numberInputTwoController.dispose();
-    _numberInputThreeController.dispose();
-    _numberInputFourController.dispose();
-    _numberInputFiveController.dispose();
-    _numberInputSixController.dispose();
-  }
-
-  String get _getSmsCode {
-    String number1 = _numberInputOneController.text;
-    String number2 = _numberInputTwoController.text;
-    String number3 = _numberInputThreeController.text;
-    String number4 = _numberInputFourController.text;
-    String number5 = _numberInputFiveController.text;
-    String number6 = _numberInputSixController.text;
-    smsCode = number1 + number2 + number3 + number4 + number5 + number6;
-    return smsCode;
+    pinController.dispose();
+    focusNode.dispose();
   }
 
   void _loading() {
@@ -69,26 +48,34 @@ class _VerificationOtpCodeScreenState
 
   @override
   Widget build(BuildContext context) {
-    void _verifyOTP() async {
-      if (_formKey.currentState!.validate()) {
+    void _verifyOTP(String value) async {
+      _loading();
+
+      final isSuccessfully =
+          await ref.read(authControllerProvider.notifier).verifyOTP(
+                context,
+                verificationId: widget.verifycationId,
+                smsCode: value,
+              );
+
+      if (isSuccessfully) {
+        // remove all routes current
+        Navigator.of(context).popUntil((ModalRoute.withName('/')));
+      } else {
         _loading();
-        FocusManager.instance.primaryFocus?.unfocus();
-
-        final isSuccessfully =
-            await ref.read(authControllerProvider.notifier).verifyOTP(
-                  context,
-                  verificationId: widget.verifycationId,
-                  smsCode: _getSmsCode,
-                );
-
-        if (isSuccessfully) {
-          // remove all routes current
-          Navigator.of(context).popUntil((ModalRoute.withName('/')));
-        } else {
-          _loading();
-        }
       }
     }
+
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(222, 231, 240, .57),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.transparent),
+      ),
+      textStyle: CustomTextStyle.bodyText1.copyWith(fontSize: 18),
+    );
 
     return Scaffold(
       key: _scaffoldKey,
@@ -108,79 +95,75 @@ class _VerificationOtpCodeScreenState
               right: 20,
               top: 34 + AppBar().preferredSize.height,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.oTP_verification,
+                    AppLocalizations.of(context)!.verification,
                     style: CustomTextStyle.titleLarge
                         .copyWith(color: CustomColors.white, fontSize: 34),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 20),
+                  const SizedBox(height: 8),
+                  Text(
+                    AppLocalizations.of(context)!
+                        .enter_the_code_sent_to_the_number,
+                    style: CustomTextStyle.bodyText1
+                        .copyWith(color: CustomColors.white),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    widget.phoneNumber,
+                    style: CustomTextStyle.bodyText1
+                        .copyWith(color: CustomColors.white),
+                  ),
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    height: 56,
+                    child: Pinput(
+                      length: 6,
+                      androidSmsAutofillMethod:
+                          AndroidSmsAutofillMethod.smsRetrieverApi,
+                      defaultPinTheme: defaultPinTheme,
+                      focusedPinTheme: defaultPinTheme.copyWith(
+                        width: 56,
+                        height: 56,
+                        decoration: defaultPinTheme.decoration!.copyWith(
+                          border: Border.all(color: CustomColors.blue),
+                        ),
+                      ),
+                      errorPinTheme: defaultPinTheme.copyWith(
+                        decoration: BoxDecoration(
+                          color: CustomColors.red,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      controller: pinController,
+                      focusNode: focusNode,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                      onCompleted: (pin) {
+                        _verifyOTP(pin);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Text(
+                    '${AppLocalizations.of(context)!.did_not_receive_code}?',
+                    style: CustomTextStyle.bodyText2.copyWith(
+                      color: CustomColors.white,
+                    ),
+                  ),
+                  TextButton(
                     child: Text(
-                      '${AppLocalizations.of(context)!.you_will_receive_a_4_digit_code_for_phone_number_verification}.',
-                      style: CustomTextStyle.bodyText2
-                          .copyWith(color: CustomColors.white),
-                    ),
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 60),
-                      child: buildListInputBox(),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            elevation: 0,
-                            side: const BorderSide(
-                              width: 1,
-                              color: CustomColors.white,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 14,
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.resend,
-                            style: CustomTextStyle.title2.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: CustomColors.white,
-                            ),
-                          ),
-                          onPressed: () {},
-                        ),
+                      AppLocalizations.of(context)!.resend,
+                      style: CustomTextStyle.bodyText2.copyWith(
+                        color: CustomColors.white,
+                        decoration: TextDecoration.underline,
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: CustomColors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 14,
-                            ),
-                          ),
-                          onPressed: _verifyOTP,
-                          child: Text(
-                            AppLocalizations.of(context)!.confirm,
-                            style: CustomTextStyle.title2
-                                .copyWith(fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -191,105 +174,6 @@ class _VerificationOtpCodeScreenState
               )
           ],
         ),
-      ),
-    );
-  }
-
-  Row buildListInputBox() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        NumberInputBox(
-          boxIndex: 0,
-          controller: _numberInputOneController,
-        ),
-        const SizedBox(width: 10),
-        NumberInputBox(
-          boxIndex: 1,
-          controller: _numberInputTwoController,
-        ),
-        const SizedBox(width: 10),
-        NumberInputBox(
-          boxIndex: 2,
-          controller: _numberInputThreeController,
-        ),
-        const SizedBox(width: 10),
-        NumberInputBox(
-          boxIndex: 3,
-          controller: _numberInputFourController,
-        ),
-        const SizedBox(width: 10),
-        NumberInputBox(
-          boxIndex: 4,
-          controller: _numberInputFiveController,
-        ),
-        const SizedBox(width: 10),
-        NumberInputBox(
-          boxIndex: 5,
-          controller: _numberInputSixController,
-        ),
-      ],
-    );
-  }
-}
-
-class NumberInputBox extends StatelessWidget {
-  const NumberInputBox({
-    Key? key,
-    required this.controller,
-    required this.boxIndex,
-  }) : super(key: key);
-
-  final int boxIndex;
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: TextFormField(
-        decoration: InputDecoration(
-          fillColor: Colors.white70,
-          filled: true,
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.pink),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.red),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          isDense: true,
-        ),
-        controller: controller,
-        style: CustomTextStyle.title1,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1),
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-        onChanged: (value) {
-          if (value.length == 1) {
-            FocusScope.of(context).nextFocus();
-          }
-          if (value.isEmpty && boxIndex != 0) {
-            FocusScope.of(context).previousFocus();
-          }
-        },
-        validator: (value) {
-          if (value!.isEmpty) {
-            return '';
-          }
-          return null;
-        },
       ),
     );
   }

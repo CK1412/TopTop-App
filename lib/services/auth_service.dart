@@ -79,10 +79,8 @@ class AuthService {
     required String phoneNumber,
   }) async {
     // ANDROID ONLY!
-    String phoneNumberVN = '+84' + phoneNumber;
-
     await _reader(firebaseAuthProvider).verifyPhoneNumber(
-      phoneNumber: phoneNumberVN,
+      phoneNumber: phoneNumber,
       verificationCompleted: (_) {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {

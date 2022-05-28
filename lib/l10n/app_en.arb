@@ -5,7 +5,7 @@
     "continue_with_Google" : "Continue with Google",
     "continue_with_Facebook" : "Continue with Facebook",
     "enter_your_phone" : "Enter your phone",
-    "you_will_receive_a_4_digit_code_for_phone_number_verification" : "You will receive a 4 digit code for phone number verification",
+    "enter_the_code_sent_to_the_number" : "Enter the code sent to the number",
     "continue_" : "Continue",
     "please_enter_your_phone_number" : "Please enter your phone number",
     "phone_number_must_be_9_or_10_digits" : "Phone number must be 9 or 10 digits",
@@ -86,6 +86,7 @@
     "video_is_saved_to_Gallery" : "Video is saved to Gallery",
     "video_is_uploading" : "Video uploading",
     "video_has_been_uploaded_successfully" : "Video has been uploaded successfully",
-    "oTP_verification" : "OTP Verification",
-    "ex" : "Ex"
+    "verification" : "Verification",
+    "ex" : "Ex",
+    "did_not_receive_code" : "Did not receive code"
 }

@@ -41,6 +41,8 @@ dependencies:
   like_button: ^2.0.4
   # create top snackbar
   another_flushbar: ^1.10.28
+  # create Pin code input field
+  pinput: ^2.2.9
 
   # play video and keep it in cache dir
   cached_video_player:

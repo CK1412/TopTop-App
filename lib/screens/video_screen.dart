@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/video.dart';
 import '../src/constants.dart';
@@ -78,7 +79,9 @@ class InformationBelow extends StatelessWidget {
           children: [
             Lottie.asset(LottiePath.barMusic, height: 26),
             Text(
-              video.songName,
+              video.songName == 'Unknown'
+                  ? AppLocalizations.of(context)!.unknown
+                  : video.songName,
               style: CustomTextStyle.bodyText2.copyWith(
                 color: CustomColors.white,
               ),

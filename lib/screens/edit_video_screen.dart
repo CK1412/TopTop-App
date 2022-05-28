@@ -63,7 +63,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
 
     final songName = _songNameController.text.trim().isNotEmpty
         ? _songNameController.text.trim()
-        : AppLocalizations.of(context)!.unknown;
+        : 'Unknown';
     final caption = _captionController.text.trim();
 
     final videoId = DateTime.now().millisecondsSinceEpoch.toString();
