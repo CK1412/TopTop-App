@@ -3,7 +3,7 @@ import 'dart:convert';
 class Comment {
   final String id;
   final String commentText;
-  final DateTime createdDateTime;
+  final DateTime createdDate;
   final String userId;
   final String avatarUrl;
   final String username;
@@ -12,7 +12,7 @@ class Comment {
   Comment({
     required this.id,
     required this.commentText,
-    required this.createdDateTime,
+    required this.createdDate,
     required this.userId,
     required this.avatarUrl,
     required this.username,
@@ -23,7 +23,7 @@ class Comment {
   Comment copyWith({
     String? id,
     String? commentText,
-    DateTime? createdDateTime,
+    DateTime? createdDate,
     String? userId,
     String? avatarUrl,
     String? username,
@@ -33,7 +33,7 @@ class Comment {
     return Comment(
       id: id ?? this.id,
       commentText: commentText ?? this.commentText,
-      createdDateTime: createdDateTime ?? this.createdDateTime,
+      createdDate: createdDate ?? this.createdDate,
       userId: userId ?? this.userId,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       username: username ?? this.username,
@@ -46,7 +46,7 @@ class Comment {
     return {
       CommentField.id: id,
       CommentField.commentText: commentText,
-      CommentField.createdDateTime: createdDateTime.millisecondsSinceEpoch,
+      CommentField.createdDate: createdDate.millisecondsSinceEpoch,
       CommentField.userId: userId,
       CommentField.avatarUrl: avatarUrl,
       CommentField.username: username,
@@ -59,8 +59,8 @@ class Comment {
     return Comment(
       id: map[CommentField.id] ?? '',
       commentText: map[CommentField.commentText] ?? '',
-      createdDateTime: DateTime.fromMillisecondsSinceEpoch(
-        map[CommentField.createdDateTime],
+      createdDate: DateTime.fromMillisecondsSinceEpoch(
+        map[CommentField.createdDate],
       ),
       userId: map[CommentField.userId] ?? '',
       avatarUrl: map[CommentField.avatarUrl] ?? '',
@@ -79,7 +79,7 @@ class Comment {
 class CommentField {
   static const String id = 'id';
   static const String commentText = 'commentText';
-  static const String createdDateTime = 'createdDateTime';
+  static const String createdDate = 'createdDate';
   static const String userId = 'userId';
   static const String avatarUrl = 'avatarUrl';
   static const String username = 'username';

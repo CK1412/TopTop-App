@@ -13,7 +13,7 @@ import 'firebase_options.dart';
 import 'screens/auth/auth_checker.dart';
 import 'src/themes.dart';
 
-bool useFirebaseEmulator = false;
+bool useFirebaseEmulator = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +39,7 @@ void main() async {
 }
 
 Future _configFirebaseEmulator() async {
-  var myIp = '192.168.0.102';
+  var myIp = '192.168.0.103';
   // auth
   await FirebaseAuth.instance.useAuthEmulator(myIp, 9099);
   debugPrint('use emulator firebaseAuth');

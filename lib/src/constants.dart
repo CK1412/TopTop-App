@@ -5,6 +5,7 @@ class CustomColors {
   static const Color black = Colors.black;
   static const Color white = Colors.white;
   static const Color grey = Colors.grey;
+  static const Color greyLight = Color(0xffDDDDDD);
   static const Color pink = Color(0xffF22E62);
   static const Color blue = Color(0xff0494B5);
   static const Color purple = Color(0xff6F3BFF);

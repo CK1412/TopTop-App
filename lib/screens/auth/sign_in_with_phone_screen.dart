@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:toptop_app/providers/state_notifier_providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:toptop_app/widgets/common/dismiss_keyboard.dart';
 
 import '../../src/constants.dart';
-import '../../widgets/auth/gradient_background.dart';
 
 class SignInWithPhoneScreen extends ConsumerStatefulWidget {
   const SignInWithPhoneScreen({Key? key}) : super(key: key);
@@ -53,98 +53,90 @@ class _SignInWithPhoneScreenState extends ConsumerState<SignInWithPhoneScreen> {
       }
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        foregroundColor: CustomColors.white,
-      ),
-      body: SizedBox.expand(
-        child: Stack(
-          children: [
-            const Positioned.fill(
-              child: GradientBackground(),
-            ),
-            Positioned(
-              left: 20,
-              right: 20,
-              top: 34 + AppBar().preferredSize.height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.enter_your_phone,
-                    style: CustomTextStyle.titleLarge.copyWith(
-                      color: CustomColors.white,
-                      fontSize: 34,
+    return DismissKeyboard(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: CustomColors.white,
+        appBar: AppBar(
+          foregroundColor: CustomColors.black,
+        ),
+        body: SizedBox.expand(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.enter_your_phone,
+                  style: CustomTextStyle.titleLarge.copyWith(
+                    fontSize: 34,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: CustomColors.greyLight),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 4,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                        hintText:
+                            '${AppLocalizations.of(context)!.ex}: 565843282',
+                        border: InputBorder.none,
+                        icon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              IconPath.flagVNColor,
+                              width: 26,
+                            ),
+                            const SizedBox(width: 5),
+                            const Text('+84'),
+                          ],
+                        ),
+                      ),
+                      textInputAction: TextInputAction.done,
+                      autofocus: _autoFocus,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        // Vietnam phone number only 10 numbers
+                        LengthLimitingTextInputFormatter(10),
+                      ],
+                      validator: _validator,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: CustomColors.white,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 4,
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: TextFormField(
-                        controller: _phoneNumberController,
-                        decoration: InputDecoration(
-                          hintText:
-                              '${AppLocalizations.of(context)!.ex}: 565843282',
-                          border: InputBorder.none,
-                          icon: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(
-                                IconPath.flagVNColor,
-                                width: 26,
-                              ),
-                              const SizedBox(width: 5),
-                              const Text('+84'),
-                            ],
-                          ),
-                        ),
-                        textInputAction: TextInputAction.done,
-                        autofocus: _autoFocus,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          // Vietnam phone number only 10 numbers
-                          LengthLimitingTextInputFormatter(10),
-                        ],
-                        validator: _validator,
-                      ),
+                      horizontal: 30,
+                      vertical: 14,
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: CustomColors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 14,
-                      ),
+                  child: Text(
+                    AppLocalizations.of(context)!.continue_,
+                    style: CustomTextStyle.title2.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: CustomColors.white,
                     ),
-                    child: Text(
-                      AppLocalizations.of(context)!.continue_,
-                      style: CustomTextStyle.title2.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onPressed: () => _signInWithPhone(),
                   ),
-                ],
-              ),
+                  onPressed: () => _signInWithPhone(),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

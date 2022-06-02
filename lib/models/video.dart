@@ -15,7 +15,7 @@ class Video {
   final String userId;
   final String username;
   final String userAvatarUrl;
-  final String type;
+  final String fileFormat;
 
   Video({
     required this.id,
@@ -31,7 +31,7 @@ class Video {
     required this.userId,
     required this.username,
     required this.userAvatarUrl,
-    required this.type,
+    required this.fileFormat,
   });
 
   void increaseCommentCount() => commentCount++;
@@ -52,7 +52,7 @@ class Video {
     String? userId,
     String? username,
     String? userAvatarUrl,
-    String? type,
+    String? fileFormat,
   }) {
     return Video(
       id: id ?? this.id,
@@ -68,7 +68,7 @@ class Video {
       userId: userId ?? this.userId,
       username: username ?? this.username,
       userAvatarUrl: userAvatarUrl ?? this.userAvatarUrl,
-      type: type ?? this.type,
+      fileFormat: fileFormat ?? this.fileFormat,
     );
   }
 
@@ -87,7 +87,7 @@ class Video {
       VideoField.userId: userId,
       VideoField.username: username,
       VideoField.userAvatarUrl: userAvatarUrl,
-      VideoField.type: type,
+      VideoField.fileFormat: fileFormat,
     };
   }
 
@@ -110,7 +110,7 @@ class Video {
       userId: map[VideoField.userId] ?? '',
       username: map[VideoField.username] ?? '',
       userAvatarUrl: map[VideoField.userAvatarUrl] ?? '',
-      type: map[VideoField.type] ?? '',
+      fileFormat: map[VideoField.fileFormat] ?? '',
     );
   }
 
@@ -133,5 +133,5 @@ class VideoField {
   static const String userId = 'userId';
   static const String username = 'username';
   static const String userAvatarUrl = 'userAvatarUrl';
-  static const String type = 'type';
+  static const String fileFormat = 'fileFormat';
 }

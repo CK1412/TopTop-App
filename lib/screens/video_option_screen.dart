@@ -79,7 +79,7 @@ class _VideoOptionScreenState extends ConsumerState<VideoOptionScreen> {
 
     Future<void> downloadVideoToGallery() async {
       final tempDir = await getTemporaryDirectory();
-      final path = '${tempDir.path}/${video.id}.${video.type}';
+      final path = '${tempDir.path}/${video.id}.${video.fileFormat}';
 
       try {
         setState(() {

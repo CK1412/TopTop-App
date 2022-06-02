@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pinput/pinput.dart';
 import 'package:toptop_app/widgets/common/center_loading_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:toptop_app/widgets/common/dismiss_keyboard.dart';
 
 import '../../providers/state_notifier_providers.dart';
 import '../../src/constants.dart';
-import '../../widgets/auth/gradient_background.dart';
 
 class VerificationOtpCodeScreen extends ConsumerStatefulWidget {
   const VerificationOtpCodeScreen({
@@ -77,102 +77,94 @@ class _VerificationOtpCodeScreenState
       textStyle: CustomTextStyle.bodyText1.copyWith(fontSize: 18),
     );
 
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        foregroundColor: CustomColors.white,
-      ),
-      body: SizedBox.expand(
-        child: Stack(
-          children: [
-            const Positioned.fill(
-              child: GradientBackground(),
-            ),
-            Positioned(
-              left: 20,
-              right: 20,
-              top: 34 + AppBar().preferredSize.height,
-              child: Column(
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.verification,
-                    style: CustomTextStyle.titleLarge
-                        .copyWith(color: CustomColors.white, fontSize: 34),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context)!
-                        .enter_the_code_sent_to_the_number,
-                    style: CustomTextStyle.bodyText1
-                        .copyWith(color: CustomColors.white),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    widget.phoneNumber,
-                    style: CustomTextStyle.bodyText1
-                        .copyWith(color: CustomColors.white),
-                  ),
-                  const SizedBox(height: 50),
-                  SizedBox(
-                    height: 56,
-                    child: Pinput(
-                      length: 6,
-                      androidSmsAutofillMethod:
-                          AndroidSmsAutofillMethod.smsRetrieverApi,
-                      defaultPinTheme: defaultPinTheme,
-                      focusedPinTheme: defaultPinTheme.copyWith(
-                        width: 56,
-                        height: 56,
-                        decoration: defaultPinTheme.decoration!.copyWith(
-                          border: Border.all(color: CustomColors.blue),
+    return DismissKeyboard(
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: CustomColors.white,
+        appBar: AppBar(
+          foregroundColor: CustomColors.black,
+        ),
+        body: SizedBox.expand(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.verification,
+                      style: CustomTextStyle.titleLarge.copyWith(fontSize: 34),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      AppLocalizations.of(context)!
+                          .enter_the_code_sent_to_the_number,
+                      style: CustomTextStyle.bodyText1,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      widget.phoneNumber,
+                      style: CustomTextStyle.bodyText1,
+                    ),
+                    const SizedBox(height: 50),
+                    SizedBox(
+                      height: 56,
+                      child: Pinput(
+                        length: 6,
+                        androidSmsAutofillMethod:
+                            AndroidSmsAutofillMethod.smsUserConsentApi,
+                        defaultPinTheme: defaultPinTheme,
+                        focusedPinTheme: defaultPinTheme.copyWith(
+                          width: 56,
+                          height: 56,
+                          decoration: defaultPinTheme.decoration!.copyWith(
+                            border: Border.all(color: CustomColors.blue),
+                          ),
+                        ),
+                        errorPinTheme: defaultPinTheme.copyWith(
+                          decoration: BoxDecoration(
+                            color: CustomColors.red,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        controller: pinController,
+                        focusNode: focusNode,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return '';
+                          }
+                          return null;
+                        },
+                        onCompleted: (pin) {
+                          _verifyOTP(pin);
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Text(
+                      '${AppLocalizations.of(context)!.did_not_receive_code}?',
+                      style: CustomTextStyle.bodyText2,
+                    ),
+                    TextButton(
+                      child: Text(
+                        AppLocalizations.of(context)!.resend,
+                        style: CustomTextStyle.bodyText2.copyWith(
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      errorPinTheme: defaultPinTheme.copyWith(
-                        decoration: BoxDecoration(
-                          color: CustomColors.red,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      controller: pinController,
-                      focusNode: focusNode,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '';
-                        }
-                        return null;
-                      },
-                      onCompleted: (pin) {
-                        _verifyOTP(pin);
-                      },
+                      onPressed: () {},
                     ),
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    '${AppLocalizations.of(context)!.did_not_receive_code}?',
-                    style: CustomTextStyle.bodyText2.copyWith(
-                      color: CustomColors.white,
-                    ),
-                  ),
-                  TextButton(
-                    child: Text(
-                      AppLocalizations.of(context)!.resend,
-                      style: CustomTextStyle.bodyText2.copyWith(
-                        color: CustomColors.white,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            if (_isLoading)
-              const CenterLoadingWidget(
-                backgroundTransparent: false,
-              )
-          ],
+              if (_isLoading)
+                const CenterLoadingWidget(
+                  backgroundTransparent: false,
+                )
+            ],
+          ),
         ),
       ),
     );

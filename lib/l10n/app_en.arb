@@ -3,7 +3,6 @@
     "create_an_account_or_log_in_to_get_started" : "Create an account or log in to get started",
     "continue_with_Phone" : "Continue with Phone",
     "continue_with_Google" : "Continue with Google",
-    "continue_with_Facebook" : "Continue with Facebook",
     "enter_your_phone" : "Enter your phone",
     "enter_the_code_sent_to_the_number" : "Enter the code sent to the number",
     "continue_" : "Continue",
@@ -88,5 +87,10 @@
     "video_has_been_uploaded_successfully" : "Video has been uploaded successfully",
     "verification" : "Verification",
     "ex" : "Ex",
-    "did_not_receive_code" : "Did not receive code"
+    "did_not_receive_code" : "Did not receive code",
+    "by_continuing_you_agree_to_our" : "By continuing, you agree to our",
+    "terms_of_Service" : "Terms of Service",
+    "and_accept_our" : "and accept our",
+    "privacy_Policy" : "Privacy Policy",
+    "for_our_use_of_your_data" : "for our use of your data"
 }

@@ -65,11 +65,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     });
 
     String instagramLink = '';
+    String avatarUrl = '';
+    final username = _usernameController.text.trim();
+    final bio = _bioController.text.trim();
 
     if (_instagramUsernameController.text.isNotEmpty) {
       instagramLink =
           'https://www.instagram.com/${_instagramUsernameController.text.trim()}/';
     }
+
+    final videos = ref.read(videoControllerProvider).value;
 
     // change avatar
     if (avatarPath!.isNotEmpty) {
@@ -80,17 +85,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             fileName: currentUser.id,
           );
 
-      final String avatarUrl =
-          await ref.read(storageServiceProvider).getDownloadUrl(
-                folder: 'user-avatar',
-                fileName: currentUser.id,
-              );
+      avatarUrl = await ref.read(storageServiceProvider).getDownloadUrl(
+            folder: 'user-avatar',
+            fileName: currentUser.id,
+          );
 
       await ref.read(currentUserControllerProvider.notifier).updateUser(
             id: currentUser.id,
             userUpdated: currentUser.copyWith(
-              username: _usernameController.text.trim(),
-              bio: _bioController.text.trim(),
+              username: username,
+              bio: bio,
               avatarUrl: avatarUrl,
               recentUpdatedDate: DateTime.now(),
               instagramLink: instagramLink,
@@ -101,12 +105,29 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       await ref.read(currentUserControllerProvider.notifier).updateUser(
             id: currentUser.id,
             userUpdated: currentUser.copyWith(
-              username: _usernameController.text.trim(),
-              bio: _bioController.text.trim(),
+              username: username,
+              bio: bio,
               recentUpdatedDate: DateTime.now(),
               instagramLink: instagramLink,
             ),
           );
+    }
+
+    // update video have current userId
+    if (videos!.isNotEmpty) {
+      for (var video in videos) {
+        if (video.userId == currentUser.id) {
+          await ref.read(videoControllerProvider.notifier).updateVideo(
+                videoId: video.id,
+                videoUpdated: video.copyWith(
+                  recentUpdatedDate: DateTime.now(),
+                  userAvatarUrl:
+                      avatarPath!.isEmpty ? video.userAvatarUrl : avatarUrl,
+                  username: username,
+                ),
+              );
+        }
+      }
     }
 
     setState(() {

@@ -143,7 +143,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
               thumbnailUrl: videoThumbnailUrl,
               createdDate: DateTime.now(),
               recentUpdatedDate: DateTime.now(),
-              type: typeVideo,
+              fileFormat: typeVideo,
             ),
           );
       // setState(() {

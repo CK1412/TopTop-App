@@ -48,7 +48,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     final comment = Comment(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       commentText: _commentController.text.trim(),
-      createdDateTime: DateTime.now(),
+      createdDate: DateTime.now(),
       userId: currentUser!.id,
       avatarUrl: currentUser!.avatarUrl,
       username: currentUser!.username,
@@ -139,7 +139,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                                   ),
                                   Text(
                                     DateFormat.Md().format(
-                                      comments[index].createdDateTime,
+                                      comments[index].createdDate,
                                     ),
                                     style: CustomTextStyle.title3.copyWith(
                                       color: CustomColors.grey,

@@ -34,6 +34,9 @@ class CustomElevateButton extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(
+              color: CustomColors.greyLight,
+            ),
           ),
           primary: backgroundColor,
         ),

@@ -3,7 +3,6 @@
     "create_an_account_or_log_in_to_get_started" : "Tạo tài khoản hoặc đăng nhập để bắt đầu",
     "continue_with_Phone" : "Đăng nhập với điện thoại",
     "continue_with_Google" : "Đăng nhập với Google",
-    "continue_with_Facebook" : "Đăng nhập với Facebook",
     "enter_your_phone" : "Nhập số điện thoại của bạn",
     "enter_the_code_sent_to_the_number" : "Nhập mã được gửi đến số",
     "continue_" : "Tiếp tục",
@@ -88,5 +87,10 @@
     "video_has_been_uploaded_successfully" : "Video đã được tải lên thành công",
     "verification" : "Xác thực",
     "ex" : "VD",
-    "did_not_receive_code" : "Không nhận được mã"
+    "did_not_receive_code" : "Không nhận được mã",
+    "by_continuing_you_agree_to_our" : "Bằng cách tiếp tục, bạn đồng ý với",
+    "terms_of_Service" : "Điều khoản Dịch vụ",
+    "and_accept_our" : "của chúng tôi và chấp nhận các",
+    "privacy_Policy" : "Chính sách Quyền riêng tư",
+    "for_our_use_of_your_data" : "để chúng tôi sử dụng dữ liệu của bạn"
 }

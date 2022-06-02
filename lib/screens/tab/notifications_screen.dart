@@ -107,7 +107,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
 
   String getMessageContent(String message) {
     if (message ==
-        'Welcome to TopTop! Wish you have moments of relaxation and fun') {
+        'Welcome to TopTop! Wish you have moments of relaxation and fun.') {
       return '${AppLocalizations.of(context)!.welcome_to_TopTop_Wish_you_have_moments_of_relaxation_and_fun}.';
     } else {
       return '${AppLocalizations.of(context)!.welcome_back_We_are_missing_you_very_much}.';

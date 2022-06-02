@@ -18,7 +18,7 @@ class CommentControllerNotifier
           await _reader(commentServiceProvider).getCommentByVideo(videoId);
 
       comments!.sort(
-        (a, b) => b.createdDateTime.compareTo(a.createdDateTime),
+        (a, b) => b.createdDate.compareTo(a.createdDate),
       );
 
       if (mounted) {
