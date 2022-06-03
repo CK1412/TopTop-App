@@ -113,7 +113,7 @@ class _VerificationOtpCodeScreenState
                       child: Pinput(
                         length: 6,
                         androidSmsAutofillMethod:
-                            AndroidSmsAutofillMethod.smsUserConsentApi,
+                            AndroidSmsAutofillMethod.smsRetrieverApi,
                         defaultPinTheme: defaultPinTheme,
                         focusedPinTheme: defaultPinTheme.copyWith(
                           width: 56,

@@ -14,7 +14,7 @@
 
 
     "home" : "Trang chủ",
-    "discover" : "Khám phá",
+    "search" : "Tìm kiếm",
     "notifications" : "Thông báo",
     "me" : "Tôi",
 
@@ -32,10 +32,9 @@
     "this_user_has_not_added_instagram_link_yet" : "Người dùng này chưa thêm liên kết instagram",
     "this_user_has_not_posted_any_videos_yet" : "Người dùng này chưa đăng bất kỳ video nào",
 
-    "search" : "Tìm kiếm",
     "videos" : "Videos",
     "people" : "Mọi người",
-    "no_matching_results_were_found" : "Không có kết quả phù hợp nào được tìm thấy",
+    "no_matching_results_were_found" : "Không tìm thấy kết quả phù hợp",
 
     "make_a_video_of_your_own_and_share_it_with_everyone" : "Tạo video của riêng bạn và chia sẻ với mọi người",
     "add_video_from_Gallery" : "Thêm video từ Thư viện",

@@ -16,15 +16,15 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # auth using firebase
-  firebase_auth: ^3.3.17
+  firebase_auth: ^3.3.19
   # connect app to firebase
-  firebase_core: ^1.16.0
+  firebase_core: ^1.17.1
   # sign in with google
-  google_sign_in: ^5.3.0
+  google_sign_in: ^5.3.2
   # firebase database
-  cloud_firestore: ^3.1.14
+  cloud_firestore: ^3.1.17
   # storage video and image on firebase
-  firebase_storage: ^10.2.15
+  firebase_storage: ^10.2.17
 
   # using icon svg
   flutter_svg: ^1.0.3
@@ -42,7 +42,7 @@ dependencies:
   # create top snackbar
   another_flushbar: ^1.10.28
   # create Pin code input field
-  pinput: ^2.2.9
+  pinput: ^2.2.10
 
   # play video and keep it in cache dir
   cached_video_player:

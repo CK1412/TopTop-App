@@ -60,7 +60,7 @@ class _TabScreenState extends ConsumerState<TabScreen> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.search_outlined),
             activeIcon: const Icon(Icons.search),
-            label: AppLocalizations.of(context)!.discover,
+            label: AppLocalizations.of(context)!.search,
           ),
           BottomNavigationBarItem(
             icon: CustomAddIcon(

@@ -13,7 +13,7 @@ import 'firebase_options.dart';
 import 'screens/auth/auth_checker.dart';
 import 'src/themes.dart';
 
-bool useFirebaseEmulator = true;
+bool useFirebaseEmulator = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
