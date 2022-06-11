@@ -245,7 +245,7 @@ class _CustomRightTaskbarState extends ConsumerState<CustomRightTaskbar>
                 : const SizedBox(
                     height: 16,
                   ),
-            CircleAnimationWidget(avatarUrl: currentVideo.userAvatarUrl),
+            const CircleAnimationWidget(),
           ],
         );
       },

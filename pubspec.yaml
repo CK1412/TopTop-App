@@ -25,6 +25,8 @@ dependencies:
   cloud_firestore: ^3.1.17
   # storage video and image on firebase
   firebase_storage: ^10.2.17
+  # enable app check
+  firebase_app_check: ^0.0.6+13
 
   # using icon svg
   flutter_svg: ^1.0.3

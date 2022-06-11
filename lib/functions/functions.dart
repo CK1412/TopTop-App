@@ -56,15 +56,15 @@ Future<bool?> showConfirmDialog({
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(false);
-          },
-          child: Text(AppLocalizations.of(context)!.cancel),
-        ),
-        ElevatedButton(
-          onPressed: () {
             Navigator.of(context).pop(true);
           },
           child: Text(actionName),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
       ],
     ),

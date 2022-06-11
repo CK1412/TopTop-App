@@ -91,5 +91,7 @@
     "terms_of_Service" : "Terms of Service",
     "and_accept_our" : "and accept our",
     "privacy_Policy" : "Privacy Policy",
-    "for_our_use_of_your_data" : "for our use of your data"
+    "for_our_use_of_your_data" : "for our use of your data",
+    "video_size_is_too_big" : "Video size is too big",
+    "please_choose_video_less_than_50MB_in_size" : "Please choose video less than 50MB in size" 
 }

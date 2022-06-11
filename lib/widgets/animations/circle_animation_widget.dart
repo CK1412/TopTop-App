@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/state_providers.dart';
+import '../../src/constants.dart';
 import '../common/custom_circle_avatar.dart';
 
 class CircleAnimationWidget extends StatefulWidget {
   const CircleAnimationWidget({
     Key? key,
-    required this.avatarUrl,
+    this.imageUrl = randomFlowerUrl,
   }) : super(key: key);
 
-  final String avatarUrl;
+  final String imageUrl;
   @override
   State<CircleAnimationWidget> createState() => _CircleAnimationWidgetState();
 }
@@ -73,7 +74,7 @@ class _CircleAnimationWidgetState extends State<CircleAnimationWidget>
             turns: _animation,
             filterQuality: FilterQuality.low,
             child: CustomCircleAvatar(
-              avatarUrl: widget.avatarUrl,
+              avatarUrl: widget.imageUrl,
               radius: 16,
             ),
           );

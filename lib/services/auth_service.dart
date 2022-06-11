@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../providers/providers.dart';
 import '../providers/state_notifier_providers.dart';
 import '../screens/auth/verification_otp_code_screen.dart';
+import '../src/constants.dart';
 import '../utils/custom_exception.dart';
 import '../models/user.dart' as user_model;
 
@@ -136,8 +137,7 @@ class AuthService {
             username: getCurrentUser()!.displayName ?? 'New User',
             email: getCurrentUser()!.email ?? '',
             phoneNumber: getCurrentUser()!.phoneNumber ?? '',
-            avatarUrl: getCurrentUser()!.photoURL ??
-                'https://source.unsplash.com/400x400/?flower',
+            avatarUrl: getCurrentUser()!.photoURL ?? randomFlowerUrl,
             followers: [],
             following: [],
             createdDate: DateTime.now(),

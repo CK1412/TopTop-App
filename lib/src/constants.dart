@@ -19,8 +19,6 @@ class IconPath {
   static const loaderColor = 'assets/icons/loader-color.svg';
   static const googleColor = 'assets/icons/google-color.svg';
   static const facebookRoundColor = 'assets/icons/facebook-round-color.svg';
-  // static const chatSquareTextFill = 'assets/icons/chat-square-text-fill.svg';
-  // static const chatSquareText = 'assets/icons/chat-square-text.svg';
   static const phoneColor = 'assets/icons/phone-color.svg';
   static const flagVNColor = 'assets/icons/flag_vn_color.svg';
   static const galleryColor = 'assets/icons/gallery-color.svg';
@@ -36,6 +34,9 @@ class LottiePath {
   static const heartAnimation = 'assets/lotties/heart-animation.json';
   static const videoEditor = 'assets/lotties/video-editor.json';
 }
+
+// URL
+const randomFlowerUrl = 'https://source.unsplash.com/400x400/?flower';
 
 // TEXT STYLE
 class CustomTextStyle {

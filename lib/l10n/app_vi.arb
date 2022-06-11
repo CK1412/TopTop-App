@@ -91,5 +91,7 @@
     "terms_of_Service" : "Điều khoản Dịch vụ",
     "and_accept_our" : "của chúng tôi và chấp nhận các",
     "privacy_Policy" : "Chính sách Quyền riêng tư",
-    "for_our_use_of_your_data" : "để chúng tôi sử dụng dữ liệu của bạn"
+    "for_our_use_of_your_data" : "để chúng tôi sử dụng dữ liệu của bạn",
+    "video_size_is_too_big" : "Kích thước video quá lớn",
+    "please_choose_video_less_than_50MB_in_size" : "Vui lòng chọn video có kích thước nhỏ hơn 50MB"
 }

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "73540276623-ifb3f8u2nevem42psl8uuo3uqcpg0lej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.haui.toptop",
+            "certificate_hash": "171f3fdb5c31d8475c79a42feb0d88c56002bd8e"
+          }
+        },
+        {
           "client_id": "73540276623-ve0k436q6n0r85f0c3bp964gtjg8eola.apps.googleusercontent.com",
           "client_type": 3
         }

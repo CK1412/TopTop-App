@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,6 +16,8 @@ import '../../functions/pick_file.dart';
 class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({Key? key}) : super(key: key);
 
+  final limitSize = 1024 * 1024 * 50; // bytes
+
   Future<void> _pickVideoFromSrc(
     BuildContext context, {
     required ImageSource imageSource,
@@ -22,13 +25,25 @@ class AddVideoScreen extends StatelessWidget {
     final File? videoFile = await pickVideo(imageSource);
 
     if (videoFile != null) {
-      Navigator.of(context).push(
-        CustomPageRoute(
-          child: EditVideoScreen(
-            videoFile: videoFile,
+      final videoFileSize = await videoFile.length();
+      debugPrint(
+          '-----------------------------$videoFileSize----------------------------');
+
+      if (videoFileSize > limitSize) {
+        FlushbarHelper.createInformation(
+          title: AppLocalizations.of(context)!.video_size_is_too_big,
+          message: AppLocalizations.of(context)!
+              .please_choose_video_less_than_50MB_in_size,
+        ).show(context);
+      } else {
+        Navigator.of(context).push(
+          CustomPageRoute(
+            child: EditVideoScreen(
+              videoFile: videoFile,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 
