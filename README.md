@@ -17,8 +17,8 @@ The app is written in Flutter and uses Firebase as a backend.
 
 ## 👀 App preview
 
-![app preview 1](app_preview\app_preview_1.png)
-![app preview 2](app_preview\app_preview_2.png)
+![app preview 1](app_preview/app_preview_1.png)
+![app preview 2](app_preview/app_preview_2.png)
 
 ## 📙 How to Use the Project
 
