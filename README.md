@@ -36,8 +36,8 @@ You can use the app by installing [Play Store][app-for-android] (applicable to a
 
 ## ℹ️ Version used
 
-- Flutter 2.10.3
-- Dart 2.16.0
+- Flutter 3.0.4
+- Dart 2.17.5
 
 ## 📝 License
 

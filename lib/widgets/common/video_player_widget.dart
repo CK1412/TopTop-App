@@ -25,7 +25,7 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
+  late CachedVideoPlayerController _controller;
   // late CachedVideoPlayerController _controller;
 
   User? _currentUser;
@@ -47,7 +47,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
       }
     });
 
-    _controller = VideoPlayerController.network(
+    _controller = CachedVideoPlayerController.network(
       widget.video.videoUrl,
     )
       ..initialize().then((_) {
@@ -118,7 +118,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
                     child: SizedBox(
                       height: _videoSize.height,
                       width: _videoSize.width,
-                      child: VideoPlayer(_controller),
+                      child: CachedVideoPlayer(_controller),
                     ),
                   ),
                 ),

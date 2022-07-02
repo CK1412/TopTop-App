@@ -12,7 +12,7 @@ final videoStateProvider = StateProvider<bool>((ref) {
 
 //* keep controller of current video
 final videoPlayerControllerProvider =
-    StateProvider<VideoPlayerController?>((ref) {
+    StateProvider<CachedVideoPlayerController?>((ref) {
   return null;
 });
 

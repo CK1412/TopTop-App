@@ -29,7 +29,7 @@ class EditVideoScreen extends ConsumerStatefulWidget {
 }
 
 class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
-  late VideoPlayerController _videoController;
+  late CachedVideoPlayerController _videoController;
   late TextEditingController _captionController;
   late TextEditingController _songNameController;
 
@@ -40,13 +40,14 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
     super.initState();
     _captionController = TextEditingController();
     _songNameController = TextEditingController();
-    _videoController = VideoPlayerController.file(File(widget.videoFile.path))
-      ..initialize().then((_) => setState(() {
-            // necessary
-          }))
-      ..play()
-      ..setVolume(1)
-      ..setLooping(true);
+    _videoController =
+        CachedVideoPlayerController.file(File(widget.videoFile.path))
+          ..initialize().then((_) => setState(() {
+                // necessary
+              }))
+          ..play()
+          ..setVolume(1)
+          ..setLooping(true);
   }
 
   @override
@@ -183,7 +184,7 @@ class _EditVideoScreenState extends ConsumerState<EditVideoScreen> {
                       alignment: Alignment.center,
                       child: AspectRatio(
                         aspectRatio: _videoController.value.aspectRatio,
-                        child: VideoPlayer(_videoController),
+                        child: CachedVideoPlayer(_videoController),
                       ),
                     ),
                     SizedBox(
