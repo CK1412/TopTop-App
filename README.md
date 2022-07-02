@@ -1,16 +1,44 @@
-# toptop_app
+# TopTop App
 
-A new Flutter project.
+<!--
+Start   : 27/03/2022
+End     : 15/06/2022
+ -->
 
-## Getting Started
+## 👋 Introduce
 
-This project is a starting point for a Flutter application.
+TopTop is a video social networking application that helps people share personal, unique and funny short videos to everyone.
 
-A few resources to get you started if this is your first Flutter project:
+Design ideas from TikTok, Instagram.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+The app is written in Flutter and uses Firebase as a backend.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**_Don't hesitate to give this project 1 🌟 if you like it. Thank you_**
+
+## 👀 App preview
+
+![app preview 1](app_preview\app_preview_1.png)
+![app preview 2](app_preview\app_preview_2.png)
+
+## 📙 How to Use the Project
+
+You can use the app by installing [Play Store][app-for-android] (applicable to android devices)
+
+## 🥰 The main functions of the application
+
+- authenticate with phone number, google account
+- CRUD video
+- edit profile
+- support Vietnamese, English language
+- search videos, users
+- video interaction: like, share, comment
+- user interaction: follow
+
+## ℹ️ Version used
+
+- Flutter 2.10.3
+- Dart 2.16.0
+
+## 📝 License
+
+Free to use for learning purposes
