@@ -15,6 +15,12 @@ The app is written in Flutter and uses Firebase as a backend.
 
 **_Don't hesitate to give this project 1 🌟 if you like it. Thank you_**
 
+## 👋 Major Dependencies
+
+|  Package   |  Desc   |
+| :-------: | :-------: |
+| flutter_riverpod | state management |
+
 ## 👀 App preview
 
 ![app preview 1](app_preview/app_preview_1.png)
@@ -22,7 +28,7 @@ The app is written in Flutter and uses Firebase as a backend.
 
 ## 📙 How to Use the Project
 
-You can use the app by installing [Play Store][app-for-android] (applicable to android devices)
+You can use the app by installing [Play Store](https://play.google.com/store/apps/details?id=github.ck1412.noteApp)
 
 ## 🥰 The main functions of the application
 
