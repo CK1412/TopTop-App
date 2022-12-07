@@ -28,7 +28,7 @@ The app is written in Flutter and uses Firebase as a backend.
 
 ## 📙 How to Use the Project
 
-You can use the app by installing [Play Store](https://play.google.com/store/apps/details?id=github.ck1412.noteApp)
+You can use the app by installing [Play Store]()
 
 ## 🥰 The main functions of the application
 
